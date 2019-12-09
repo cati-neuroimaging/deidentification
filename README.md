@@ -5,12 +5,12 @@ Tool to remove metadata allowing to identify a subject from DICOM images used in
 
 Le script d'anonymisation est composé de 6 fichiers.
 
-aggregator.py :  lecture des dicom
-ano_function.py : fonction principale pour lancer le script pour les ARCs
-anon_example.py : fonction principale pour lancer le script
-anonymizer.py : parcours des dicom et anonymisation 
-archive.py : gere les archives et compressions de dossiers/fichiers pour donner n’importe quel format en entrée
-tag_lists.py : procédure d’anonymisation construite à partir de l’annexe E de la partie 15 du standard dicom
+- aggregator.py :  lecture des dicom
+- ano_function.py : fonction principale pour lancer le script pour les ARCs
+- anon_example.py : fonction principale pour lancer le script
+- anonymizer.py : parcours des dicom et anonymisation 
+- archive.py : gere les archives et compressions de dossiers/fichiers pour donner n’importe quel format en entrée
+- tag_lists.py : procédure d’anonymisation construite à partir de l’annexe E de la partie 15 du standard dicom
 
 
 **prérequis :**
