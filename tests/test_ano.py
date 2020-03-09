@@ -1,6 +1,6 @@
 
 def test_import_class():
-    import deidentification.anonymizer as anonymizer
+    from deidentification.anonymizer import anonymize
     assert True
 
 
