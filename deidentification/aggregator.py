@@ -33,10 +33,7 @@
 # knowledge of the CeCILL license version 2 and that you accept its terms.
 
 import os
-try:
-    import dicom
-except ImportError, e:
-    raise Exception("DICOM aggregator requires pydicom.")
+import pydicom
 
 
 class DicomAggregator(object):
@@ -61,19 +58,13 @@ class DicomAggregator(object):
         serie_sop_uids = {}
         positions_and_orientations = []
         for f in self._dicom_sources:
-            try:
-                ds = dicom.read_file(f)
-            except:
-                continue
+            ds = pydicom.read_file(f)
 
             if len(self.modalities) != 0 and \
                ds.Modality not in self.modalities:
                 continue
 
-            try:
-                serie_uid = ds.SeriesInstanceUID
-            except:
-                continue
+            serie_uid = ds.SeriesInstanceUID
 
 #            try:
 #                frameOfRefUID = ds.FrameofReferenceUID
@@ -84,7 +75,7 @@ class DicomAggregator(object):
 #            except:
 #                pass
 
-            if not self._aggregate_sources.has_key(serie_uid):
+            if serie_uid not in self._aggregate_sources:
                 self._aggregate_sources[serie_uid] = []
                 serie_sop_uids[serie_uid] = []
 
@@ -96,7 +87,7 @@ class DicomAggregator(object):
                 position_and_orientation = None
 
             sop_uid = ds.SOPInstanceUID
-            if not sop_uid in serie_sop_uids[ serie_uid ] and \
+            if not sop_uid in serie_sop_uids[serie_uid] and \
                not position_and_orientation in positions_and_orientations:
                 serie_sop_uids[serie_uid].append(sop_uid)
                 self._aggregate_sources[serie_uid].append(f)
