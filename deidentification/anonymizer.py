@@ -5,16 +5,18 @@
 # This script is not guaranteed to be complete.
 # In particular, the detection of burnt-in PHI is not managed.
 
-import tag_lists
-from archive import unpack, pack, is_archive
-from tempfile import mkdtemp
+import filecmp
+import hashlib
 import os
 import shutil
-from glob import glob
-import hashlib
-import pydicom
 import subprocess
-import filecmp
+from glob import glob
+from tempfile import mkdtemp
+
+import pydicom
+
+from deidentification import tag_lists
+from deidentification.archive import is_archive, pack, unpack
 
 
 def anonymize(dicom_in, dicom_out,

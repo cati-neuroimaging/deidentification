@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import anonymizer as anonymizer
+import deidentification.anonymizer as anonymizer
 
 
 def run_ano_function(subject, inputPath, outputPath):
@@ -19,13 +19,13 @@ def run_ano_function(subject, inputPath, outputPath):
 
     forced_values = {(0x0010, 0x0010): subject}
    
-    print 'Launch anonymization for ', subject
+    print('Launch anonymization for ', subject)
     anonymizer.anonymize(
         dicom_in=inputPath,
         dicom_out=outputPath,
         tags_to_keep=tags_to_keep,
         forced_values=forced_values)
-    print 'Anonymization done for ', subject
+    print('Anonymization done for ', subject)
 
 
 
@@ -38,14 +38,13 @@ def run_ano_function_MultiSubjects(myListe):
         try:
             run_ano_function(subject, inputPath, outputPath)
         except:
-            print 'Error during anonymization for ', subject
-
+            print('Error during anonymization for ', subject)
 
 
 def fileToList(filePath):
 
     myListe = []
-    liste = [ i.strip() for i in  open( filePath ) ]
+    liste = [i.strip() for i in open(filePath)]
     for el in liste:
         subject = el.split(';')[0]
         inputPath = el.split(';')[1]
