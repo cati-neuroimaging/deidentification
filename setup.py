@@ -10,7 +10,6 @@ setup(
     author='CATI team',
     author_email='support@cati-neuroimaging.com',
     version='0.1.0',
-    package_dir={'': 'deidentification'},
     packages=modules,
     install_requires=['pydicom'],
 )
