@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 # Select appropriate modules
-modules = find_packages('deidentification')
+modules = find_packages()
 
 # Build the setup
 setup(
