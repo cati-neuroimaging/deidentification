@@ -1,35 +1,35 @@
 # deidentification
-Tool to remove metadata allowing to identify a subject from DICOM images used in neuroimaging research
 
-**Anonymization script**
+Tool to remove metadata allowing to identify a subject from DICOM images used in neuroimaging research.
+
+## Anonymization script
 
 Le script d'anonymisation est composé de 6 fichiers.
 
 - aggregator.py :  lecture des dicom
 - ano_function.py : fonction principale pour lancer le script pour les ARCs
 - anon_example.py : fonction principale pour lancer le script
-- anonymizer.py : parcours des dicom et anonymisation 
+- anonymizer.py : parcours des dicom et anonymisation
 - archive.py : gere les archives et compressions de dossiers/fichiers pour donner n’importe quel format en entrée
 - tag_lists.py : procédure d’anonymisation construite à partir de l’annexe E de la partie 15 du standard dicom
 
+## Dependencies
 
-**prérequis :**
-*Python*
-*Pydicom*
+- Python >= 2.7
+- Pydicom >= 1.4.2
+
+## Norme d’anonymisation
+
+[DICOM attribute confidentiality Profiles](http://dicom.nema.org/medical/dicom/current/output/html/part15.html#chapter_E)
 
 
+- X means the attribute must be removed
+- U means the attribute must be replaced with a cleaned but internally consistent UUID
+- D means replace with a non-zero length dummy value
+- Z means replace with a zero or non-zero length dummy value
+- C means the attribute can be kept if it is cleaned
 
-**Norme d’anonymisation :**
-
-http://dicom.nema.org/medical/dicom/current/output/html/part15.html#chapter_E
-
- - X means the attribute must be removed
- - U means the attribute must be replaced with a cleaned but internally consistent UUID
- - D means replace with a non-zero length dummy value
- - Z means replace with a zero or non-zero length dummy value
- - C means the attribute can be kept if it is cleaned
-
-```
+```python
 annex_e = {
     (0x0008, 0x0050): ['N', 'Y', 'Z', '', '', '', '', '', '', '', '', ''],  # Accession Number
     (0x0018, 0x4000): ['Y', 'N', 'X', '', '', '', '', '', '', 'C', '', ''],  # Acquisition Comments
@@ -47,16 +47,16 @@ annex_e = {
     (0x0008, 0x1080): ['N', 'Y', 'X', '', '', '', '', '', '', 'C', '', ''],  # Admitting Diagnoses Description
     (0x0038, 0x0021): ['N', 'N', 'X', '', '', '', '', 'K', 'C', '', '', ''],  # Admitting Time
 
-[....]
+    [....]
 
 }
 ```
 
+## Config file
 
-**Fichier de config**
-Tag à garder pour le CATI :
+Tag to keep for CATI :
 
-```
+```python
 tags_to_keep = [
     (0x0008, 0x0020), (0x0008, 0x0031), (0x0008, 0x0032), (0x0008, 0x0033),
     (0x0008, 0x103E), (0x0010, 0x0010), (0x0019, 0x100A), (0x0019, 0x100C),
@@ -71,29 +71,46 @@ tags_to_keep = [
 ]
 ```
 
+## Improvements
 
-Prévoir le cas de la version XA11
-Que faire du CSA header ?
+- Take into account XA11 version
+- What to do with CSA header ?
 
-**Méthode Normale**
+## How to use it?
 
+### As a script
 
-Lancer la fonction anon_example.py
+Launch anon_example.py function to anonymize a dicom file.
 
-Exemple:
+Whitout subject id (set as "Unknown" by default):
 
-Sans choisir d’identifiant sujet (il sera mis à “Unknown” par défaut) :
-``python anon_example.py -in myInputFolder -out myOutputFolder``
+```sh
+python anon_example.py -in myInputFolder -out myOutputFolder
+```
 
+With a subject id:
 
+```sh
+python anon_example.py -in myInputFolder -out myOutputFolder -ID 0001XXXX
+```
 
-Pour forcer l’identifiant sujet :
-``python anon_example.py -in myInputFolder -out myOutputFolder -ID 0001XXXX``
+### Using python module
 
+```python
+from deidentification import anonymizer
+from deidentification.config import tag_to_keep
 
+dicom_input_path = '/path/to/dicom_input_file'
+dicom_output_path = '/path/to/dicom_output_file'
 
+anonymizer.anonymize(
+    dicom_input_path,
+    dicom_output_path,
+    tag_to_keep
+)
+```
 
-**Méthode ARC**
+## ARC method
 
 *Pour lancer le scirpt en singlesubject:*
 
@@ -101,8 +118,9 @@ lancer un python / ipython / spyder,...
 Ouvrir en parallèle le fichier ano_function.py
 
 Remplir les champs:
-tag to keep
-forced_values
+
+- `tag to keep`
+- `forced_values`
 
 lancer la fonction ‘run_ano_function’ avec comme parametres l’identifiant sujet, le chemin dicom d’entrée et le chemin dicom de sortie. Le dicom en entrée peut etre zippé ou non. Si le chemin du dicom en sortie est le même que je le chemin du dicom en entrée, celui-ci sera écrasé.
 
@@ -120,6 +138,3 @@ lancer la fonction run_ano_function_MultiSubjects avec comme parametres une list
 Si besoin il est possible de créer la liste a donner en entrée à l’aide de la fonction fileToList.
 fileToList prend en entrée un fichier texte avec sur chaque ligne l’identifiant sujet, le chemin dicom d’entrée et le chemin dicom de sortie, séparés par un ‘;’.
 fileToList retourne la liste
-
-
-
