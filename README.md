@@ -1,6 +1,6 @@
 # deidentification
 
-Tool to remove metadata allowing to identify a subject from DICOM images used in neuroimaging research.
+Tool to remove metadata allowing to identify a subject from DICOM images used in neuroimaging research. Can anonymize dicom files or archives of dicoms.
 
 ## Anonymization script
 
@@ -21,7 +21,6 @@ Le script d'anonymisation est composé de 6 fichiers.
 ## Norme d’anonymisation
 
 [DICOM attribute confidentiality Profiles](http://dicom.nema.org/medical/dicom/current/output/html/part15.html#chapter_E)
-
 
 - X means the attribute must be removed
 - U means the attribute must be replaced with a cleaned but internally consistent UUID
@@ -109,32 +108,3 @@ anonymizer.anonymize(
     tag_to_keep
 )
 ```
-
-## ARC method
-
-*Pour lancer le scirpt en singlesubject:*
-
-lancer un python / ipython / spyder,...
-Ouvrir en parallèle le fichier ano_function.py
-
-Remplir les champs:
-
-- `tag to keep`
-- `forced_values`
-
-lancer la fonction ‘run_ano_function’ avec comme parametres l’identifiant sujet, le chemin dicom d’entrée et le chemin dicom de sortie. Le dicom en entrée peut etre zippé ou non. Si le chemin du dicom en sortie est le même que je le chemin du dicom en entrée, celui-ci sera écrasé.
-
-*Pour lancer le scirpt en multisubjects:*
-
-lancer un python / ipython / spyder,...
-Ouvrir en parallèle le fichier ano_function.py
-
-Remplir les champs:
-tag to keep
-forced_values
-
-lancer la fonction run_ano_function_MultiSubjects avec comme parametres une liste. Cette liste condiendra des sous listes de 3 éléments:  l’identifiant sujet, le chemin dicom d’entrée et le chemin dicom de sortie. Le dicom en entrée peut etre zippé ou non. Si le chemin du dicom en sortie est le même que je le chemin du dicom en entrée, celui-ci sera écrasé.
-
-Si besoin il est possible de créer la liste a donner en entrée à l’aide de la fonction fileToList.
-fileToList prend en entrée un fichier texte avec sur chaque ligne l’identifiant sujet, le chemin dicom d’entrée et le chemin dicom de sortie, séparés par un ‘;’.
-fileToList retourne la liste
