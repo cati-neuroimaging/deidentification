@@ -257,9 +257,8 @@ annex_e = {
     (0x0018, 0x1201): ['N', 'N', 'X', '', '', '', '', '', '', '', ''],  # Time of Last Calibration
     (0x0032, 0x1064): ['N', 'N', 'X', '', '', '', '', '', '', '', ''],  # Requested Procedure Sequence
     (0x0040, 0x1012): ['N', 'N', 'X', '', '', '', '', '', '', '', ''],  # Reason for peformed procedure sequence
-    (0x0040, 0xA124): ['N', 'N', 'X', '', '', '', '', '', '', '', ''],  # UID
-    (0x0072, 0x6A): ['N', 'N', 'X', '', '', '', '', '', '', '', ''],  # Selector PN Value
-    (0x3006, 0xA6): ['N', 'N', 'X', '', '', '', '', '', '', '', ''],  # ROI Interpreter
+    (0x0072, 0x006A): ['N', 'N', 'X', '', '', '', '', '', '', '', ''],  # Selector PN Value
+    (0x3006, 0x00A6): ['N', 'N', 'X', '', '', '', '', '', '', '', ''],  # ROI Interpreter
 }
 
 # This dictionary contains tags that can be kept
