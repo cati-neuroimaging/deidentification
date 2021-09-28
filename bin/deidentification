@@ -1,20 +1,19 @@
 #!/usr/bin/env python
-# -*- coding: utf-8 -*-
 
 import os
 import argparse
-import anonymizer as anonymizer
-from config import tags_to_keep, forced_values
 
+from deidentification import anonymizer
+from deidentification.config import tags_to_keep, forced_values
 
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser = argparse.ArgumentParser(
         description=("Anonymize a dicom according to dicom standard "))
-    parser.add_argument("-in", "--dicom_in", 
+    parser.add_argument("-in", "--dicom_in",
                         help="input path of the dicom")
-    parser.add_argument("-out", "--dicom_out", 
+    parser.add_argument("-out", "--dicom_out",
                         help="output path of the dicom")
     parser.add_argument("-ID", "--subjectID", default='Unknown',
                         help="ID of the subject")
