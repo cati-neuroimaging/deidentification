@@ -4,7 +4,7 @@ Tool to remove metadata allowing to identify a subject from DICOM images used in
 
 ## Dependencies
 
-- Python >= 2.7
+- Python >= 3.6
 - Pydicom >= 1.4.2
 
 ## Deidentification norm

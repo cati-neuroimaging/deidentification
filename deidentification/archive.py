@@ -29,10 +29,24 @@ def unpack(input_filename, extract_dir):
     """
     Unpacks the input_filename archive to the extract_dir directory.
     """
+    if not is_archive(input_filename):
+        raise AttributeError("Input_filename must be an archive (ex: .tar.gz, .zip)")
     if zipfile.is_zipfile(input_filename):
         unzip(input_filename, extract_dir)
     else:
         untar(input_filename, extract_dir)
+
+
+def unpack_first(input_filename: str, extract_dir: str) -> str:
+    """
+    Unpacks the first file in input_filename archive to the extract_dir directory.
+    """
+    if not is_archive(input_filename):
+        raise AttributeError("Input_filename must be an archive (ex: .tar.gz, .zip)")
+    if zipfile.is_zipfile(input_filename):
+        return unzip_first(input_filename, extract_dir)
+    else:
+        return untar_first(input_filename, extract_dir)
 
 
 def pack(output_filename, sources):
@@ -58,6 +72,24 @@ def untar(input_filename, extract_dir):
     tar_ds.close()
 
 
+def untar_first(input_filename: str, extract_dir: str) -> str:
+    """
+    Extracts the first file in an archive file and return filepath extracted.
+    """
+    with tarfile.open(input_filename) as tar_data:
+        file_to_extract = tar_data.next()
+        while file_to_extract is not None and not file_to_extract.isfile():
+            file_to_extract = tar_data.next()
+            
+        if file_to_extract is None:
+            print(f'No file found in archive {input_filename}')
+            res = ''
+        else:
+            tar_data.extract(file_to_extract, path=extract_dir)
+            res = os.path.join(extract_dir, file_to_extract.name)
+    return res
+
+
 def unzip(input_filename, extract_dir):
     """
     Extracts the input_filename archive to the extract_dir directory.
@@ -68,6 +100,24 @@ def unzip(input_filename, extract_dir):
     zip_ds.extractall(path=extract_dir)
     zip_ds.close()
 
+
+def unzip_first(input_filename: str, extract_dir: str) -> str:
+    """
+    Extracts the first file in a zip file and return filepath extracted.
+    """
+    with zipfile.ZipFile(input_filename) as zip_file:
+        zip_file_list = zip_file.infolist()
+        zip_index = 0
+        while zip_index < len(zip_file_list) and zip_file_list[zip_index].is_dir():
+            zip_index += 1
+        if zip_index == len(zip_file_list):
+            res = ''
+        else:
+            file_to_extract = zip_file_list[zip_index]
+            zip_file.extract(file_to_extract, extract_dir)
+            res = os.path.join(extract_dir, file_to_extract.filename)
+    return res
+        
 
 def pack_tar(output_filename, sources, type='gz'):
     """

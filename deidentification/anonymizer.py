@@ -17,6 +17,7 @@ import pydicom
 
 from deidentification import tag_lists
 from deidentification.archive import is_archive, pack, unpack
+from deidentification.archive import unpack_first
 
 
 def anonymize(dicom_in, dicom_out,
@@ -53,8 +54,6 @@ def anonymize(dicom_in, dicom_out,
         if os.path.isfile(wip_dicom_out):
             print("Since the input is a directory, an output directory is expected.")
             return
-        if not os.path.exists(wip_dicom_out):
-            os.makedirs(wip_dicom_out)
         
         for root, dirs, files in os.walk(wip_dicom_in):
             for name in files:
@@ -79,69 +78,30 @@ def anonymize(dicom_in, dicom_out,
 
 def checkAnonymize(dicom_in, tags_to_keep=None, forced_values=None):
     """
-    Configures the Anonymizer and runs it on one DICOM files to check if anonymization already done.
+    Configures the Anonymizer and runs it on one DICOM file to check if anonymization already done.
     """
         
     if not os.path.exists(dicom_in):
         print("The DICOM input does not exist.")
         return
-    is_dicom_in_archive = is_archive(dicom_in)
     
-    if is_dicom_in_archive:
-        wip_dicom_in = mkdtemp()
-        
-        command_list = ['tar', '-tf', dicom_in]
-        command = ' '.join(command_list)
-        p = subprocess.Popen(command,
-                             shell=True,
-                             bufsize=-1,
-                             stdin=subprocess.PIPE,
-                             stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE,
-                             close_fds=True)
-        
-        (sdtoutl, stderrl) = p.communicate()
-        
-        F = sdtoutl.decode().split('\n')
-        for i in F:
-            if i.split('/')[-1] != '':
-                f1 = i
-                f2 = i.split('/')[-1]
-                break
-        os.chdir(wip_dicom_in)
-        command_list = ['tar', '-xvzf', dicom_in, f1]
-        command = ' '.join(command_list)
-        
-        p = subprocess.Popen(command,
-                             shell=True,
-                             bufsize=-1,
-                             stdin=subprocess.PIPE,
-                             stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE,
-                             close_fds=True)
-        
-        (sdtoutl, stderrl) = p.communicate()
-        wip_dicom_in = wip_dicom_in + '/' + f1
-        
+    if is_archive(dicom_in):
+        dicom_tmp = mkdtemp()
+        wip_dicom_in = unpack_first(dicom_in, dicom_tmp)
+    elif os.path.isfile(dicom_in):
+        wip_dicom_in = dicom_in
+    elif os.path.isdir(dicom_in):
+        items_in_folder = glob.glob(os.path.join(dicom_in, '*'))
+        wip_dicom_in = next(filter(os.path.isfile, items_in_folder), '')
     else:
-        wip_dicom_in = os.path.abspath(dicom_in + '/' + os.listdir(dicom_in)[0])
+        raise AttributeError("The dicom_in type is not handled by this tool.")
         
     if os.path.isfile(wip_dicom_in):
-        anon = Anonymizer(wip_dicom_in, '', tags_to_keep,
-                          forced_values)
+        anon = Anonymizer(wip_dicom_in, '',
+                          tags_to_keep, forced_values)
         anon.runCheck()
-        
-    elif os.path.isdir(wip_dicom_in):
-        for root, dirs, files in os.walk(wip_dicom_in):
-            for name in files:
-                current_file = os.path.join(root, name)
-                subdir = root.replace(
-                    wip_dicom_in + '/', '').replace(wip_dicom_in, '')
-                anon = Anonymizer(current_file, '', tags_to_keep,
-                                  forced_values)
-                anon.runCheck()
     else:
-        print("The input file type is not handled by this tool.")
+        raise AttributeError("The dicom_in type is not handled by this tool.")
     
     return anon.result
 
@@ -212,11 +172,7 @@ class Anonymizer():
         except:
             print("This file is not a DICOM file:", self._dicom_filein)
             return
-        #for i,val in self.originalDict.items():
-            #print(i,val)
-        #print('##############################################')
-        #for i,val in self.outputDict.items():
-            #print(i,val)
+
         if self.originalDict == self.outputDict:
             self.result = True
             print('Anonymization already done')
