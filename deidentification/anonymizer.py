@@ -44,26 +44,27 @@ def anonymize(dicom_in, dicom_out,
         if os.path.exists(wip_dicom_out) and os.path.isdir(wip_dicom_out):
             wip_dicom_out = os.path.join(
                 wip_dicom_out, os.path.basename(wip_dicom_in))
-        anon = Anonymizer(wip_dicom_in, wip_dicom_out, tags_to_keep,
-                          forced_values)
+
+        anon = Anonymizer(wip_dicom_in, wip_dicom_out,
+                          tags_to_keep, forced_values)
         anon.run()
+
     elif os.path.isdir(wip_dicom_in):
         if os.path.isfile(wip_dicom_out):
             print("Since the input is a directory, an output directory is expected.")
             return
         if not os.path.exists(wip_dicom_out):
             os.makedirs(wip_dicom_out)
+        
         for root, dirs, files in os.walk(wip_dicom_in):
             for name in files:
                 current_file = os.path.join(root, name)
-                subdir = root.replace(
-                    wip_dicom_in + '/', '').replace(wip_dicom_in, '')
-                file_out = os.path.join(
-                    wip_dicom_out, subdir, os.path.basename(current_file))
+                file_out = current_file.replace(wip_dicom_in, wip_dicom_out)
                 if not os.path.exists(os.path.dirname(file_out)):
                     os.makedirs(os.path.dirname(file_out))
-                anon = Anonymizer(current_file, file_out, tags_to_keep,
-                                  forced_values)
+                
+                anon = Anonymizer(current_file, file_out,
+                                  tags_to_keep, forced_values)
                 anon.run()
     else:
         print("The input file type is not handled by this tool.")
