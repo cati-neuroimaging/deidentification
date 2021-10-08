@@ -2,23 +2,12 @@
 
 Tool to remove metadata allowing to identify a subject from DICOM images used in neuroimaging research. Can anonymize dicom files or archives of dicoms.
 
-## Anonymization script
-
-Le script d'anonymisation est composé de 6 fichiers.
-
-- aggregator.py :  lecture des dicom
-- ano_function.py : fonction principale pour lancer le script pour les ARCs
-- anon_example.py : fonction principale pour lancer le script
-- anonymizer.py : parcours des dicom et anonymisation
-- archive.py : gere les archives et compressions de dossiers/fichiers pour donner n’importe quel format en entrée
-- tag_lists.py : procédure d’anonymisation construite à partir de l’annexe E de la partie 15 du standard dicom
-
 ## Dependencies
 
 - Python >= 2.7
 - Pydicom >= 1.4.2
 
-## Norme d’anonymisation
+## Deidentification norm
 
 [DICOM attribute confidentiality Profiles](http://dicom.nema.org/medical/dicom/current/output/html/part15.html#chapter_E)
 
