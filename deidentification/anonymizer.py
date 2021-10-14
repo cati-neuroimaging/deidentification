@@ -5,11 +5,9 @@
 # This script is not guaranteed to be complete.
 # In particular, the detection of burnt-in PHI is not managed.
 
-import filecmp
 import hashlib
 import os
 import shutil
-import subprocess
 from glob import glob
 from tempfile import mkdtemp
 
@@ -18,6 +16,18 @@ import pydicom
 from deidentification import tag_lists
 from deidentification.archive import is_archive, pack, unpack
 from deidentification.archive import unpack_first
+
+
+def anonymize_file(dicom_file_in, dicom_folder_out,
+                   tags_to_keep=None, forced_values=None):
+    if not os.path.exists(dicom_folder_out):
+        os.makedirs(dicom_folder_out)
+    dicom_file_out = os.path.join(dicom_folder_out,
+                                  os.path.basename(dicom_file_in))
+
+    anon = Anonymizer(dicom_file_in, dicom_file_out,
+                      tags_to_keep, forced_values)
+    anon.run()
 
 
 def anonymize(dicom_in, dicom_out,
@@ -42,13 +52,8 @@ def anonymize(dicom_in, dicom_out,
         wip_dicom_out = os.path.abspath(dicom_out)
 
     if os.path.isfile(wip_dicom_in):
-        if os.path.exists(wip_dicom_out) and os.path.isdir(wip_dicom_out):
-            wip_dicom_out = os.path.join(
-                wip_dicom_out, os.path.basename(wip_dicom_in))
-
-        anon = Anonymizer(wip_dicom_in, wip_dicom_out,
-                          tags_to_keep, forced_values)
-        anon.run()
+        anonymize_file(wip_dicom_in, wip_dicom_out,
+                       tags_to_keep, forced_values)
 
     elif os.path.isdir(wip_dicom_in):
         if os.path.isfile(wip_dicom_out):
@@ -56,15 +61,12 @@ def anonymize(dicom_in, dicom_out,
             return
         
         for root, dirs, files in os.walk(wip_dicom_in):
+            folder_out = root.replace(wip_dicom_in, wip_dicom_out)
             for name in files:
                 current_file = os.path.join(root, name)
-                file_out = current_file.replace(wip_dicom_in, wip_dicom_out)
-                if not os.path.exists(os.path.dirname(file_out)):
-                    os.makedirs(os.path.dirname(file_out))
+                anonymize_file(current_file, folder_out,
+                               tags_to_keep, forced_values)
                 
-                anon = Anonymizer(current_file, file_out,
-                                  tags_to_keep, forced_values)
-                anon.run()
     else:
         print("The input file type is not handled by this tool.")
 
@@ -76,7 +78,7 @@ def anonymize(dicom_in, dicom_out,
         shutil.rmtree(wip_dicom_out)
 
 
-def checkAnonymize(dicom_in, tags_to_keep=None, forced_values=None):
+def check_anonymize_fast(dicom_in, tags_to_keep=None, forced_values=None):
     """
     Configures the Anonymizer and runs it on one DICOM file to check if anonymization already done.
     """
@@ -104,6 +106,48 @@ def checkAnonymize(dicom_in, tags_to_keep=None, forced_values=None):
         raise AttributeError("The dicom_in type is not handled by this tool.")
     
     return anon.result
+
+
+def check_anonymize(dicom_in, tags_to_keep=None, forced_values=None):
+    """
+    Check if dicom_in is an anonymized DICOM.
+    Input can be DICOM file/folder or archive of DICOM files/folder
+    """
+    if not os.path.exists(dicom_in):
+        print("The DICOM input does not exist.")
+        return
+    
+    if is_archive(dicom_in):
+        wip_dicom_in = mkdtemp()
+        unpack(dicom_in, wip_dicom_in)
+    else:
+        wip_dicom_in = dicom_in
+        
+    if os.path.isfile(wip_dicom_in):
+        anon = Anonymizer(wip_dicom_in, '',
+                          tags_to_keep, forced_values)
+        anon.runCheck()
+        return anon.result
+        
+    elif os.path.isdir(wip_dicom_in):
+        return check_folder_anonymize(wip_dicom_in, tags_to_keep, forced_values)
+    
+    else:
+        raise AttributeError("Input is not a data type handled.")
+        
+
+def check_folder_anonymize(dicom_folder, tags_to_keep=None, forced_values=None):
+    if not os.path.isdir(dicom_folder):
+        raise AttributeError('Dicom_folder input is not a folder path.')
+    
+    anonymized = True
+    for root, dirs, files in os.walk(dicom_folder):
+        for filename in files:
+            anon = Anonymizer(os.path.join(root, filename), '',
+                              tags_to_keep, forced_values)
+            anon.runCheck()
+            anonymized *= anon.result
+    return bool(anonymized)
 
 
 class Anonymizer():
@@ -175,13 +219,12 @@ class Anonymizer():
 
         if self.originalDict == self.outputDict:
             self.result = True
-            print('Anonymization already done')
+            # print('Anonymization already done')
         else:
             self.result = False
-            print('Anonymization NOT already done')
+            # print('Anonymization NOT already done')
 
     def anonymizeCheck(self, ds, data_element):
-    
         """
         Check anonymization on a single DICOM element.
         ds: the DICOM descriptor
@@ -242,7 +285,6 @@ class Anonymizer():
             #self.outputDict[data_element.tag] = data_element.value
                 
     def anonymize(self, ds, data_element):
-    
         """
         Anonymizes a single DICOM element.
         ds: the DICOM descriptor
