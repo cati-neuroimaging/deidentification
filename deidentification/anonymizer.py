@@ -251,6 +251,7 @@ class Anonymizer():
             # Apply the recommended action
             action = tag_lists.annex_e[(group, element)][2][0]
             if 'X' == action:
+                self.originalDict[data_element.tag] = data_element.value
                 del ds[data_element.tag]
             elif 'Z' == action:
                 self.originalDict[data_element.tag] = data_element.value
@@ -279,6 +280,7 @@ class Anonymizer():
             block = element & 0x00ff
             # Check if the data element is in the safe private attributes list
             if (group, block) not in tag_lists.safe_private_attributes[private_creator_value]:
+                self.originalDict[data_element.tag] = data_element.value
                 del ds[data_element.tag]
         #else:
             #self.originalDict[data_element.tag] = data_element.value
