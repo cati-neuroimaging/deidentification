@@ -29,7 +29,8 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
 
     anon = Anonymizer(dicom_file_in, dicom_file_out,
                       tags_to_keep, forced_values)
-    anon.run()
+    if not anon.run_ano():
+        print("File is a DICOMDIR.")
 
 
 def anonymize(dicom_in, dicom_out,
@@ -149,14 +150,14 @@ def check_folder_anonymize(dicom_folder,
     if not os.path.isdir(dicom_folder):
         raise AttributeError('Dicom_folder input is not a folder path.')
     
-    anonymized = True
     for root, dirs, files in os.walk(dicom_folder):
         for filename in files:
             anon = Anonymizer(os.path.join(root, filename), '',
                               tags_to_keep, forced_values)
             anon.runCheck()
-            anonymized *= anon.result
-    return bool(anonymized)
+            if not anon.result:
+                return False
+    return True
 
 
 class Anonymizer():
@@ -184,7 +185,7 @@ class Anonymizer():
 
     def run(self):
         """
-        Reads the DICOM file, anonymizes it and write the result.
+        Reads the DICOM file and run anonymisation on dataset.
         """
         try:
             ds = pydicom.read_file(self._dicom_filein)
@@ -193,47 +194,40 @@ class Anonymizer():
                     self._dicom_filein)
                 if meta_data[0x0002, 0x0002].value == "Media Storage Directory Storage":
                     print("This file is a DICOMDIR:", self._dicom_filein)
-                    return
-            except:
+                    return None
+            except KeyError:
                 pass
-            ds.walk(self.anonymize)
-        except:
+            ds.walk(self._anonymize_check)
+        except Exception:
             print("This file is not a DICOM file:", self._dicom_filein)
-            return
+            return None
+        return ds
 
-        try:
-            pydicom.write_file(self._dicom_fileout, ds)
-        except:
-            print("The anonymization fails on", self._dicom_filein)
-            return
+    def run_ano(self):
+        """
+        Reads the DICOM file, anonymizes it and write the result.
+        """
+        ds = self.run()
+        if not ds:
+            return 0
+        
+        pydicom.write_file(self._dicom_fileout, ds)
+        return 1
+        # try:
+        #     pydicom.write_file(self._dicom_fileout, ds)
+        # except:
+        #     print("The anonymization fails on", self._dicom_filein)
+        #     return
     
     def runCheck(self):
         """
-        Reads the DICOM file, check anonymization.
+        Check anonymization.
         """
-        try:
-            ds = pydicom.read_file(self._dicom_filein)
-            try:
-                meta_data = pydicom.filereader.read_file_meta_info(
-                    self._dicom_filein)
-                if meta_data[0x0002, 0x0002].value == "Media Storage Directory Storage":
-                    print("This file is a DICOMDIR:", self._dicom_filein)
-                    return
-            except:
-                pass
-            ds.walk(self.anonymizeCheck)
-        except:
-            print("This file is not a DICOM file:", self._dicom_filein)
-            return
+        _ = self.run()
 
-        if self.originalDict == self.outputDict:
-            self.result = True
-            # print('Anonymization already done')
-        else:
-            self.result = False
-            # print('Anonymization NOT already done')
+        self.result = self.originalDict == self.outputDict
 
-    def anonymizeCheck(self, ds, data_element):
+    def _anonymize_check(self, ds, data_element):
         """
         Check anonymization on a single DICOM element.
         ds: the DICOM descriptor
@@ -295,54 +289,6 @@ class Anonymizer():
             #self.originalDict[data_element.tag] = data_element.value
             #self.outputDict[data_element.tag] = data_element.value
                 
-    def anonymize(self, ds, data_element):
-        """
-        Anonymizes a single DICOM element.
-        ds: the DICOM descriptor
-        data_element: the current element to anonymize
-        """
-        group = data_element.tag.group
-        element = data_element.tag.element
-        # Check if the value must be forced
-        if self._forced_values is not None and \
-        (group, element) in list(self._forced_values.keys()):
-            data_element.value = self._forced_values[(group, element)]
-            return
-        # Check if the data element has to be kept
-        if self._tags_to_keep is not None and \
-        (group, element) in self._tags_to_keep:
-            return
-        # Check if the data element is in the DICOM part 15/annex E tag list
-        if (group, element) in list(tag_lists.annex_e.keys()):
-            # Apply the recommended action
-            action = tag_lists.annex_e[(group, element)][2][0]
-            if 'X' == action:
-                del ds[data_element.tag]
-            elif 'Z' == action:
-                data_element.value = ""
-            elif 'D' == action:
-                data_element.value = self._get_cleaned_value(data_element)
-            elif 'U' == action:
-                data_element.value = self._generate_uuid(data_element.value.encode())
-        # Check if the data element is private
-        elif data_element.tag.is_private:
-            if self._is_private_creator(group, element):
-                return
-            try:
-                private_creator_value = ds.get(
-                    self._get_private_creator_tag(data_element), None).value
-            except:
-                print('The tag ' + str(data_element.tag) + ' does not exist in this sequence.')
-                return
-            # Check if the private creator is in the safe private attribute
-            # keys
-            if private_creator_value not in list(tag_lists.safe_private_attributes.keys()):
-                return
-            block = element & 0x00ff
-            # Check if the data element is in the safe private attributes list
-            if (group, block) not in tag_lists.safe_private_attributes[private_creator_value]:
-                del ds[data_element.tag]
-            
     def _generate_uuid(self, input):
         """
         Returns an UUID according to input.
@@ -355,7 +301,7 @@ class Anonymizer():
         """
         if data_element.VR == 'UI':
             return self._generate_uuid(data_element.value)
-        if data_element.VR == 'DT' or data_element.VR == 'TM':
+        if data_element.VR in ['DT', 'TM']:
             return "000000.00"
         elif data_element.VR == 'DA':
             return "20000101"
