@@ -16,10 +16,12 @@ import pydicom
 from deidentification import tag_lists
 from deidentification.archive import is_archive, pack, unpack
 from deidentification.archive import unpack_first
+from deidentification.config import tags_to_keep, forced_values
 
 
 def anonymize_file(dicom_file_in, dicom_folder_out,
-                   tags_to_keep=None, forced_values=None):
+                   tags_to_keep=tags_to_keep,
+                   forced_values=forced_values):
     if not os.path.exists(dicom_folder_out):
         os.makedirs(dicom_folder_out)
     dicom_file_out = os.path.join(dicom_folder_out,
@@ -31,7 +33,8 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
 
 
 def anonymize(dicom_in, dicom_out,
-              tags_to_keep=None, forced_values=None):
+              tags_to_keep=tags_to_keep,
+              forced_values=forced_values):
     """
     Configures the Anonymizer and runs it on DICOM files.
     """
@@ -78,7 +81,9 @@ def anonymize(dicom_in, dicom_out,
         shutil.rmtree(wip_dicom_out)
 
 
-def check_anonymize_fast(dicom_in, tags_to_keep=None, forced_values=None):
+def check_anonymize_fast(dicom_in,
+                         tags_to_keep=tags_to_keep,
+                         forced_values=forced_values):
     """
     Configures the Anonymizer and runs it on one DICOM file to check if anonymization already done.
     """
@@ -108,7 +113,9 @@ def check_anonymize_fast(dicom_in, tags_to_keep=None, forced_values=None):
     return anon.result
 
 
-def check_anonymize(dicom_in, tags_to_keep=None, forced_values=None):
+def check_anonymize(dicom_in,
+                    tags_to_keep=tags_to_keep,
+                    forced_values=forced_values):
     """
     Check if dicom_in is an anonymized DICOM.
     Input can be DICOM file/folder or archive of DICOM files/folder
@@ -136,7 +143,9 @@ def check_anonymize(dicom_in, tags_to_keep=None, forced_values=None):
         raise AttributeError("Input is not a data type handled.")
         
 
-def check_folder_anonymize(dicom_folder, tags_to_keep=None, forced_values=None):
+def check_folder_anonymize(dicom_folder,
+                           tags_to_keep=tags_to_keep,
+                           forced_values=forced_values):
     if not os.path.isdir(dicom_folder):
         raise AttributeError('Dicom_folder input is not a folder path.')
     
@@ -157,7 +166,7 @@ class Anonymizer():
     """
 
     def __init__(self, dicom_filein, dicom_fileout,
-                 tags_to_keep=None, forced_values=None):
+                 tags_to_keep=tags_to_keep, forced_values=forced_values):
         """
         dicom_filein: the DICOM file to anonymize
         dicom_fileout: the file to write the output of the anonymization
