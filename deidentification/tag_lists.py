@@ -1,3 +1,22 @@
+import csv
+import pathlib
+
+file_path = pathlib.Path(__file__)
+profile_path = file_path.parent.joinpath('confidentiality_profiles.tsv')
+with open(profile_path, 'r') as tsv_file:
+    tsv_reader = csv.reader(tsv_file, delimiter='\t')
+    annex_e_new = dict()
+    annex_e_range = dict()
+    for d in tsv_reader:
+        if 'X' not in d[0]:
+            annex_e_new[eval(d[0])] = {'name': d[2], 'profile': d[1]}
+        else:
+            range_key = (
+                eval(d[0].replace('X', '0')),
+                eval(d[0].replace('X', 'F'))
+            )
+            annex_e_range[range_key] = {'name': d[2], 'profile': d[1]}
+
 # This dictionary has been built from annex E of part 15 of the DICOM standard.
 # Legend:
 # - X means the attribute must be removed
@@ -252,6 +271,7 @@ annex_e = {
     (0x0040, 0xA073): ['N', 'Y', 'D', '', '', '', '', '', '', '', '', ''],  # Verifying Observer Sequence
     (0x0040, 0xA027): ['N', 'Y', 'X', '', '', '', '', '', '', '', '', ''],  # Verifying Organization
     (0x0038, 0x4000): ['N', 'N', 'X', '', '', '', '', '', '', 'C', '', ''],  # Visit Comments
+
     (0x0008, 0x1150): ['N', 'N', 'X', '', '', '', '', '', '', '', ''],  # Referenced SOP Class UID Sequence
     (0x0018, 0x1200): ['N', 'N', 'X', '', '', '', '', '', '', '', ''],  # Date of Last Calibration
     (0x0018, 0x1201): ['N', 'N', 'X', '', '', '', '', '', '', '', ''],  # Time of Last Calibration
