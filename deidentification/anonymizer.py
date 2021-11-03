@@ -183,7 +183,31 @@ class Anonymizer():
         self.outputDict = {}
         self.result = None
 
-    def run(self):
+    def run_ano(self):
+        """
+        Reads the DICOM file, anonymizes it and write the result.
+        """
+        ds = self._run()
+        if not ds:
+            return 0
+        
+        pydicom.write_file(self._dicom_fileout, ds)
+        return 1
+        # try:
+        #     pydicom.write_file(self._dicom_fileout, ds)
+        # except:
+        #     print("The anonymization fails on", self._dicom_filein)
+        #     return
+    
+    def runCheck(self):
+        """
+        Check anonymization.
+        """
+        _ = self._run()
+
+        self.result = self.originalDict == self.outputDict
+
+    def _run(self):
         """
         Reads the DICOM file and run anonymisation on dataset.
         """
@@ -203,30 +227,6 @@ class Anonymizer():
             return None
         return ds
 
-    def run_ano(self):
-        """
-        Reads the DICOM file, anonymizes it and write the result.
-        """
-        ds = self.run()
-        if not ds:
-            return 0
-        
-        pydicom.write_file(self._dicom_fileout, ds)
-        return 1
-        # try:
-        #     pydicom.write_file(self._dicom_fileout, ds)
-        # except:
-        #     print("The anonymization fails on", self._dicom_filein)
-        #     return
-    
-    def runCheck(self):
-        """
-        Check anonymization.
-        """
-        _ = self.run()
-
-        self.result = self.originalDict == self.outputDict
-
     def _anonymize_check(self, ds, data_element):
         """
         Check anonymization on a single DICOM element.
@@ -235,37 +235,25 @@ class Anonymizer():
         """
         group = data_element.tag.group
         element = data_element.tag.element
+        tag = (group, element)
         
         # Check if the value must be forced
-        if self._forced_values is not None and \
-        (group, element) in list(self._forced_values.keys()):
+        if self._forced_values is not None and tag in self._forced_values:
             self.originalDict[data_element.tag] = data_element.value
-            data_element.value = self._forced_values[(group, element)]
-            self.outputDict[data_element.tag] = self._forced_values[(group, element)]
+            data_element.value = self._forced_values[tag]
+            self.outputDict[data_element.tag] = self._forced_values[tag]
             return
         # Check if the data element has to be kept
-        if self._tags_to_keep is not None and \
-        (group, element) in self._tags_to_keep:
+        if self._tags_to_keep is not None and tag in self._tags_to_keep:
             self.originalDict[data_element.tag] = data_element.value
             self.outputDict[data_element.tag] = data_element.value
             return
+        
         # Check if the data element is in the DICOM part 15/annex E tag list
-        if (group, element) in list(tag_lists.annex_e.keys()):
-            # Apply the recommended action
-            action = tag_lists.annex_e[(group, element)][2][0]
-            if 'X' == action:
-                self.originalDict[data_element.tag] = data_element.value
-                del ds[data_element.tag]
-            elif 'Z' == action:
-                self.originalDict[data_element.tag] = data_element.value
-                data_element.value = ""
-                self.outputDict[data_element.tag] = data_element.value
-            elif 'D' == action:
-                self.originalDict[data_element.tag] = data_element.value
-                data_element.value = self._get_cleaned_value(data_element)
-                self.outputDict[data_element.tag] = data_element.value
-            elif 'U' == action:
-                data_element.value = self._generate_uuid(data_element.value.encode())
+        action = self._find_in_annex(group, element)
+        if action:
+            self._apply_action(ds, data_element, action)
+        
         # Check if the data element is private
         elif data_element.tag.is_private:
             if self._is_private_creator(group, element):
@@ -289,6 +277,44 @@ class Anonymizer():
             #self.originalDict[data_element.tag] = data_element.value
             #self.outputDict[data_element.tag] = data_element.value
                 
+    def _find_in_annex(self, group: int, element: int) -> str:
+        """
+        Find (group, element) in confidentiality profiles and return action expected if found.
+        """
+        if (group, element) in tag_lists.annex_e_new:
+            return tag_lists.annex_e_new[(group, element)]['profile'][0]
+        
+        for tag_range in tag_lists.annex_e_range:
+            (group_min, element_min), (group_max, element_max) = tag_range
+            if group_min <= group <= group_max and element_min <= element <= element_max:
+                return tag_lists.annex_e_range[tag_range]['profile'][0]
+        
+        return ''
+    
+    def _apply_action(self, ds, data_element, action):
+        """
+        Apply confidentiality profiles action to data_element of ds
+
+        Parameters
+        ----------
+        ds : pydicom.dataset.Dataset
+        data_element : pydicom.dataelem.DataElement
+        action : str
+        """
+        if action == 'X':
+            self.originalDict[data_element.tag] = data_element.value
+            del ds[data_element.tag]
+        elif action == 'Z':
+            self.originalDict[data_element.tag] = data_element.value
+            data_element.value = ""
+            self.outputDict[data_element.tag] = data_element.value
+        elif action == 'D':
+            self.originalDict[data_element.tag] = data_element.value
+            data_element.value = self._get_cleaned_value(data_element)
+            self.outputDict[data_element.tag] = data_element.value
+        elif action == 'U':
+            data_element.value = self._generate_uuid(data_element.value.encode())
+
     def _generate_uuid(self, input):
         """
         Returns an UUID according to input.
