@@ -14,4 +14,7 @@ setup(
     script=['bin/deidentification'],
     packages=modules,
     install_requires=['pydicom'],
+    package_data={
+        '': ['*.tsv'],
+    },
 )
