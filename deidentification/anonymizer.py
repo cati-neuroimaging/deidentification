@@ -250,7 +250,7 @@ class Anonymizer():
             return
         
         # Check if the data element is in the DICOM part 15/annex E tag list
-        action = self._find_in_annex(group, element)
+        action = self._find_in_conf_profile(group, element)
         if action:
             self._apply_action(ds, data_element, action)
         
@@ -264,30 +264,30 @@ class Anonymizer():
                 self._get_private_creator_tag(data_element), None).value
             # Check if the private creator is in the safe private attribute
             # keys
-            if private_creator_value not in list(tag_lists.safe_private_attributes.keys()):
+            if private_creator_value not in list(tag_lists.safe_private_attr_new.keys()):
                 self.originalDict[data_element.tag] = data_element.value
                 self.outputDict[data_element.tag] = data_element.value
                 return
             block = element & 0x00ff
             # Check if the data element is in the safe private attributes list
-            if (group, block) not in tag_lists.safe_private_attributes[private_creator_value]:
+            if (group, block) not in tag_lists.safe_private_attr_new[private_creator_value]:
                 self.originalDict[data_element.tag] = data_element.value
                 del ds[data_element.tag]
         #else:
             #self.originalDict[data_element.tag] = data_element.value
             #self.outputDict[data_element.tag] = data_element.value
                 
-    def _find_in_annex(self, group: int, element: int) -> str:
+    def _find_in_conf_profile(self, group: int, element: int) -> str:
         """
         Find (group, element) in confidentiality profiles and return action expected if found.
         """
-        if (group, element) in tag_lists.annex_e_new:
-            return tag_lists.annex_e_new[(group, element)]['profile'][0]
+        if (group, element) in tag_lists.conf_profile:
+            return tag_lists.conf_profile[(group, element)]['profile'][0]
         
-        for tag_range in tag_lists.annex_e_range:
+        for tag_range in tag_lists.conf_profile_range:
             (group_min, element_min), (group_max, element_max) = tag_range
             if group_min <= group <= group_max and element_min <= element <= element_max:
-                return tag_lists.annex_e_range[tag_range]['profile'][0]
+                return tag_lists.conf_profile_range[tag_range]['profile'][0]
         
         return ''
     
