@@ -1,246 +1,474 @@
-(0x0008,0x0050)	Z	Accession Number
-(0x0018,0x4000)	X	Acquisition Comments
-(0x0040,0x0555)	X	Acquisition Context Sequence
-(0x0008,0x0022)	X/Z	Acquisition Date
-(0x0008,0x002A)	X/D	Acquisition DateTime
-(0x0018,0x1400)	X/D	Acquisition Device Processing Description
-(0x0018,0x9424)	X	Acquisition Protocol Description
-(0x0008,0x0032)	X/Z	Acquisition Time
-(0x0040,0x4035)	X	Actual Human Performers Sequence
-(0x0010,0x21B0)	X	Additional Patient's History
-(0x0038,0x0010)	X	Admission ID
-(0x0038,0x0020)	X	Admitting Date
-(0x0008,0x1084)	X	Admitting Diagnoses Code Sequence
-(0x0008,0x1080)	X	Admitting Diagnoses Description
-(0x0038,0x0021)	X	Admitting Time
 (0x0000,0x1000)	X	Affected SOP Instance UID
-(0x0010,0x2110)	X	Allergies
-(0x4000,0x0010)	X	Arbitrary
-(0x0040,0xA078)	X	Author Observer Sequence
-(0x0010,0x1081)	X	Branch of Service
-(0x0018,0x1007)	X	Cassette ID
-(0x0040,0x0280)	X	Comments on Performed Procedure Step
-(0x0020,0x9161)	U	Concatenation UID
-(0x0040,0x3001)	X	Confidentiality Constraint on Patient Data Description
-(0x0070,0x0084)	Z	Content Creator's Name
-(0x0070,0x0086)	X	Content Creator's Identification Code Sequence
-(0x0008,0x0023)	Z/D	Content Date
-(0x0040,0xA730)	X	Content Sequence
-(0x0008,0x0033)	Z/D	Content Time
-(0x0008,0x010D)	U	Context Group Extension Creator UID
-(0x0018,0x0010)	Z/D	Contrast Bolus Agent
-(0x0018,0xA003)	X	Contribution Description
-(0x0010,0x2150)	X	Country of Residence
-(0x0008,0x9123)	U	Creator Version UID
-(0x0038,0x0300)	X	Current Patient Location
-(0x50XX,0xXXXX)	X	Curve Data
-(0x0008,0x0025)	X	Curve Date
-(0x0008,0x0035)	X	Curve Time
-(0x0040,0xA07C)	X	Custodial Organization Sequence
-(0xFFFC,0xFFFC)	X	Data Set Trailing Padding
-(0x0008,0x2111)	X	Derivation Description
-(0x0018,0x700A)	X	Detector ID
-(0x0018,0x1000)	X/Z/D	Device Serial Number
-(0x0018,0x1002)	U	Device UID
-(0x0400,0x0100)	X	Digital Signature UID
-(0xFFFA,0xFFFA)	X	Digital Signatures Sequence
-(0x0020,0x9164)	U	Dimension Organization UID
-(0x0038,0x0040)	X	Discharge Diagnosis Description
-(0x4008,0x011A)	X	Distribution Address
-(0x4008,0x0119)	X	Distribution Name
-(0x300A,0x0013)	U	Dose Reference UID
-(0x0010,0x2160)	X	Ethnic Group
-(0x0008,0x0058)	U	Failed SOP Instance UID List
-(0x0070,0x031A)	U	Fiducial UID
-(0x0040,0x2017)	Z	Filler Order Number of Imaging Service Request
-(0x0020,0x9158)	X	Frame Comments
-(0x0020,0x0052)	U	Frame of Reference UID
-(0x0018,0x1008)	X	Gantry ID
-(0x0018,0x1005)	X	Generator ID
-(0x0070,0x0001)	D	Graphic Annotation Sequence
-(0x0040,0x4037)	X	Human Performers Name
-(0x0040,0x4036)	X	Human Performers Organization
-(0x0088,0x0200)	X	Icon Image Sequence
-(0x0008,0x4000)	X	Identifying Comments
-(0x0020,0x4000)	X	Image Comments
-(0x0028,0x4000)	X	Image Presentation Comments
-(0x0040,0x2400)	X	Imaging Service Request Comments
-(0x4008,0x0300)	X	Impressions
+(0x0000,0x1001)	U	Requested SOP Instance UID
+(0x0002,0x0003)	U	Media Storage SOP Instance UID
+(0x0004,0x1511)	U	Referenced SOP Instance UID in File
 (0x0008,0x0014)	U	Instance Creator UID
+(0x0008,0x0015)	X	Instance Coercion DateTime
+(0x0008,0x0018)	U	SOP Instance UID
+(0x0008,0x0020)	Z	Study Date
+(0x0008,0x0021)	X/D	Series Date
+(0x0008,0x0022)	X/Z	Acquisition Date
+(0x0008,0x0023)	Z/D	Content Date
+(0x0008,0x0024)	X	Overlay Date
+(0x0008,0x0025)	X	Curve Date
+(0x0008,0x002A)	X/Z/D	Acquisition DateTime
+(0x0008,0x0030)	Z	Study Time
+(0x0008,0x0031)	X/D	Series Time
+(0x0008,0x0032)	X/Z	Acquisition Time
+(0x0008,0x0033)	Z/D	Content Time
+(0x0008,0x0034)	X	Overlay Time
+(0x0008,0x0035)	X	Curve Time
+(0x0008,0x0050)	Z	Accession Number
+(0x0008,0x0058)	U	Failed SOP Instance UID List
+(0x0008,0x0080)	X/Z/D	Institution Name
 (0x0008,0x0081)	X	Institution Address
 (0x0008,0x0082)	X/Z/D	Institution Code Sequence
-(0x0008,0x0080)	X/Z/D	Institution Name
+(0x0008,0x0090)	Z	Referring Physician's Name
+(0x0008,0x0092)	X	Referring Physician's Address
+(0x0008,0x0094)	X	Referring Physician's Telephone Numbers
+(0x0008,0x0096)	X	Referring Physician Identification Sequence
+(0x0008,0x009C)	Z	Consulting Physician's Name
+(0x0008,0x009D)	X	Consulting Physician Identification Sequence
+(0x0008,0x0201)	X	Timezone Offset From UTC
+(0x0008,0x1010)	X/Z/D	Station Name
+(0x0008,0x1030)	X	Study Description
+(0x0008,0x103E)	X	Series Description
 (0x0008,0x1040)	X	Institutional Department Name
-(0x0010,0x1050)	X	Insurance Plan Identification
-(0x0040,0x1011)	X	Intended Recipients of Results Identification Sequence
-(0x4008,0x0111)	X	Interpretation Approver Sequence
-(0x4008,0x010C)	X	Interpretation Author
-(0x4008,0x0115)	X	Interpretation Diagnosis Description
-(0x4008,0x0202)	X	Interpretation ID Issuer
-(0x4008,0x0102)	X	Interpretation Recorder
-(0x4008,0x010B)	X	Interpretation Text
-(0x4008,0x010A)	X	Interpretation Transcriber
-(0x0008,0x3010)	U	Irradiation Event UID
-(0x0038,0x0011)	X	Issuer of Admission ID
-(0x0010,0x0021)	X	Issuer of Patient ID
-(0x0038,0x0061)	X	Issuer of Service Episode ID
-(0x0028,0x1214)	U	Large Palette Color Lookup Table UID
-(0x0010,0x21D0)	X	Last Menstrual Date
-(0x0400,0x0404)	X	MAC
-(0x0002,0x0003)	U	Media Storage SOP Instance UID
-(0x0010,0x2000)	X	Medical Alerts
-(0x0010,0x1090)	X	Medical Record Locator
-(0x0010,0x1080)	X	Military Rank
-(0x0400,0x0550)	X	Modified Attributes Sequence
-(0x0020,0x3406)	X	Modified Image Description
-(0x0020,0x3401)	X	Modifying Device ID
-(0x0020,0x3404)	X	Modifying Device Manufacturer
-(0x0008,0x1060)	X	Name of Physician(s) Reading Study
-(0x0040,0x1010)	X	Names of Intended Recipient of Results
-(0x0010,0x2180)	X	Occupation
-(0x0008,0x1072)	X/D	Operators' Identification Sequence
-(0x0008,0x1070)	X/Z/D	Operators' Name
-(0x0400,0x0561)	X	Original Attributes Sequence
-(0x0040,0x2010)	X	Order Callback Phone Number
-(0x0040,0x2008)	X	Order Entered By
-(0x0040,0x2009)	X	Order Enterer Location
-(0x0010,0x1000)	X	Other Patient IDs
-(0x0010,0x1002)	X	Other Patient IDs Sequence
-(0x0010,0x1001)	X	Other Patient Names
-(0x60XX,0x4000)	X	Overlay Comments
-(0x60XX,0x3000)	X	Overlay Data
-(0x0008,0x0024)	X	Overlay Date
-(0x0008,0x0034)	X	Overlay Time
-(0x0028,0x1199)	U	Palette Color Lookup Table UID
-(0x0040,0xA07A)	X	Participant Sequence
-(0x0010,0x1040)	X	Patient Address
-(0x0010,0x4000)	X	Patient Comments
-(0x0010,0x0020)	Z	Patient ID
-(0x0010,0x2203)	X/Z	Patient Sex Neutered
-(0x0038,0x0500)	X	Patient State
-(0x0040,0x1004)	X	Patient Transport Arrangements
-(0x0010,0x1010)	X	Patient's Age
-(0x0010,0x0030)	Z	Patient's Birth Date
-(0x0010,0x1005)	X	Patient's Birth Name
-(0x0010,0x0032)	X	Patient's Birth Time
-(0x0038,0x0400)	X	Patient's Institution Residence
-(0x0010,0x0050)	X	Patient's Insurance Plan Code Sequence
-(0x0010,0x1060)	X	Patient's Mother's Birth Name
-(0x0010,0x0010)	Z	Patient's Name
-(0x0010,0x0101)	X	Patient's Primary Language Code Sequence
-(0x0010,0x0102)	X	Patient's Primary Language Modifier Code Sequence
-(0x0010,0x21F0)	X	Patient's Religious Preference
-(0x0010,0x0040)	Z	Patient's Sex
-(0x0010,0x1020)	X	Patient's Size
-(0x0010,0x2154)	X	Patient's Telephone Number
-(0x0010,0x1030)	X	Patient's Weight
-(0x0040,0x0243)	X	Performed Location
-(0x0040,0x0254)	X	Performed Procedure Step Description
-(0x0040,0x0253)	X	Performed Procedure Step ID
-(0x0040,0x0244)	X	Performed Procedure Step Start Date
-(0x0040,0x0245)	X	Performed Procedure Step Start Time
-(0x0040,0x0241)	X	Performed Station AE Title
-(0x0040,0x4030)	X	Performed Station Geographic Location Code Sequence
-(0x0040,0x0242)	X	Performed Station Name
-(0x0040,0x0248)	X	Performed Station Name Code Sequence
-(0x0008,0x1052)	X	Performing Physicians' Identification Sequence
-(0x0008,0x1050)	X	Performing Physicians' Name
-(0x0040,0x1102)	X	Person Address
-(0x0040,0x1101)	D	Person Identification Code Sequence
-(0x0040,0xA123)	D	Person Name
-(0x0040,0x1103)	X	Person Telephone Numbers
-(0x4008,0x0114)	X	Physician Approving Interpretation
-(0x0008,0x1062)	X	Physician Reading Study Identification Sequence
+(0x0008,0x1041)	X	Institutional Department Type Code Sequence
 (0x0008,0x1048)	X	Physician(s) of Record
 (0x0008,0x1049)	X	Physician(s) of Record Identification Sequence
-(0x0040,0x2016)	Z	Placer Order Number of Imaging Service Request
-(0x0018,0x1004)	X	Plate ID
-(0x0040,0x0012)	X	Pre-Medication
-(0x0010,0x21C0)	X	Pregnancy Status
-(0x0018,0x1030)	X/D	Protocol Name
-(0x0040,0x2001)	X	Reason for Imaging Service Request
-(0x0032,0x1030)	X	Reason for Study
-(0x0400,0x0402)	X	Referenced Digital Signature Sequence
-(0x3006,0x0024)	U	Referenced Frame of Reference UID
-(0x0040,0x4023)	U	Referenced General Purpose Scheduled Procedure Step Transaction UID
-(0x0008,0x1140)	X/Z/U*	Referenced Image Sequence
-(0x0038,0x1234)	X	Referenced Patient Alias Sequence
-(0x0008,0x1120)	X	Referenced Patient Sequence
-(0x0008,0x1111)	X/Z/D	Referenced Performed Procedure Step Sequence
-(0x0400,0x0403)	X	Referenced SOP Instance MAC Sequence
-(0x0008,0x1155)	U	Referenced SOP Instance UID
-(0x0004,0x1511)	U	Referenced SOP Instance UID in File
+(0x0008,0x1050)	X	Performing Physician's Name
+(0x0008,0x1052)	X	Performing Physician Identification Sequence
+(0x0008,0x1060)	X	Name of Physician(s) Reading Study
+(0x0008,0x1062)	X	Physician(s) Reading Study Identification Sequence
+(0x0008,0x1070)	X/Z/D	Operators' Name
+(0x0008,0x1072)	X/D	Operator Identification Sequence
+(0x0008,0x1080)	X	Admitting Diagnoses Description
+(0x0008,0x1084)	X	Admitting Diagnoses Code Sequence
 (0x0008,0x1110)	X/Z	Referenced Study Sequence
-(0x0008,0x0092)	X	Referring Physician's Address
-(0x0008,0x0096)	X	Referring Physician's Identification Sequence
-(0x0008,0x0090)	Z	Referring Physician's Name
-(0x0008,0x0094)	X	Referring Physician's Telephone Numbers
+(0x0008,0x1111)	X/Z/D	Referenced Performed Procedure Step Sequence
+(0x0008,0x1120)	X	Referenced Patient Sequence
+(0x0008,0x1140)	X/Z/U*	Referenced Image Sequence
+(0x0008,0x1155)	U	Referenced SOP Instance UID
+(0x0008,0x1195)	U	Transaction UID
+(0x0008,0x2111)	X	Derivation Description
+(0x0008,0x2112)	X/Z/U*	Source Image Sequence
+(0x0008,0x3010)	U	Irradiation Event UID
+(0x0008,0x4000)	X	Identifying Comments
+(0x0010,0x0010)	Z	Patient's Name
+(0x0010,0x0020)	Z	Patient ID
+(0x0010,0x0021)	X	Issuer of Patient ID
+(0x0010,0x0030)	Z	Patient's Birth Date
+(0x0010,0x0032)	X	Patient's Birth Time
+(0x0010,0x0040)	Z	Patient's Sex
+(0x0010,0x0050)	X	Patient's Insurance Plan Code Sequence
+(0x0010,0x0101)	X	Patient's Primary Language Code Sequence
+(0x0010,0x0102)	X	Patient's Primary Language Modifier Code Sequence
+(0x0010,0x1000)	X	Other Patient IDs
+(0x0010,0x1001)	X	Other Patient Names
+(0x0010,0x1002)	X	Other Patient IDs Sequence
+(0x0010,0x1005)	X	Patient's Birth Name
+(0x0010,0x1010)	X	Patient's Age
+(0x0010,0x1020)	X	Patient's Size
+(0x0010,0x1030)	X	Patient's Weight
+(0x0010,0x1040)	X	Patient's Address
+(0x0010,0x1050)	X	Insurance Plan Identification
+(0x0010,0x1060)	X	Patient's Mother's Birth Name
+(0x0010,0x1080)	X	Military Rank
+(0x0010,0x1081)	X	Branch of Service
+(0x0010,0x1090)	X	Medical Record Locator
+(0x0010,0x1100)	X	Referenced Patient Photo Sequence
+(0x0010,0x2000)	X	Medical Alerts
+(0x0010,0x2110)	X	Allergies
+(0x0010,0x2150)	X	Country of Residence
 (0x0010,0x2152)	X	Region of Residence
-(0x3006,0x00C2)	U	Related Frame of Reference UID
-(0x0040,0x0275)	X	Request Attributes Sequence
-(0x0032,0x1070)	X	Requested Contrast Agent
-(0x0040,0x1400)	X	Requested Procedure Comments
-(0x0032,0x1060)	X/Z	Requested Procedure Description
-(0x0040,0x1001)	X	Requested Procedure ID
-(0x0040,0x1005)	X	Requested Procedure Location
-(0x0000,0x1001)	U	Requested SOP Instance UID
-(0x0032,0x1032)	X	Requesting Physician
-(0x0032,0x1033)	X	Requesting Service
-(0x0010,0x2299)	X	Responsible Organization
+(0x0010,0x2154)	X	Patient's Telephone Numbers
+(0x0010,0x2155)	X	Patient's Telecom Information
+(0x0010,0x2160)	X	Ethnic Group
+(0x0010,0x2180)	X	Occupation
+(0x0010,0x21A0)	X	Smoking Status
+(0x0010,0x21B0)	X	Additional Patient History
+(0x0010,0x21C0)	X	Pregnancy Status
+(0x0010,0x21D0)	X	Last Menstrual Date
+(0x0010,0x21F0)	X	Patient's Religious Preference
+(0x0010,0x2203)	X/Z	Patient's Sex Neutered
 (0x0010,0x2297)	X	Responsible Person
-(0x4008,0x4000)	X	Results Comments
-(0x4008,0x0118)	X	Results Distribution List Sequence
-(0x4008,0x0042)	X	Results ID Issuer
-(0x300E,0x0008)	X/Z	Reviewer Name
-(0x0040,0x4034)	X	Scheduled Human Performers Sequence
-(0x0038,0x001E)	X	Scheduled Patient Institution Residence
-(0x0040,0x000B)	X	Scheduled Performing Physician Identification Sequence
-(0x0040,0x0006)	X	Scheduled Performing Physician Name
-(0x0040,0x0004)	X	Scheduled Procedure Step End Date
-(0x0040,0x0005)	X	Scheduled Procedure Step End Time
-(0x0040,0x0007)	X	Scheduled Procedure Step Description
-(0x0040,0x0011)	X	Scheduled Procedure Step Location
-(0x0040,0x0002)	X	Scheduled Procedure Step Start Date
-(0x0040,0x0003)	X	Scheduled Procedure Step Start Time
-(0x0040,0x0001)	X	Scheduled Station AE Title
-(0x0040,0x4027)	X	Scheduled Station Geographic Location Code Sequence
-(0x0040,0x0010)	X	Scheduled Station Name
-(0x0040,0x4025)	X	Scheduled Station Name Code Sequence
+(0x0010,0x2299)	X	Responsible Organization
+(0x0010,0x4000)	X	Patient Comments
+(0x0012,0x0010)	D	Clinical Trial Sponsor Name
+(0x0012,0x0020)	D	Clinical Trial Protocol ID
+(0x0012,0x0021)	Z	Clinical Trial Protocol Name
+(0x0012,0x0030)	Z	Clinical Trial Site ID
+(0x0012,0x0031)	Z	Clinical Trial Site Name
+(0x0012,0x0040)	D	Clinical Trial Subject ID
+(0x0012,0x0042)	D	Clinical Trial Subject Reading ID
+(0x0012,0x0050)	Z	Clinical Trial Time Point ID
+(0x0012,0x0051)	X	Clinical Trial Time Point Description
+(0x0012,0x0060)	Z	Clinical Trial Coordinating Center Name
+(0x0012,0x0071)	X	Clinical Trial Series ID
+(0x0012,0x0072)	X	Clinical Trial Series Description
+(0x0012,0x0081)	D	Clinical Trial Protocol Ethics Committee Name
+(0x0012,0x0082)	X	Clinical Trial Protocol Ethics Committee Approval Number
+(0x0016,0x002B)	X	Maker Note
+(0x0016,0x004B)	X	Device Setting Description
+(0x0016,0x004D)	X	Camera Owner Name
+(0x0016,0x004E)	X	Lens Specification
+(0x0016,0x004F)	X	Lens Make
+(0x0016,0x0050)	X	Lens Model
+(0x0016,0x0051)	X	Lens Serial Number
+(0x0016,0x0070)	X	GPS Version ID
+(0x0016,0x0071)	X	GPS Latitude​ Ref
+(0x0016,0x0072)	X	GPS Latitude​
+(0x0016,0x0073)	X	GPS Longitude Ref
+(0x0016,0x0074)	X	GPS Longitude
+(0x0016,0x0075)	X	GPS Altitude​ Ref
+(0x0016,0x0076)	X	GPS Altitude​
+(0x0016,0x0077)	X	GPS Time​ Stamp
+(0x0016,0x0078)	X	GPS Satellites
+(0x0016,0x0079)	X	GPS Status
+(0x0016,0x007A)	X	GPS Measure ​Mode
+(0x0016,0x007B)	X	GPS DOP
+(0x0016,0x007C)	X	GPS Speed​ Ref
+(0x0016,0x007D)	X	GPS Speed​
+(0x0016,0x007E)	X	GPS Track ​Ref
+(0x0016,0x007F)	X	GPS Track
+(0x0016,0x0080)	X	GPS Img​ Direction Ref
+(0x0016,0x0081)	X	GPS Img ​Direction
+(0x0016,0x0082)	X	GPS Map​ Datum
+(0x0016,0x0083)	X	GPS Dest​ Latitude Ref
+(0x0016,0x0084)	X	GPS Dest​ Latitude
+(0x0016,0x0085)	X	GPS Dest ​Longitude Ref
+(0x0016,0x0086)	X	GPS Dest ​Longitude
+(0x0016,0x0087)	X	GPS Dest​ Bearing Ref
+(0x0016,0x0088)	X	GPS Dest ​Bearing
+(0x0016,0x0089)	X	GPS Dest ​Distance Ref
+(0x0016,0x008A)	X	GPS Dest ​Distance
+(0x0016,0x008B)	X	GPS Processing​ Method
+(0x0016,0x008C)	X	GPS Area ​Information
+(0x0016,0x008D)	X	GPS Date​ Stamp
+(0x0016,0x008E)	X	GPS Differential
+(0x0018,0x0010)	Z/D	Contrast/Bolus Agent
+(0x0018,0x1000)	X/Z/D	Device Serial Number
+(0x0018,0x1002)	U	Device UID
+(0x0018,0x1004)	X	Plate ID
+(0x0018,0x1005)	X	Generator ID
+(0x0018,0x1007)	X	Cassette ID
+(0x0018,0x1008)	X	Gantry ID
+(0x0018,0x1009)	X	Unique Device Identifier
+(0x0018,0x100A)	X	UDI Sequence
+(0x0018,0x100B)	U	Manufacturer's Device Class UID
+(0x0018,0x1030)	X/D	Protocol Name
+(0x0018,0x11BB)	D	Acquisition Field Of View Label
+(0x0018,0x1400)	X/D	Acquisition Device Processing Description
+(0x0018,0x2042)	U	Target UID
+(0x0018,0x4000)	X	Acquisition Comments
+(0x0018,0x5011)	X	Transducer Identification Sequence
+(0x0018,0x700A)	X/D	Detector ID
+(0x0018,0x9185)	X	Respiratory Motion Compensation Technique Description
+(0x0018,0x9367)	D	X-Ray Source ID
+(0x0018,0x9369)	D	Source Start DateTime
+(0x0018,0x936A)	D	Source End DateTime
+(0x0018,0x9371)	D	X-Ray Detector ID
+(0x0018,0x9373)	X	X-Ray Detector Label
+(0x0018,0x937B)	X	Multi-energy Acquisition Description
+(0x0018,0x937F)	X	Decomposition Description
+(0x0018,0x9424)	X	Acquisition Protocol Description
+(0x0018,0x9516)	X/D	Start Acquisition DateTime
+(0x0018,0x9517)	X/D	End Acquisition DateTime
+(0x0018,0x9937)	X	Requested Series Description
+(0x0018,0xA003)	X	Contribution Description
+(0x0020,0x000D)	U	Study Instance UID
+(0x0020,0x000E)	U	Series Instance UID
+(0x0020,0x0010)	Z	Study ID
+(0x0020,0x0052)	U	Frame of Reference UID
+(0x0020,0x0200)	U	Synchronization Frame of Reference UID
+(0x0020,0x3401)	X	Modifying Device ID
+(0x0020,0x3406)	X	Modified Image Description
+(0x0020,0x4000)	X	Image Comments
+(0x0020,0x9158)	X	Frame Comments
+(0x0020,0x9161)	U	Concatenation UID
+(0x0020,0x9164)	U	Dimension Organization UID
+(0x0028,0x1199)	U	Palette Color Lookup Table UID
+(0x0028,0x1214)	U	Large Palette Color Lookup Table UID
+(0x0028,0x4000)	X	Image Presentation Comments
+(0x0032,0x0012)	X	Study ID Issuer
 (0x0032,0x1020)	X	Scheduled Study Location
 (0x0032,0x1021)	X	Scheduled Study Location AE Title
-(0x0008,0x0021)	X/D	Series Date
-(0x0008,0x103E)	X	Series Description
-(0x0020,0x000E)	U	Series Instance UID
-(0x0008,0x0031)	X/D	Series Time
-(0x0038,0x0062)	X	Service Episode Description
-(0x0038,0x0060)	X	Service Episode ID
-(0x0010,0x21A0)	X	Smoking Status
-(0x0008,0x0018)	U	SOP Instance UID
-(0x0008,0x2112)	X/Z/U*	Source Image Sequence
-(0x0038,0x0050)	X	Special Needs
-(0x0008,0x1010)	X/Z/D	Station Name
-(0x0088,0x0140)	U	Storage Media File-set UID
+(0x0032,0x1030)	X	Reason for Study
+(0x0032,0x1032)	X	Requesting Physician
+(0x0032,0x1033)	X	Requesting Service
+(0x0032,0x1060)	X/Z	Requested Procedure Description
+(0x0032,0x1066)	X	Reason for Visit
+(0x0032,0x1067)	X	Reason for Visit Code Sequence
+(0x0032,0x1070)	X	Requested Contrast Agent
 (0x0032,0x4000)	X	Study Comments
-(0x0008,0x0020)	Z	Study Date
-(0x0008,0x1030)	X	Study Description
-(0x0020,0x0010)	Z	Study ID
-(0x0032,0x0012)	X	Study ID Issuer
-(0x0020,0x000D)	U	Study Instance UID
-(0x0008,0x0030)	Z	Study Time
-(0x0020,0x0200)	U	Synchronization Frame of Reference UID
-(0x0040,0xDB0D)	U	Template Extension Creator UID
-(0x0040,0xDB0C)	U	Template Extension Organization UID
-(0x4000,0x4000)	X	Text Comments
-(0x2030,0x0020)	X	Text String
-(0x0008,0x0201)	X	Timezone Offset From UTC
-(0x0088,0x0910)	X	Topic Author
-(0x0088,0x0912)	X	Topic Key Words
-(0x0088,0x0906)	X	Topic Subject
-(0x0088,0x0904)	X	Topic Title
-(0x0008,0x1195)	U	Transaction UID
-(0x0040,0xA124)	U	UID
-(0x0040,0xA088)	Z	Verifying Observer Identification Code Sequence
-(0x0040,0xA075)	D	Verifying Observer Name
-(0x0040,0xA073)	D	Verifying Observer Sequence
-(0x0040,0xA027)	X	Verifying Organization
+(0x0034,0x0001)	D	Flow Identifier Sequence
+(0x0034,0x0002)	D	Flow Identifier
+(0x0034,0x0005)	D	Source Identifier
+(0x0034,0x0007)	D	Frame Origin Timestamp
+(0x0038,0x0004)	X	Referenced Patient Alias Sequence
+(0x0038,0x0010)	X	Admission ID
+(0x0038,0x0011)	X	Issuer of Admission ID
+(0x0038,0x0014)	X	Issuer of Admission ID Sequence
+(0x0038,0x001E)	X	Scheduled Patient Institution Residence
+(0x0038,0x0020)	X	Admitting Date
+(0x0038,0x0021)	X	Admitting Time
+(0x0038,0x0040)	X	Discharge Diagnosis Description
+(0x0038,0x0050)	X	Special Needs
+(0x0038,0x0060)	X	Service Episode ID
+(0x0038,0x0061)	X	Issuer of Service Episode ID
+(0x0038,0x0062)	X	Service Episode Description
+(0x0038,0x0064)	X	Issuer of Service Episode ID Sequence
+(0x0038,0x0300)	X	Current Patient Location
+(0x0038,0x0400)	X	Patient's Institution Residence
+(0x0038,0x0500)	X	Patient State
 (0x0038,0x4000)	X	Visit Comments
+(0x003A,0x0310)	U	Multiplex Group UID
+(0x003A,0x0314)	D	Impedance Measurement DateTime
+(0x0040,0x0001)	X	Scheduled Station AE Title
+(0x0040,0x0002)	X	Scheduled Procedure Step Start Date
+(0x0040,0x0003)	X	Scheduled Procedure Step Start Time
+(0x0040,0x0004)	X	Scheduled Procedure Step End Date
+(0x0040,0x0005)	X	Scheduled Procedure Step End Time
+(0x0040,0x0006)	X	Scheduled Performing Physician's Name
+(0x0040,0x0007)	X	Scheduled Procedure Step Description
+(0x0040,0x0009)	X	Scheduled Procedure Step ID
+(0x0040,0x000B)	X	Scheduled Performing Physician Identification Sequence
+(0x0040,0x0010)	X	Scheduled Station Name
+(0x0040,0x0011)	X	Scheduled Procedure Step Location
+(0x0040,0x0012)	X	Pre-Medication
+(0x0040,0x0241)	X	Performed Station AE Title
+(0x0040,0x0242)	X	Performed Station Name
+(0x0040,0x0243)	X	Performed Location
+(0x0040,0x0244)	X	Performed Procedure Step Start Date
+(0x0040,0x0245)	X	Performed Procedure Step Start Time
+(0x0040,0x0250)	X	Performed Procedure Step End Date
+(0x0040,0x0251)	X	Performed Procedure Step End Time
+(0x0040,0x0253)	X	Performed Procedure Step ID
+(0x0040,0x0254)	X	Performed Procedure Step Description
+(0x0040,0x0275)	X	Request Attributes Sequence
+(0x0040,0x0280)	X	Comments on the Performed Procedure Step
+(0x0040,0x0310)	X	Comments on Radiation Dose
+(0x0040,0x050A)	X	Specimen Accession Number
+(0x0040,0x0512)	D	Container Identifier
+(0x0040,0x0513)	Z	Issuer of the Container Identifier Sequence
+(0x0040,0x051A)	X	Container Description
+(0x0040,0x0551)	D	Specimen Identifier
+(0x0040,0x0554)	U	Specimen UID
+(0x0040,0x0555)	X/Z	Acquisition Context Sequence
+(0x0040,0x0562)	Z	Issuer of the Specimen Identifier Sequence
+(0x0040,0x0600)	X	Specimen Short Description
+(0x0040,0x0602)	X	Specimen Detailed Description
+(0x0040,0x0610)	Z	Specimen Preparation Sequence
+(0x0040,0x06FA)	X	Slide Identifier
+(0x0040,0x1001)	X	Requested Procedure ID
+(0x0040,0x1002)	X	Reason for the Requested Procedure
+(0x0040,0x1004)	X	Patient Transport Arrangements
+(0x0040,0x1005)	X	Requested Procedure Location
+(0x0040,0x100A)	X	Reason for Requested Procedure Code Sequence
+(0x0040,0x1010)	X	Names of Intended Recipients of Results
+(0x0040,0x1011)	X	Intended Recipients of Results Identification Sequence
+(0x0040,0x1101)	D	Person Identification Code Sequence
+(0x0040,0x1102)	X	Person's Address
+(0x0040,0x1103)	X	Person's Telephone Numbers
+(0x0040,0x1104)	X	Person's Telecom Information
+(0x0040,0x1400)	X	Requested Procedure Comments
+(0x0040,0x2001)	X	Reason for the Imaging Service Request
+(0x0040,0x2008)	X	Order Entered By
+(0x0040,0x2009)	X	Order Enterer's Location
+(0x0040,0x2010)	X	Order Callback Phone Number
+(0x0040,0x2011)	X	Order Callback Telecom Information
+(0x0040,0x2016)	Z	Placer Order Number / Imaging Service Request
+(0x0040,0x2017)	Z	Filler Order Number / Imaging Service Request
+(0x0040,0x2400)	X	Imaging Service Request Comments
+(0x0040,0x3001)	X	Confidentiality Constraint on Patient Data Description
+(0x0040,0x4005)	X	Scheduled Procedure Step Start DateTime
+(0x0040,0x4008)	X	Scheduled Procedure Step Expiration DateTime
+(0x0040,0x4010)	X	Scheduled Procedure Step Modification DateTime
+(0x0040,0x4011)	X	Expected Completion DateTime
+(0x0040,0x4023)	U	Referenced General Purpose Scheduled Procedure Step Transaction UID
+(0x0040,0x4025)	X	Scheduled Station Name Code Sequence
+(0x0040,0x4027)	X	Scheduled Station Geographic Location Code Sequence
+(0x0040,0x4028)	X	Performed Station Name Code Sequence
+(0x0040,0x4030)	X	Performed Station Geographic Location Code Sequence
+(0x0040,0x4034)	X	Scheduled Human Performers Sequence
+(0x0040,0x4035)	X	Actual Human Performers Sequence
+(0x0040,0x4036)	X	Human Performer's Organization
+(0x0040,0x4037)	X	Human Performer's Name
+(0x0040,0x4050)	X	Performed Procedure Step Start DateTime
+(0x0040,0x4051)	X	Performed Procedure Step End DateTime
+(0x0040,0x4052)	X	Procedure Step Cancellation DateTime
+(0x0040,0xA027)	D	Verifying Organization
+(0x0040,0xA073)	D	Verifying Observer Sequence
+(0x0040,0xA075)	D	Verifying Observer Name
+(0x0040,0xA078)	X	Author Observer Sequence
+(0x0040,0xA07A)	X	Participant Sequence
+(0x0040,0xA07C)	X	Custodial Organization Sequence
+(0x0040,0xA088)	Z	Verifying Observer Identification Code Sequence
+(0x0040,0xA123)	D	Person Name
+(0x0040,0xA124)	U	UID
+(0x0040,0xA171)	U	Observation UID
+(0x0040,0xA172)	U	Referenced Observation UID (Trial)
+(0x0040,0xA192)	X	Observation Date (Trial)
+(0x0040,0xA193)	X	Observation Time (Trial)
+(0x0040,0xA307)	X	Current Observer (Trial)
+(0x0040,0xA352)	X	Verbal Source (Trial)
+(0x0040,0xA353)	X	Address (Trial)
+(0x0040,0xA354)	X	Telephone Number (Trial)
+(0x0040,0xA358)	X	Verbal Source Identifier Code Sequence (Trial)
+(0x0040,0xA402)	U	Observation Subject UID (Trial)
+(0x0040,0xA730)	D	Content Sequence
+(0x0040,0xDB0C)	U	Template Extension Organization UID
+(0x0040,0xDB0D)	U	Template Extension Creator UID
+(0x0050,0x001B)	X	Container Component ID
+(0x0050,0x0020)	X	Device Description
+(0x0050,0x0021)	X	Long Device Description
+(0x0062,0x0021)	U	Tracking UID
+(0x006A,0x0003)	D	Annotation Group UID
+(0x006A,0x0005)	D	Annotation Group Label
+(0x006A,0x0006)	X	Annotation Group Description
+(0x0070,0x0001)	D	Graphic Annotation Sequence
+(0x0070,0x0084)	Z/D	Content Creator's Name
+(0x0070,0x0086)	X	Content Creator's Identification Code Sequence
+(0x0070,0x031A)	U	Fiducial UID
+(0x0070,0x1101)	U	Presentation Display Collection UID
+(0x0070,0x1102)	U	Presentation Sequence Collection UID
+(0x0088,0x0140)	U	Storage Media File-set UID
+(0x0088,0x0200)	X	Icon Image Sequence (see Note 12)
+(0x0088,0x0904)	X	Topic Title
+(0x0088,0x0906)	X	Topic Subject
+(0x0088,0x0910)	X	Topic Author
+(0x0088,0x0912)	X	Topic Keywords
+(0x0400,0x0100)	U	Digital Signature UID
+(0x0400,0x0402)	X	Referenced Digital Signature Sequence
+(0x0400,0x0403)	X	Referenced SOP Instance MAC Sequence
+(0x0400,0x0404)	X	MAC
+(0x0400,0x0550)	X	Modified Attributes Sequence
+(0x0400,0x0551)	X	Nonconforming Modified Attributes Sequence
+(0x0400,0x0552)	X	Nonconforming Data Element Value
+(0x0400,0x0561)	X	Original Attributes Sequence
+(0x0400,0x0563)	D	Modifying System
+(0x0400,0x0564)	Z	Source of Previous Values
+(0x0400,0x0565)	D	Reason for the Attribute Modification
+(0x0400,0x0600)	X	Instance Origin Status
+(0x2030,0x0020)	X	Text String
+(0x2200,0x0002)	X/Z	Label Text
+(0x2200,0x0005)	X/Z	Barcode Value
+(0x3006,0x0002)	D	Structure Set Label
+(0x3006,0x0004)	X	Structure Set Name
+(0x3006,0x0006)	X	Structure Set Description
+(0x3006,0x0008)	Z	Structure Set Date
+(0x3006,0x0009)	Z	Structure Set Time
+(0x3006,0x0024)	U	Referenced Frame of Reference UID
+(0x3006,0x0026)	Z	ROI Name
+(0x3006,0x0028)	X	ROI Description
+(0x3006,0x0038)	X	ROI Generation Description
+(0x3006,0x0085)	X	ROI Observation Label
+(0x3006,0x0088)	X	ROI Observation Description
+(0x3006,0x00A6)	Z	ROI Interpreter
+(0x3006,0x00C2)	U	Related Frame of Reference UID
+(0x3008,0x0054)	X/D	First Treatment Date
+(0x3008,0x0056)	X/D	Most Recent Treatment Date
+(0x3008,0x0105)	X/Z	Source Serial Number
+(0x3008,0x0250)	X/D	Treatment Date
+(0x3008,0x0251)	X/D	Treatment Time
+(0x300A,0x0002)	D	RT Plan Label
+(0x300A,0x0003)	X	RT Plan Name
+(0x300A,0x0004)	X	RT Plan Description
+(0x300A,0x0006)	X/D	RT Plan Date
+(0x300A,0x0007)	X/D	RT Plan Time
+(0x300A,0x000E)	X	Prescription Description
+(0x300A,0x0013)	U	Dose Reference UID
+(0x300A,0x0016)	X	Dose Reference Description
+(0x300A,0x0072)	X	Fraction Group Description
+(0x300A,0x0083)	U	Referenced Dose Reference UID
+(0x300A,0x00B2)	X/Z	Treatment Machine Name
+(0x300A,0x00C3)	X	Beam Description
+(0x300A,0x00DD)	X	Bolus Description
+(0x300A,0x0196)	X	Fixation Device Description
+(0x300A,0x01A6)	X	Shielding Device Description
+(0x300A,0x01B2)	X	Setup Technique Description
+(0x300A,0x0216)	X	Source Manufacturer
+(0x300A,0x02EB)	X	Compensator Description
+(0x300A,0x0608)	D	Treatment Position Group Label
+(0x300A,0x0609)	U	Treatment Position Group UID
+(0x300A,0x0611)	Z	RT Accessory Holder Slot ID
+(0x300A,0x0615)	Z	RT Accessory Device Slot ID
+(0x300A,0x0619)	D	Radiation Dose Identification Label
+(0x300A,0x0623)	D	Radiation Dose In-Vivo Measurement Label
+(0x300A,0x062A)	D	RT Tolerance Set Label
+(0x300A,0x0650)	U	Patient Setup UID
+(0x300A,0x0676)	X	Equipment Frame of Reference Description
+(0x300A,0x067C)	D	Radiation Generation Mode Label
+(0x300A,0x067D)	Z	Radiation Generation Mode Description
+(0x300A,0x0700)	U	Treatment Session UID
+(0x300A,0x0734)	D	Treatment Tolerance Violation Description
+(0x300A,0x0736)	D	Treatment Tolerance Violation DateTime
+(0x300A,0x073A)	D	Recorded RT Control Point DateTime
+(0x300A,0x0741)	D	Interlock DateTime
+(0x300A,0x0742)	D	Interlock Description
+(0x300A,0x0760)	D	Override DateTime
+(0x300A,0x0783)	D	Interlock Origin Description
+(0x300A,0x0785)	U	Referenced Treatment Position Group UID
+(0x300A,0x078E)	X	Patient Treatment Preparation Procedure Parameter Description
+(0x300A,0x0792)	X	Patient Treatment Preparation Method Description
+(0x300A,0x0794)	X	Patient Setup Photo Description
+(0x300A,0x079A)	X	Displacement Reference Label
+(0x300C,0x0113)	X	Reason for Omission Description
+(0x300E,0x0008)	X/Z	Reviewer Name
+(0x3010,0x0006)	U	Conceptual Volume UID
+(0x3010,0x000B)	U	Referenced Conceptual Volume UID
+(0x3010,0x000F)	Z	Conceptual Volume Combination Description
+(0x3010,0x0013)	U	Constituent Conceptual Volume UID
+(0x3010,0x0015)	U	Source Conceptual Volume UID
+(0x3010,0x0017)	Z	Conceptual Volume Description
+(0x3010,0x001B)	Z	Device Alternate Identifier
+(0x3010,0x002D)	D	Device Label
+(0x3010,0x0031)	U	Referenced Fiducials UID
+(0x3010,0x0033)	D	User Content Label
+(0x3010,0x0034)	D	User Content Long Label
+(0x3010,0x0035)	D	Entity Label
+(0x3010,0x0036)	X	Entity Name
+(0x3010,0x0037)	X	Entity Description
+(0x3010,0x0038)	D	Entity Long Label
+(0x3010,0x003B)	U	RT Treatment Phase UID
+(0x3010,0x0043)	Z	Manufacturer's Device Identifier
+(0x3010,0x004C)	X/D	Intended Phase Start Date
+(0x3010,0x004D)	X/D	Intended Phase End Date
+(0x3010,0x0054)	D	RT Prescription Label
+(0x3010,0x0056)	X/D	RT Treatment Approach Label
+(0x3010,0x005A)	Z	RT Physician Intent Narrative
+(0x3010,0x005C)	Z	Reason for Superseding
+(0x3010,0x0061)	X	Prior Treatment Dose Description
+(0x3010,0x006E)	U	Dosimetric Objective UID
+(0x3010,0x006F)	U	Referenced Dosimetric Objective UID
+(0x3010,0x0077)	D	Treatment Site
+(0x3010,0x007A)	Z	Treatment Technique Notes
+(0x3010,0x007B)	Z	Prescription Notes
+(0x3010,0x007F)	Z	Fractionation Notes
+(0x3010,0x0081)	Z	Prescription Notes Sequence
+(0x4000,0x0010)	X	Arbitrary
+(0x4000,0x4000)	X	Text Comments
+(0x4008,0x0040)	X	Results ID
+(0x4008,0x0042)	X	Results ID Issuer
+(0x4008,0x0102)	X	Interpretation Recorder
+(0x4008,0x010A)	X	Interpretation Transcriber
+(0x4008,0x010B)	X	Interpretation Text
+(0x4008,0x010C)	X	Interpretation Author
+(0x4008,0x0111)	X	Interpretation Approver Sequence
+(0x4008,0x0112)	X	Interpretation Approval Date
+(0x4008,0x0113)	X	Interpretation Approval Time
+(0x4008,0x0114)	X	Physician Approving Interpretation
+(0x4008,0x0115)	X	Interpretation Diagnosis Description
+(0x4008,0x0118)	X	Results Distribution List Sequence
+(0x4008,0x0119)	X	Distribution Name
+(0x4008,0x011A)	X	Distribution Address
+(0x4008,0x0200)	X	Interpretation ID
+(0x4008,0x0202)	X	Interpretation ID Issuer
+(0x4008,0x0300)	X	Impressions
+(0x4008,0x4000)	X	Results Comments
+(0x50XX,0xXXXX)	X	Curve Data
+(0x60XX,0x3000)	X	Overlay Data
+(0x60XX,0x4000)	X	Overlay Comments
+(0xFFFA,0xFFFA)	X	Digital Signatures Sequence
+(0xFFFC,0xFFFC)	X	Data Set Trailing Padding
