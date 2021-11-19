@@ -1,8 +1,9 @@
 import csv
 import pathlib
 
-file_path = pathlib.Path(__file__)
-profile_path = file_path.parent.joinpath('confidentiality_profiles.tsv')
+from deidentification import CONFIG_FOLDER
+
+profile_path = CONFIG_FOLDER.joinpath('confidentiality_profiles.tsv')
 with open(profile_path, 'r') as tsv_file:
     tsv_reader = csv.reader(tsv_file, delimiter='\t')
     annex_e_new = dict()
@@ -17,8 +18,7 @@ with open(profile_path, 'r') as tsv_file:
             )
             annex_e_range[range_key] = {'name': d[2], 'profile': d[1]}
 
-safe_private_path = file_path.parent.joinpath('safe_private.tsv')
-safe_private_attr_new = dict()
+safe_private_path = CONFIG_FOLDER.joinpath('safe_private.tsv')
 with open(safe_private_path, 'r') as tsv_file:
     tsv_reader = csv.reader(tsv_file, delimiter='\t')
     header = next(tsv_reader)
