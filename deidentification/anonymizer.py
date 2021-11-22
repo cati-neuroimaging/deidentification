@@ -264,13 +264,13 @@ class Anonymizer():
                 self._get_private_creator_tag(data_element), None).value
             # Check if the private creator is in the safe private attribute
             # keys
-            if private_creator_value not in list(tag_lists.safe_private_attr_new.keys()):
+            if private_creator_value not in list(tag_lists.safe_private_attributes.keys()):
                 self.originalDict[data_element.tag] = data_element.value
                 self.outputDict[data_element.tag] = data_element.value
                 return
             block = element & 0x00ff
             # Check if the data element is in the safe private attributes list
-            if (group, block) not in tag_lists.safe_private_attr_new[private_creator_value]:
+            if (group, block) not in tag_lists.safe_private_attributes[private_creator_value]:
                 self.originalDict[data_element.tag] = data_element.value
                 del ds[data_element.tag]
         #else:
