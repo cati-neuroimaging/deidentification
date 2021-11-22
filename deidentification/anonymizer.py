@@ -294,6 +294,11 @@ class Anonymizer():
     def _apply_action(self, ds, data_element, action):
         """
         Apply confidentiality profiles action to data_element of ds
+        - X means the attribute must be removed
+        - U means the attribute must be replaced with a cleaned but internally consistent UUID
+        - D means replace with a non-zero length dummy value
+        - Z means replace with a zero or non-zero length dummy value
+        - C means the attribute can be kept if it is cleaned
 
         Parameters
         ----------

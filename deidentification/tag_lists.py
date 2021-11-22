@@ -25,9 +25,3 @@ with open(safe_private_path, 'r') as tsv_file:
     for d in tsv_reader:
         safe_private_attributes.setdefault(d[1], [])
         safe_private_attributes[d[1]].append(d[0])
-
-# - X means the attribute must be removed
-# - U means the attribute must be replaced with a cleaned but internally consistent UUID
-# - D means replace with a non-zero length dummy value
-# - Z means replace with a zero or non-zero length dummy value
-# - C means the attribute can be kept if it is cleaned
