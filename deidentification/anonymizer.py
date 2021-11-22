@@ -13,6 +13,7 @@ from tempfile import mkdtemp
 
 import pydicom
 
+import deidentification as deid
 from deidentification import tag_lists
 from deidentification.archive import is_archive, pack, unpack
 from deidentification.archive import unpack_first
@@ -191,13 +192,13 @@ class Anonymizer():
         if not ds:
             return 0
         
+        # Patient Identity Removed
+        ds.add_new((0x0012, 0x0062), 'CS', 'YES')
+        # De-identification Method
+        ds.add_new((0x0012, 0x0063), 'LO', f'CATI DEIDENTIFICATION - {deid.__version__}')
+
         pydicom.write_file(self._dicom_fileout, ds)
         return 1
-        # try:
-        #     pydicom.write_file(self._dicom_fileout, ds)
-        # except:
-        #     print("The anonymization fails on", self._dicom_filein)
-        #     return
     
     def runCheck(self):
         """
