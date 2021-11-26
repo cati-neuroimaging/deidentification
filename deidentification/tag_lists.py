@@ -2,10 +2,10 @@ import csv
 
 from deidentification import CONFIG_FOLDER
 
-profile_path = CONFIG_FOLDER.joinpath('confidentiality_profiles.tsv')
+conf_profile_path = CONFIG_FOLDER.joinpath('confidentiality_profiles.tsv')
 conf_profile = {}
 conf_profile_range = {}
-with open(profile_path, 'r') as tsv_file:
+with open(conf_profile_path, 'r') as tsv_file:
     tsv_reader = csv.reader(tsv_file, delimiter='\t')
     for d in tsv_reader:
         if 'X' not in d[0]:
