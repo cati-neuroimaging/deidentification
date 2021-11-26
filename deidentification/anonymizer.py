@@ -17,6 +17,8 @@ from deidentification import tag_lists
 from deidentification.archive import is_archive, pack, unpack
 from deidentification.archive import unpack_first
 from deidentification.config import tags_to_keep, forced_values
+from deidentification.config import load_config_profile
+from deidentification import CONFIG_FOLDER
 
 
 def anonymize_file(dicom_file_in, dicom_folder_out,
@@ -35,13 +37,16 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
 
 def anonymize(dicom_in, dicom_out,
               tags_to_keep=tags_to_keep,
-              forced_values=forced_values):
+              forced_values=forced_values,
+              config_profile=None):
     """
     Configures the Anonymizer and runs it on DICOM files.
     """
     if not os.path.exists(dicom_in):
         print("The DICOM input does not exist.")
         return
+    if config_profile:
+        tags_to_keep = load_config_profile(config_profile)
 
     is_dicom_in_archive = is_archive(dicom_in)
     is_dicom_out_archive = is_archive(dicom_out)
