@@ -185,50 +185,38 @@ class Anonymizer():
         self._forced_values = forced_values
         self.originalDict = {}
         self.outputDict = {}
+        self._dataset = self._load_dataset()
         self.result = None
+        self.ano_run = False
 
     def run_ano(self):
         """
         Reads the DICOM file, anonymizes it and write the result.
         """
-        ds = self._run()
-        if not ds:
-            return 0
+        if not self.ano_run:
+            self._dataset.walk(self._anonymize_check)
         
-        pydicom.write_file(self._dicom_fileout, ds)
-        return 1
-        # try:
-        #     pydicom.write_file(self._dicom_fileout, ds)
-        # except:
-        #     print("The anonymization fails on", self._dicom_filein)
-        #     return
+        pydicom.write_file(self._dicom_fileout, self._dataset)
     
     def runCheck(self):
         """
         Check anonymization.
         """
-        _ = self._run()
+        if not self.ano_run:
+            self._dataset.walk(self._anonymize_check)
 
         self.result = self.originalDict == self.outputDict
+        return self.result
 
-    def _run(self):
-        """
-        Reads the DICOM file and run anonymisation on dataset.
-        """
+    def _load_dataset(self):
         try:
             ds = pydicom.read_file(self._dicom_filein)
-            try:
-                meta_data = pydicom.filereader.read_file_meta_info(
-                    self._dicom_filein)
-                if meta_data[0x0002, 0x0002].value == "Media Storage Directory Storage":
-                    print("This file is a DICOMDIR:", self._dicom_filein)
-                    return None
-            except KeyError:
-                pass
-            ds.walk(self._anonymize_check)
+            meta_data = pydicom.filereader.read_file_meta_info(self._dicom_filein)
+            if (meta_data.get((0x0002, 0x0002)) and
+                    meta_data.get((0x0002, 0x0002)).value == "Media Storage Directory Storage"):
+                raise ValueError('This file is a DICOMDIR : {}'.format(self._dicom_filein))
         except Exception:
-            print("This file is not a DICOM file:", self._dicom_filein)
-            return None
+            raise AttributeError('This file is not a DICOM file : {}'.format(self._dicom_filein))
         return ds
 
     def _anonymize_check(self, ds, data_element):
