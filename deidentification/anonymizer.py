@@ -22,7 +22,16 @@ from deidentification import CONFIG_FOLDER
 
 def anonymize_file(dicom_file_in, dicom_folder_out,
                    tags_to_keep=None,
-                   forced_values=None):
+                   forced_values=None,
+                   config_profile=None):
+    if os.path.isfile(dicom_folder_out):
+        raise ValueError('The DICOM output has to be a folder.')
+    
+    if config_profile:
+        if tags_to_keep:
+            raise AttributeError('Both tags_to_keep and config_profile have been specified.')
+        tags_to_keep = load_config_profile(config_profile)
+    
     if not os.path.exists(dicom_folder_out):
         os.makedirs(dicom_folder_out)
     dicom_file_out = os.path.join(dicom_folder_out,
@@ -30,8 +39,7 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
 
     anon = Anonymizer(dicom_file_in, dicom_file_out,
                       tags_to_keep, forced_values)
-    if not anon.run_ano():
-        print("File is a DICOMDIR.")
+    anon.run_ano()
 
 
 def anonymize(dicom_in, dicom_out,
