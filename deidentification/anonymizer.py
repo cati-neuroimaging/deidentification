@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-
 # /!\ Disclaimer:
 # Use at your own risk. Please verify your anonymization results.
 # This script is not guaranteed to be complete.
@@ -17,13 +15,23 @@ from deidentification import tag_lists
 from deidentification.archive import is_archive, pack, unpack
 from deidentification.archive import unpack_first
 from deidentification.config import load_config_profile
-from deidentification import CONFIG_FOLDER
 
 
 def anonymize_file(dicom_file_in, dicom_folder_out,
                    tags_to_keep=None,
                    forced_values=None,
                    config_profile=None):
+    """Configures the Anonymizer and runs it on a DICOM file
+
+    Parameters
+    ----------
+    dicom_file_in : str
+    dicom_folder_out : str
+    tags_to_keep : list, optional
+    forced_values : dict, optional
+    config_profile : str, optional
+
+    """
     if os.path.isfile(dicom_folder_out):
         raise ValueError('The DICOM output has to be a folder.')
     
@@ -46,8 +54,15 @@ def anonymize(dicom_in, dicom_out,
               tags_to_keep=None,
               forced_values=None,
               config_profile=None):
-    """
-    Configures the Anonymizer and runs it on DICOM files.
+    """Configures the Anonymizer and runs it on DICOM files.
+    
+    Parameters
+    ----------
+    dicom_in : str
+    dicom_out : str
+    tags_to_keep : list, optional
+    forced_values : dict, optional
+    config_profile : str, optional
     """
     if not os.path.exists(dicom_in):
         raise ValueError('The DICOM input does not exists.')
