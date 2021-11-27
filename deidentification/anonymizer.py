@@ -42,13 +42,17 @@ def anonymize(dicom_in, dicom_out,
     Configures the Anonymizer and runs it on DICOM files.
     """
     if not os.path.exists(dicom_in):
-        print("The DICOM input does not exist.")
-        return
+        raise ValueError('The DICOM input does not exists.')
+    if not os.path.isfile(dicom_in) and not os.path.isdir(dicom_in):
+        raise ValueError('The DICOM input file type is not handled by this tool.')
+    if not os.path.isfile(dicom_in) and os.path.isfile(dicom_out):
+        raise ValueError('The DICOM out could not be a file if DICOM in is not a file.')
     if config_profile:
         if tags_to_keep:
             raise AttributeError('Both tags_to_keep and config_profile have been specified.')
         tags_to_keep = load_config_profile(config_profile)
 
+    # Handle archives
     is_dicom_in_archive = is_archive(dicom_in)
     is_dicom_out_archive = is_archive(dicom_out)
     if is_dicom_in_archive:
@@ -61,15 +65,12 @@ def anonymize(dicom_in, dicom_out,
     else:
         wip_dicom_out = os.path.abspath(dicom_out)
 
+    # Launch deidentification
     if os.path.isfile(wip_dicom_in):
         anonymize_file(wip_dicom_in, wip_dicom_out,
                        tags_to_keep, forced_values)
 
     elif os.path.isdir(wip_dicom_in):
-        if os.path.isfile(wip_dicom_out):
-            print("Since the input is a directory, an output directory is expected.")
-            return
-        
         for root, dirs, files in os.walk(wip_dicom_in):
             folder_out = root.replace(wip_dicom_in, wip_dicom_out)
             for name in files:
@@ -77,9 +78,6 @@ def anonymize(dicom_in, dicom_out,
                 anonymize_file(current_file, folder_out,
                                tags_to_keep, forced_values)
                 
-    else:
-        print("The input file type is not handled by this tool.")
-
     if is_dicom_in_archive:
         shutil.rmtree(wip_dicom_in)
     if is_dicom_out_archive:
