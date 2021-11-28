@@ -275,8 +275,11 @@ class Anonymizer():
                 self.originalDict[data_element.tag] = data_element.value
                 self.outputDict[data_element.tag] = data_element.value
                 return
-            private_creator_value = ds.get(
-                self._get_private_creator_tag(data_element), None).value
+            private_creator = ds.get(self._get_private_creator_tag(data_element), None)
+            if not private_creator:
+                del ds[data_element.tag]
+                return
+            private_creator_value = private_creator.value
             # Check if the private creator is in the safe private attribute
             # keys
             if private_creator_value not in list(tag_lists.safe_private_attributes.keys()):
