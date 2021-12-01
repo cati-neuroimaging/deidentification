@@ -17,6 +17,11 @@ from deidentification.archive import unpack_first
 from deidentification.config import load_config_profile
 
 
+class DeidentificationValueError(Exception):
+    def __init__(self, message):
+        super().__init__(message)
+
+
 def anonymize_file(dicom_file_in, dicom_folder_out,
                    tags_to_keep=None,
                    forced_values=None,
@@ -65,14 +70,14 @@ def anonymize(dicom_in, dicom_out,
     config_profile : str, optional
     """
     if not os.path.exists(dicom_in):
-        raise ValueError('The DICOM input does not exists.')
+        raise DeidentificationValueError('The DICOM input does not exists.')
     if not os.path.isfile(dicom_in) and not os.path.isdir(dicom_in):
-        raise ValueError('The DICOM input file type is not handled by this tool.')
+        raise DeidentificationValueError('The DICOM input file type is not handled by this tool.')
     if not os.path.isfile(dicom_in) and os.path.isfile(dicom_out):
-        raise ValueError('The DICOM out could not be a file if DICOM in is not a file.')
+        raise DeidentificationValueError('The DICOM out could not be a file if DICOM in is not a file.')
     if config_profile:
         if tags_to_keep:
-            raise AttributeError('Both tags_to_keep and config_profile have been specified.')
+            raise DeidentificationValueError('Both tags_to_keep and config_profile have been specified.')
         tags_to_keep = load_config_profile(config_profile)
 
     # Handle archives
@@ -80,7 +85,10 @@ def anonymize(dicom_in, dicom_out,
     is_dicom_out_archive = is_archive(dicom_out)
     if is_dicom_in_archive:
         wip_dicom_in = mkdtemp()
-        unpack(dicom_in, wip_dicom_in)
+        try:
+            unpack(dicom_in, wip_dicom_in)
+        except Exception:
+            raise DeidentificationValueError('Unpacking compressed file failed.')
     else:
         wip_dicom_in = os.path.abspath(dicom_in)
     if is_dicom_out_archive:
@@ -104,9 +112,13 @@ def anonymize(dicom_in, dicom_out,
     if is_dicom_in_archive:
         shutil.rmtree(wip_dicom_in)
     if is_dicom_out_archive:
-        pack(os.path.abspath(dicom_out),
-             glob(os.path.join(wip_dicom_out, '*')))
-        shutil.rmtree(wip_dicom_out)
+        try:
+            pack(os.path.abspath(dicom_out),
+                 glob(os.path.join(wip_dicom_out, '*')))
+        except Exception:
+            raise DeidentificationValueError('Compress deidentification results failed.')
+        finally:
+            shutil.rmtree(wip_dicom_out)
 
 
 def check_anonymize_fast(dicom_in,
@@ -187,6 +199,18 @@ def check_folder_anonymize(dicom_folder,
     return True
 
 
+class AnonymizerError(Exception):
+    def __init__(self, message='', complement='', anonymous=False):
+        self.message = message
+        self.complement = complement
+        self.anonymous = anonymous
+        
+    def __str__(self):
+        if self.anonymous:
+            return self.message.format('')
+        return self.message.format(self.complement)
+
+
 class Anonymizer():
 
     """
@@ -194,7 +218,8 @@ class Anonymizer():
     """
 
     def __init__(self, dicom_filein, dicom_fileout,
-                 tags_to_keep=None, forced_values=None):
+                 tags_to_keep=None, forced_values=None,
+                 anonymous=False):
         """
         dicom_filein: the DICOM file to anonymize
         dicom_fileout: the file to write the output of the anonymization
@@ -206,6 +231,8 @@ class Anonymizer():
         self._dicom_fileout = dicom_fileout
         self._tags_to_keep = tags_to_keep
         self._forced_values = forced_values
+        self.anonymous = anonymous
+
         self.originalDict = {}
         self.outputDict = {}
         self._dataset = self._load_dataset()
@@ -237,9 +264,9 @@ class Anonymizer():
             meta_data = pydicom.filereader.read_file_meta_info(self._dicom_filein)
             if (meta_data.get((0x0002, 0x0002)) and
                     meta_data.get((0x0002, 0x0002)).value == "Media Storage Directory Storage"):
-                raise ValueError('This file is a DICOMDIR : {}'.format(self._dicom_filein))
+                raise AnonymizerError('The file is a DICOMDIR. {}', self._dicom_filein, self.anonymous)
         except Exception:
-            raise AttributeError('This file is not a DICOM file : {}'.format(self._dicom_filein))
+            raise AnonymizerError('The file is not a DICOM file. {}', self._dicom_filein, self.anonymous)
         return ds
 
     def _anonymize_check(self, ds, data_element):
