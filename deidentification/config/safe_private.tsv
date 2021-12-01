@@ -1,480 +1,480 @@
 Data Element 	Private Creator 	Meaning
-(0x7053,0x0000)	Philips PET Private Group	SUV Factor - Multiplying stored pixel values by Rescale Slope then this factor results in SUVbw in g/l
-(0x7053,0x0009)	Philips PET Private Group	Activity Concentration Factor - Multiplying stored pixel values by Rescale Slope then this factor results in MBq/ml.
-(0x00E1,0x0021)	ELSCINT1	DLP
-(0x00E1,0x0050)	ELSCINT1	Acquisition Duration
-(0x01E1,0x0026)	ELSCINT1	Phantom Type
-(0x01F1,0x0001)	ELSCINT1	Acquisition Type
-(0x01F1,0x0007)	ELSCINT1	Table Velocity
-(0x01F1,0x0026)	ELSCINT1	Pitch
-(0x01F1,0x0027)	ELSCINT1	Rotation Time
-(0x0019,0x0023)	GEMS_ACQU_01	Table Speed [mm/rotation]
-(0x0019,0x0024)	GEMS_ACQU_01	Mid Scan Time [sec]
-(0x0019,0x0027)	GEMS_ACQU_01	Rotation Speed (Gantry Period)
-(0x0019,0x009E)	GEMS_ACQU_01	Internal Pulse Sequence Name
-(0x0043,0x0027)	GEMS_PARM_01	"Scan Pitch Ratio in the form ""n.nnn:1"""
-(0x0045,0x0001)	GEMS_HELIOS_01	Number of Macro Rows in Detector
-(0x0045,0x0002)	GEMS_HELIOS_01	Macro width at ISO Center
-(0x0903,0x0010)	GEIIS PACS	Reject Image Flag
-(0x0903,0x0011)	GEIIS PACS	Significant Flag
-(0x0903,0x0012)	GEIIS PACS	Confidential Flag
-(0x2001,0x0001)	Philips Imaging DD 001	MR Image Chemical Shift
-(0x2001,0x0002)	Philips Imaging DD 001	MR Image Chemical Shift Number
-(0x2001,0x0003)	Philips Imaging DD 001	MR Image Diffusion B-Factor
-(0x2001,0x0004)	Philips Imaging DD 001	MR Image Diffusion Direction
-(0x2001,0x0005)	Philips Imaging DD 001	Graphic Annotation Parent ID
-(0x2001,0x0006)	Philips Imaging DD 001	MR Image Enhanced
-(0x2001,0x0007)	Philips Imaging DD 001	MR Image Type Edes
-(0x2001,0x0008)	Philips Imaging DD 001	MR Image Phase Number
-(0x2001,0x0009)	Philips Imaging DD 001	MR Image Prepulse Delay
-(0x2001,0x000a)	Philips Imaging DD 001	Image Plane Number
-(0x2001,0x000b)	Philips Imaging DD 001	Image Plane Orientation
-(0x2001,0x000c)	Philips Imaging DD 001	MR Series Arrhythmia Rejection
-(0x2001,0x000e)	Philips Imaging DD 001	MR Series Cardiac Cycled
-(0x2001,0x000f)	Philips Imaging DD 001	MR Series Cardiac Gate Width
-(0x2001,0x0010)	Philips Imaging DD 001	MR Series Cardiac Sync
-(0x2001,0x0011)	Philips Imaging DD 001	MR Series Diffusion Echo Time
-(0x2001,0x0012)	Philips Imaging DD 001	MR Series Dynamic Series
-(0x2001,0x0013)	Philips Imaging DD 001	MR Series Epi Factor
-(0x2001,0x0014)	Philips Imaging DD 001	MR Series Nr Of Echoes
-(0x2001,0x0015)	Philips Imaging DD 001	MR Series Nr Of Locations
-(0x2001,0x0016)	Philips Imaging DD 001	MR Series Nr Of Phase Contrast Directions
-(0x2001,0x0017)	Philips Imaging DD 001	MR Series Nr Of Phases
-(0x2001,0x0018)	Philips Imaging DD 001	MR Series Nr Of Slices
-(0x2001,0x0019)	Philips Imaging DD 001	MR Series Partial Matrix Scanned
-(0x2001,0x001a)	Philips Imaging DD 001	MR Series Pc Velocity
-(0x2001,0x001b)	Philips Imaging DD 001	MR Series Prepulse Delay
-(0x2001,0x001c)	Philips Imaging DD 001	MR Series Prepulse Type
-(0x2001,0x001d)	Philips Imaging DD 001	MR Series Reconstruction Number
-(0x2001,0x001e)	Philips Imaging DD 001	MR Series Reformat Accuracy
-(0x2001,0x001f)	Philips Imaging DD 001	MR Series Respiration Sync
-(0x2001,0x0021)	Philips Imaging DD 001	MR Series Sel Part Inversion Recovery
-(0x2001,0x0022)	Philips Imaging DD 001	MR Series Water Fat Shift
-(0x2001,0x0023)	Philips Imaging DD 001	MR Series Flip Angle
-(0x2001,0x0024)	Philips Imaging DD 001	MR Series Is Interactive
-(0x2001,0x0025)	Philips Imaging DD 001	MR Series Echo Time Display
-(0x2001,0x0026)	Philips Imaging DD 001	Presentation State Subtraction Active
-(0x2001,0x0027)	Philips Imaging DD 001	Edge Enhancement Kernel Size
-(0x2001,0x0028)	Philips Imaging DD 001	Edge Enhancement Gain Factor Sub
-(0x2001,0x0029)	Philips Imaging DD 001	Edge Enhancement Gain Factor
-(0x2001,0x002a)	Philips Imaging DD 001	Edge Enhancement Taste Adapt Sub
-(0x2001,0x002b)	Philips Imaging DD 001	Edge Enhancement Taste Adapt
-(0x2001,0x002c)	Philips Imaging DD 001	Harmonization Factor
-(0x2001,0x002d)	Philips Imaging DD 001	Stack Number Of Slices
-(0x2001,0x002e)	Philips Imaging DD 001	Harmonization Kernel Size
-(0x2001,0x002f)	Philips Imaging DD 001	Harmonization Gain
-(0x2001,0x0030)	Philips Imaging DD 001	Log Subtraction Gain Step Taste
-(0x2001,0x0031)	Philips Imaging DD 001	Mixing Nr Of Mask Image Numbers
-(0x2001,0x0032)	Philips Imaging DD 001	Stack Radial Angle
-(0x2001,0x0033)	Philips Imaging DD 001	Stack Radial Axis
-(0x2001,0x0034)	Philips Imaging DD 001	Mixing Mask Operation Type
-(0x2001,0x0035)	Philips Imaging DD 001	Stack Slice Number
-(0x2001,0x0036)	Philips Imaging DD 001	Stack Type
-(0x2001,0x0037)	Philips Imaging DD 001	Mixing Operation Type
-(0x2001,0x0038)	Philips Imaging DD 001	Overlay Mix Factor
-(0x2001,0x0039)	Philips Imaging DD 001	Overscan Factor
-(0x2001,0x003a)	Philips Imaging DD 001	Pixel Shift
-(0x2001,0x003b)	Philips Imaging DD 001	Pixel Shift Split Line Coordinates
-(0x2001,0x003c)	Philips Imaging DD 001	Pixel Shift Shift Vectora
-(0x2001,0x003d)	Philips Imaging DD 001	Contour Fill Color
-(0x2001,0x003e)	Philips Imaging DD 001	Pixel Shift Shift Vectorb
-(0x2001,0x003f)	Philips Imaging DD 001	Displayed Area Zoom Interpolation Meth
-(0x2001,0x0040)	Philips Imaging DD 001	Pixel Shift Split Screen
-(0x2001,0x0041)	Philips Imaging DD 001	Subtraction Land Marking Factor
-(0x2001,0x0042)	Philips Imaging DD 001	Subtraction Land Marking Active
-(0x2001,0x0043)	Philips Imaging DD 001	Ellips Displ Shut Major Ax Frst End Pnt
-(0x2001,0x0044)	Philips Imaging DD 001	Ellips Displ Shut Major Ax Scnd End Pnt
-(0x2001,0x0045)	Philips Imaging DD 001	Ellips Displ Shut Other Ax Frst End Pnt
-(0x2001,0x0046)	Philips Imaging DD 001	Graphic Line Style
-(0x2001,0x0047)	Philips Imaging DD 001	Graphic Line Width
-(0x2001,0x0048)	Philips Imaging DD 001	Graphic Annotation Id
-(0x2001,0x0049)	Philips Imaging DD 001	Trace First Image
-(0x2001,0x004a)	Philips Imaging DD 001	Trace Taste
-(0x2001,0x004b)	Philips Imaging DD 001	Interpolation Method
-(0x2001,0x004c)	Philips Imaging DD 001	Poly Line Begin Point Style
-(0x2001,0x004d)	Philips Imaging DD 001	Poly Line End Point Style
-(0x2001,0x004e)	Philips Imaging DD 001	Window Smoothing Taste
-(0x2001,0x004f)	Philips Imaging DD 001	Harmonization Offset
-(0x2001,0x0050)	Philips Imaging DD 001	Graphic Marker Type
-(0x2001,0x0051)	Philips Imaging DD 001	Overlay Plane Id
-(0x2001,0x0053)	Philips Imaging DD 001	Presentation Gl Trafo Invert
-(0x2001,0x0054)	Philips Imaging DD 001	Contour Fill Transparency
-(0x2001,0x0055)	Philips Imaging DD 001	Graphic Line Color
-(0x2001,0x0056)	Philips Imaging DD 001	Graphic Type
-(0x2001,0x0057)	Philips Imaging DD 001	Log Subtraction Taste
-(0x2001,0x0058)	Philips Imaging DD 001	Series Xray Contrast Transfer Taste
-(0x2001,0x0059)	Philips Imaging DD 001	Curve Id
-(0x2001,0x005a)	Philips Imaging DD 001	Graphic Annotation Model
-(0x2001,0x005d)	Philips Imaging DD 001	Measurement Text Units
-(0x2001,0x005e)	Philips Imaging DD 001	Measurement Text Type
-(0x2001,0x005f)	Philips Imaging DD 001	Stack Sequence
-(0x2001,0x0060)	Philips Imaging DD 001	MR Series Nr Of Stacks
-(0x2001,0x0061)	Philips Imaging DD 001	Series Transmitted
-(0x2001,0x0062)	Philips Imaging DD 001	Series Committed
-(0x2001,0x0063)	Philips Imaging DD 001	Examination Source
-(0x2001,0x0064)	Philips Imaging DD 001	Text Type
-(0x2001,0x0065)	Philips Imaging DD 001	Overlay Plane Sequence
-(0x2001,0x0066)	Philips Imaging DD 001	Image Curve
-(0x2001,0x0067)	Philips Imaging DD 001	Linear Presentation Gl Trafo Shape Sub
-(0x2001,0x0068)	Philips Imaging DD 001	Modality Gl Trafo Sequence
-(0x2001,0x0069)	Philips Imaging DD 001	Display Shutter Sequence
-(0x2001,0x006a)	Philips Imaging DD 001	Spatial Transformation Sequence
-(0x2001,0x006b)	Philips Imaging DD 001	Edge Enhancement Sequence
-(0x2001,0x006d)	Philips Imaging DD 001	Text Font
-(0x2001,0x006e)	Philips Imaging DD 001	Series Type
-(0x2001,0x006f)	Philips Imaging DD 001	Mixing Sequence
-(0x2001,0x0071)	Philips Imaging DD 001	Graphic Constraint
-(0x2001,0x0072)	Philips Imaging DD 001	Ellips Displ Shut Other Ax Scnd End Pnt
-(0x2001,0x0073)	Philips Imaging DD 001	Referenced Mask Image Sequence
-(0x2001,0x0074)	Philips Imaging DD 001	Window Center Sub
-(0x2001,0x0075)	Philips Imaging DD 001	Window Width Sub
-(0x2001,0x0076)	Philips Imaging DD 001	Presentation State Xray Contrast Transfer Taste
-(0x2001,0x0077)	Philips Imaging DD 001	Gl Trafo Type
-(0x2001,0x0079)	Philips Imaging DD 001	Harmonisation Sequence
-(0x2001,0x007a)	Philips Imaging DD 001	Window Rounding Factor
-(0x2001,0x007b)	Philips Imaging DD 001	MR Series Acquisition Number
-(0x2001,0x007c)	Philips Imaging DD 001	Frame Number
-(0x2001,0x007d)	Philips Imaging DD 001	Frame Pixel Data
-(0x2001,0x007e)	Philips Imaging DD 001	Edge Enhancement Gain Taste
-(0x2001,0x007f)	Philips Imaging DD 001	Edge Enhancement Gain Taste Sub
-(0x2001,0x0080)	Philips Imaging DD 001	Text Anchor Point Alignment
-(0x2001,0x0081)	Philips Imaging DD 001	MR Series Nr Of Dynamic Scans
-(0x2001,0x0082)	Philips Imaging DD 001	MR Series Echo Train Length
-(0x2001,0x0083)	Philips Imaging DD 001	MR Series Imaging Frequency
-(0x2001,0x0084)	Philips Imaging DD 001	MR Series Inversion Time
-(0x2001,0x0085)	Philips Imaging DD 001	MR Series Magnetic Field Strength
-(0x2001,0x0086)	Philips Imaging DD 001	MR Series Nr Of Phase Encoding Steps
-(0x2001,0x0087)	Philips Imaging DD 001	MR Series Nucleus
-(0x2001,0x0088)	Philips Imaging DD 001	MR Series Number Of Averages
-(0x2001,0x0089)	Philips Imaging DD 001	MR Series Percent Phase Field Of View
-(0x2001,0x008a)	Philips Imaging DD 001	MR Series Percent Sampling
-(0x2001,0x008b)	Philips Imaging DD 001	MR Series Transmitting Coil
-(0x2001,0x008c)	Philips Imaging DD 001	Needs Processing
-(0x2001,0x0090)	Philips Imaging DD 001	Text Foreground Color
-(0x2001,0x0091)	Philips Imaging DD 001	Text Background Color
-(0x2001,0x0092)	Philips Imaging DD 001	Text Shadow Color
-(0x2001,0x0093)	Philips Imaging DD 001	Text Style
-(0x2001,0x0094)	Philips Imaging DD 001	Processing Order Specialization
-(0x2001,0x009a)	Philips Imaging DD 001	Graphic Number Sequence
-(0x2001,0x009b)	Philips Imaging DD 001	Graphic Number
-(0x2001,0x009d)	Philips Imaging DD 001	Subtraction Type
-(0x2001,0x009f)	Philips Imaging DD 001	Pixel Processing Kernel Size
-(0x2001,0x00a1)	Philips Imaging DD 001	Is Raw Image
-(0x2001,0x00a2)	Philips Imaging DD 001	Log Subtraction Curve Taste
-(0x2001,0x00a3)	Philips Imaging DD 001	Text Color Foreground
-(0x2001,0x00a4)	Philips Imaging DD 001	Text Color Background
-(0x2001,0x00a5)	Philips Imaging DD 001	Text Color Shadow
-(0x2001,0x00c0)	Philips Imaging DD 001	Content Item Identifier
-(0x2001,0x00c1)	Philips Imaging DD 001	Nested Object Type Name
-(0x2001,0x00c2)	Philips Imaging DD 001	Subtraction Rescale Factor
-(0x2001,0x00c3)	Philips Imaging DD 001	Subtraction Offset
-(0x2001,0x00c5)	Philips Imaging DD 001	Mask Image Lut Sequence
-(0x2001,0x00c6)	Philips Imaging DD 001	Gain Lut Sequence
-(0x2001,0x00c7)	Philips Imaging DD 001	Contrast Image Lut Sequence
-(0x2001,0x00ca)	Philips Imaging DD 001	Reversed Modality Lut
-(0x2001,0x00cb)	Philips Imaging DD 001	Redundant Overlay Plane Id
-(0x2001,0x00d0)	Philips Imaging DD 001	Frame Index Pointer
-(0x2001,0x00d1)	Philips Imaging DD 001	Index Number Vector
-(0x2001,0x00d2)	Philips Imaging DD 001	Frame Detector Number
-(0x2001,0x00d3)	Philips Imaging DD 001	Frame Phase Number
-(0x2001,0x00d4)	Philips Imaging DD 001	Frame Rotation Number
-(0x2001,0x00d5)	Philips Imaging DD 001	Frame Rr Interval Number
-(0x2001,0x00d6)	Philips Imaging DD 001	Frame Time Slot Number
-(0x2001,0x00d7)	Philips Imaging DD 001	Frame Slice Number
-(0x2001,0x00d8)	Philips Imaging DD 001	Frame Angular View Number
-(0x2001,0x00d9)	Philips Imaging DD 001	Frame Time Slice Number
-(0x2001,0x00da)	Philips Imaging DD 001	Is Arrowhead
-(0x2001,0x00db)	Philips Imaging DD 001	PET Rr Interval Index
-(0x2001,0x00dc)	Philips Imaging DD 001	PET Time Slot Index
-(0x2001,0x00dd)	Philips Imaging DD 001	PET Time Slice Index
-(0x2001,0x00de)	Philips Imaging DD 001	PET Slice Index
-(0x2001,0x00df)	Philips Imaging DD 001	Voxel Number
-(0x2001,0x00e9)	Philips Imaging DD 001	Per Frame Voxels Functional Group
-(0x2001,0x00f1)	Philips Imaging DD 001	MR Image Prospective Motion Correction
-(0x2001,0x00f2)	Philips Imaging DD 001	MR Image Retrospective Motion Correction
-(0x2001,0x00f3)	Philips Imaging DD 001	Dynamic Linear Voigl Trafo
-(0x2001,0x00f4)	Philips Imaging DD 001	Color Key
-(0x2001,0x00f5)	Philips Imaging DD 001	Rotated Text Allowed
-(0x2001,0x00f6)	Philips Imaging DD 001	Number Of Represented Images
-(0x2001,0x00f7)	Philips Imaging DD 001	Data Type Icons
-(0x2001,0x00f9)	Philips Imaging DD 001	Flagging Sequence
-(0x2001,0x00fb)	Philips Imaging DD 001	Bookmark Sequence
-(0x2001,0x00fc)	Philips Imaging DD 001	Ris Code Sequence
-(0x2001,0x00fd)	Philips Imaging DD 001	Workflow Step Sequence
-(0x2001,0x00ff)	Philips Imaging DD 001	Volume Pixel
-(0x2001,0x0001)	Philips Imaging DD 002	Edr Setgp
-(0x2001,0x0002)	Philips Imaging DD 002	Edr Setsk
-(0x2001,0x0003)	Philips Imaging DD 002	Um Rank Type
-(0x2001,0x0004)	Philips Imaging DD 002	Um Rank Number
-(0x2001,0x0005)	Philips Imaging DD 002	Um Rank Enhancement
-(0x2001,0x0006)	Philips Imaging DD 002	Um Kernel Size
-(0x2001,0x0007)	Philips Imaging DD 002	Um Gamma Type
-(0x2001,0x0008)	Philips Imaging DD 002	Um Gamma Angle
-(0x2001,0x0009)	Philips Imaging DD 002	Um Gamma Shift
-(0x2001,0x000a)	Philips Imaging DD 002	Um Gamma Center
-(0x2001,0x000b)	Philips Imaging DD 002	Drr Contrast Equalization
-(0x2001,0x000c)	Philips Imaging DD 002	Drr Contrast Equalization Kernel Size
-(0x2001,0x000d)	Philips Imaging DD 002	Drr Sharp Lut Type
-(0x2001,0x000e)	Philips Imaging DD 002	Drr Sharpening
-(0x2001,0x000f)	Philips Imaging DD 002	Drr Sharp Kernel Size
-(0x2001,0x0010)	Philips Imaging DD 002	Drr Window Width
-(0x2001,0x0011)	Philips Imaging DD 002	Drr Window Level
-(0x2001,0x0012)	Philips Imaging DD 002	Drr Lut Type
-(0x2001,0x0013)	Philips Imaging DD 002	Unique Processing Mode
-(0x2001,0x0014)	Philips Imaging DD 002	Unique Contrast Balance
-(0x2001,0x0015)	Philips Imaging DD 002	Unique Center Density
-(0x2001,0x0016)	Philips Imaging DD 002	Unique Bright Density
-(0x2001,0x0017)	Philips Imaging DD 002	Unique Detail Contrast
-(0x2001,0x0018)	Philips Imaging DD 002	Unique Density Curve
-(0x2001,0x0019)	Philips Imaging DD 002	Unique Density Min
-(0x2001,0x001a)	Philips Imaging DD 002	Unique Density Max
-(0x2001,0x001b)	Philips Imaging DD 002	Unique Gamma
-(0x2001,0x001c)	Philips Imaging DD 002	Unique Gamma Min
-(0x2001,0x001d)	Philips Imaging DD 002	Unique Gamma Max
-(0x2001,0x001e)	Philips Imaging DD 002	Unique Structure Preference
-(0x2001,0x001f)	Philips Imaging DD 002	Unique Noise Limit
-(0x2001,0x0020)	Philips Imaging DD 002	Unique Noise Band
-(0x2001,0x0021)	Philips Imaging DD 002	Unique Noise Step
-(0x2001,0x0022)	Philips Imaging DD 002	Unique Noise Compensation
-(0x2001,0x0023)	Philips Imaging DD 002	Unique Structure Boost
-(0x2001,0x0024)	Philips Imaging DD 002	Unique Strong Contrast Limit
-(0x2001,0x0025)	Philips Imaging DD 002	Unique Strong Contrast Factor
-(0x2001,0x0026)	Philips Imaging DD 002	Unique Structure Boost Offset
-(0x2001,0x0027)	Philips Imaging DD 002	Unique Weak Contrast Limit
-(0x2001,0x0028)	Philips Imaging DD 002	Unique Smooth Gain
-(0x2001,0x0029)	Philips Imaging DD 002	Unique Level
-(0x2001,0x002a)	Philips Imaging DD 002	Unique Gain Up Single
-(0x2001,0x002b)	Philips Imaging DD 002	Unique Smh Limit One
-(0x2001,0x002c)	Philips Imaging DD 002	Unique Film Density Min
-(0x2001,0x002d)	Philips Imaging DD 002	Unique Film Density Max
-(0x2001,0x002e)	Philips Imaging DD 002	Unique Version
-(0x2001,0x002f)	Philips Imaging DD 002	Ranger Version
-(0x2001,0x0030)	Philips Imaging DD 002	Ranger Mode
-(0x2001,0x0031)	Philips Imaging DD 002	Ranger Field1
-(0x2001,0x0032)	Philips Imaging DD 002	Ranger Field2
-(0x2001,0x0033)	Philips Imaging DD 002	Ranger Percentile Key1
-(0x2001,0x0034)	Philips Imaging DD 002	Ranger Percentile Key2
-(0x2001,0x0035)	Philips Imaging DD 002	Ranger Dose1
-(0x2001,0x0036)	Philips Imaging DD 002	Ranger Dose2
-(0x2001,0x0037)	Philips Imaging DD 002	Ranger Manual Dose1
-(0x2001,0x0038)	Philips Imaging DD 002	Ranger Manual Dose2
-(0x2001,0x0039)	Philips Imaging DD 002	Unique Rox Shape
-(0x2001,0x003a)	Philips Imaging DD 002	Ranger Set Sequence
-(0x2001,0x003b)	Philips Imaging DD 002	Rox Sequence
-(0x2001,0x003c)	Philips Imaging DD 002	Xray Edge Enhancement Sequence
-(0x2001,0x003d)	Philips Imaging DD 002	Edr Lut Sequence
-(0x2001,0x003e)	Philips Imaging DD 002	Unique Dose Decades
-(0x2001,0x003f)	Philips Imaging DD 002	Unique Dose Unit
-(0x2001,0x0040)	Philips Imaging DD 002	Unique Density Unit
-(0x2001,0x0050)	Philips Imaging DD 002	Workflow Status
-(0x2001,0x0052)	Philips Imaging DD 002	Workflow Step Id
-(0x2001,0x0053)	Philips Imaging DD 002	Workflow Step Status
-(0x2001,0x0057)	Philips Imaging DD 002	Workflow Step Input Sequence
-(0x2001,0x0058)	Philips Imaging DD 002	Workflow Step Output Sequence
-(0x2001,0x005a)	Philips Imaging DD 002	Workflow Step Type
-(0x2001,0x005c)	Philips Imaging DD 002	Workflow Id
-(0x2001,0x005d)	Philips Imaging DD 002	Pixel Data Representation Rows
-(0x2001,0x005e)	Philips Imaging DD 002	Pixel Data Representation Columns
-(0x2001,0x005f)	Philips Imaging DD 002	Private Dicom Extension Sequence
-(0x2001,0x0063)	Philips Imaging DD 002	Isyntax Reference
-(0x2001,0x0064)	Philips Imaging DD 002	Workflow Step Job Params Sequence
-(0x2001,0x0065)	Philips Imaging DD 002	Preserve Aspect
-(0x2001,0x0066)	Philips Imaging DD 002	Interpolated
-(0x2001,0x0067)	Philips Imaging DD 002	Error Flag
-(0x2001,0x0068)	Philips Imaging DD 002	Error Message Id
-(0x2001,0x006b)	Philips Imaging DD 002	Suitable For
-(0x2001,0x0071)	Philips Imaging DD 002	Submit Mpps Job
-(0x2001,0x0072)	Philips Imaging DD 002	Displayed Area Bottom Right Hand Corner Fraction
-(0x2001,0x0073)	Philips Imaging DD 002	Displayed Area Top Left Hand Corner Fraction
-(0x2001,0x0074)	Philips Imaging DD 002	Interpolation Mode
-(0x2001,0x0075)	Philips Imaging DD 002	Graphic Annotation Id Reference
-(0x2001,0x0001)	Philips Imaging DD 097	View Geometry
-(0x2001,0x0002)	Philips Imaging DD 097	Frame Geometry Origin
-(0x2001,0x0003)	Philips Imaging DD 097	Frame Geometry Extent
-(0x2001,0x0004)	Philips Imaging DD 097	Frame Geometry Orientation
-(0x2001,0x0005)	Philips Imaging DD 097	Visual Sequence
-(0x2001,0x0006)	Philips Imaging DD 097	Cut Sequence
-(0x2001,0x0007)	Philips Imaging DD 097	Visual Opacity
-(0x2001,0x0008)	Philips Imaging DD 097	Opacity Map Sequence
-(0x2001,0x000a)	Philips Imaging DD 097	Light Sequence
-(0x2001,0x000b)	Philips Imaging DD 097	Color Map Sequence
-(0x2001,0x000d)	Philips Imaging DD 097	Visual Threshold
-(0x2001,0x000e)	Philips Imaging DD 097	Scene Sequence
-(0x2001,0x000f)	Philips Imaging DD 097	Frame Geometry Slab
-(0x2001,0x0012)	Philips Imaging DD 097	Gradient Map Sequence
-(0x2001,0x0017)	Philips Imaging DD 097	Display Rows
-(0x2001,0x0018)	Philips Imaging DD 097	Display Columns
-(0x2001,0x0019)	Philips Imaging DD 097	Frame Geometry Type
-(0x2001,0x001a)	Philips Imaging DD 097	Light Intensity
-(0x2001,0x001b)	Philips Imaging DD 097	Light Color
-(0x2001,0x001c)	Philips Imaging DD 097	Light Origin
-(0x2001,0x001d)	Philips Imaging DD 097	Light Direction
-(0x2001,0x001e)	Philips Imaging DD 097	Color Map Samples
-(0x2001,0x001f)	Philips Imaging DD 097	Opacity Map Samples
-(0x2001,0x0021)	Philips Imaging DD 097	Visual Color
-(0x2001,0x0022)	Philips Imaging DD 097	Illumination Ambient
-(0x2001,0x0023)	Philips Imaging DD 097	Illumination Diffuse
-(0x2001,0x0024)	Philips Imaging DD 097	Illumination Specular
-(0x2001,0x0025)	Philips Imaging DD 097	Illumination Specular Power
-(0x2001,0x0026)	Philips Imaging DD 097	Depth Cue Begin
-(0x2001,0x0027)	Philips Imaging DD 097	Depth Cue Lambda
-(0x2001,0x0028)	Philips Imaging DD 097	Depth Cue Function
-(0x2001,0x002a)	Philips Imaging DD 097	Cut Set Type
-(0x2001,0x002b)	Philips Imaging DD 097	Cut Plane Origin
-(0x2001,0x002c)	Philips Imaging DD 097	Cut Plane Normal
-(0x2001,0x002d)	Philips Imaging DD 097	Volume Definition Number
-(0x2001,0x002e)	Philips Imaging DD 097	Volume Mask Sequence
-(0x2001,0x002f)	Philips Imaging DD 097	Volume Mask Data
-(0x2001,0x0030)	Philips Imaging DD 097	Volume Mask Offset
-(0x2001,0x0031)	Philips Imaging DD 097	Volume Mask Size
-(0x2001,0x0032)	Philips Imaging DD 097	Volume Mask Alignment
-(0x2001,0x0036)	Philips Imaging DD 097	Light Anchor
-(0x2001,0x0037)	Philips Imaging DD 097	Cone Geometry Origin
-(0x2001,0x0038)	Philips Imaging DD 097	Cone Geometry Orientation
-(0x2001,0x0039)	Philips Imaging DD 097	Cone Geometry View Distance
-(0x2001,0x003a)	Philips Imaging DD 097	Cone Geometry Slab Extent
-(0x2001,0x003b)	Philips Imaging DD 097	Cone Geometry Field Of View
-(0x2001,0x003c)	Philips Imaging DD 097	Intensity Map Sequence
-(0x2001,0x003d)	Philips Imaging DD 097	Intensity Map Samples
-(0x2001,0x003e)	Philips Imaging DD 097	Mesh Sequence
-(0x2001,0x0040)	Philips Imaging DD 097	Mesh Color
-(0x2001,0x0041)	Philips Imaging DD 097	Mesh Draw Style
-(0x2001,0x0042)	Philips Imaging DD 097	Mesh Section Sequence
-(0x2001,0x0044)	Philips Imaging DD 097	Mesh Section Vertex Connectivity
-(0x2001,0x0045)	Philips Imaging DD 097	Mesh Section Vertex Size
-(0x2001,0x0046)	Philips Imaging DD 097	Mesh Section Vertex Format
-(0x2001,0x0047)	Philips Imaging DD 097	Mesh Section Vertex Data
-(0x2001,0x0049)	Philips Imaging DD 097	Referenced Volume Definition Sequence
-(0x2001,0x004a)	Philips Imaging DD 097	Mesh Section Index Data
-(0x2001,0x004b)	Philips Imaging DD 097	Mesh Section Index Size
-(0x2001,0x004c)	Philips Imaging DD 097	Shutter Interaction Type
-(0x2001,0x00a1)	Philips Imaging DD 097	Volume Type
-(0x2001,0x00a2)	Philips Imaging DD 097	Volume Origin
-(0x2001,0x00a3)	Philips Imaging DD 097	Volume Axis
-(0x2001,0x00a4)	Philips Imaging DD 097	Volume Pixel Spacing
-(0x2001,0x00a5)	Philips Imaging DD 097	Volume Slice Spacing
-(0x2001,0x00a6)	Philips Imaging DD 097	Volume Slices
-(0x2001,0x00a8)	Philips Imaging DD 097	Referenced Volume Definition Number
-(0x2001,0x00a9)	Philips Imaging DD 097	Linear Modality Gl Trafo Sequence
-(0x2001,0x00aa)	Philips Imaging DD 097	Volume Slice Offsets
-(0x2001,0x00ab)	Philips Imaging DD 097	Number Of Volume Definitions
-(0x2001,0x0000)	Philips Imaging DD 129	Presentation State Sequence
-(0x2001,0x0001)	Philips Imaging DD 129	Embedded Original Presentation State Sequence
-(0x2001,0x0002)	Philips Imaging DD 129	Planar Intersection Sequence
-(0x2001,0x0003)	Philips Imaging DD 129	Plane Separator Line Color
-(0x2001,0x0004)	Philips Imaging DD 129	Plane Sequence
-(0x2001,0x0005)	Philips Imaging DD 129	Plane Equation
-(0x2001,0x0006)	Philips Imaging DD 129	Plane Opacity
-(0x2001,0x0007)	Philips Imaging DD 129	Plane Enabled
-(0x2001,0x0008)	Philips Imaging DD 129	Plane Selected
-(0x2001,0x0009)	Philips Imaging DD 129	Plane Highlight Color
-(0x0025,0x0001)	Philips ST80i	ST80i Stress Study file data
-(0x0019,0x000C)	SIEMENS MR HEADER	B Value
-(0x0019,0x000D)	SIEMENS MR HEADER	Diffusion Directionality
-(0x0019,0x000E)	SIEMENS MR HEADER	Diffusion Gradient Direction
-(0x0019,0x0027)	SIEMENS MR HEADER	B Matrix
-(0x0043,0x0039)	GEMS_PARM_01	1stvalue is B Value
-(0x0043,0x006F)	GEMS_PARM_01	Scanner Table Entry + Gradient Coil Selected
-(0x0025,0x0007)	GEMS_SERS_01	Images in Series
-(0x7E01,0x0001)	HOLOGIC, Inc.	Codec Version
-(0x7E01,0x0002)	HOLOGIC, Inc.	Codec Content Type
-(0x7E01,0x0010)	HOLOGIC, Inc.	High Resolution Data Sequence
-(0x7E01,0x0011)	HOLOGIC, Inc.	Low Resolution Data Sequence
-(0x7E01,0x0012)	HOLOGIC, Inc.	Codec Content
-(0x0099,0x0001)	NQHeader	Version
-(0x0099,0x0002)	NQHeader	Analyzed Series UID
-(0x0099,0x0004)	NQHeader	Return Code
-(0x0099,0x0005)	NQHeader	Return Message
-(0x0099,0x0010)	NQHeader	MI
-(0x0099,0x0020)	NQHeader	Units
-(0x0099,0x0021)	NQHeader	ICV
-(0x0199,0x0001)	NQLeft	Left Cortical White Matter
-(0x0199,0x0002)	NQLeft	Left Cortical Gray Matter
-(0x0199,0x0003)	NQLeft	Left 3rd Ventricle
-(0x0199,0x0004)	NQLeft	Left 4th Ventricle
-(0x0199,0x0005)	NQLeft	Left 5th Ventricle
-(0x0199,0x0006)	NQLeft	Left Lateral Ventricle
-(0x0199,0x0007)	NQLeft	Left Inferior Lateral Ventricle
-(0x0199,0x0008)	NQLeft	Left Inferior CSF
-(0x0199,0x0009)	NQLeft	Left Cerebellar White Matter
-(0x0199,0x000a)	NQLeft	Left Cerebellar Gray Matter
-(0x0199,0x000b)	NQLeft	Left Hippocampus
-(0x0199,0x000c)	NQLeft	Left Amygdala
-(0x0199,0x000d)	NQLeft	Left Thalamus
-(0x0199,0x000e)	NQLeft	Left Caudate
-(0x0199,0x000f)	NQLeft	Left Putamen
-(0x0199,0x0010)	NQLeft	Left Pallidum
-(0x0199,0x0011)	NQLeft	Left Ventral Diencephalon
-(0x0199,0x0012)	NQLeft	Left Nucleus Accumbens
-(0x0199,0x0013)	NQLeft	Left Brain Stem
-(0x0199,0x0014)	NQLeft	Left Exterior CSF
-(0x0199,0x0015)	NQLeft	Left WM Hypo
-(0x0199,0x0016)	NQLeft	Left Other
-(0x0299,0x0001)	NQRight	Right Cortical White Matter
-(0x0299,0x0002)	NQRight	Right Cortical Gray Matter
-(0x0299,0x0003)	NQRight	Right 3rd Ventricle
-(0x0299,0x0004)	NQRight	Right 4th Ventricle
-(0x0299,0x0005)	NQRight	Right 5th Ventricle
-(0x0299,0x0006)	NQRight	Right Lateral Ventricle
-(0x0299,0x0007)	NQRight	Right Inferior Lateral Ventricle
-(0x0299,0x0008)	NQRight	Right Inferior CSF
-(0x0299,0x0009)	NQRight	Right Cerebellar White Matter
-(0x0299,0x000a)	NQRight	Right Cerebellar Gray Matter
-(0x0299,0x000b)	NQRight	Right Hippocampus
-(0x0299,0x000c)	NQRight	Right Amygdala
-(0x0299,0x000d)	NQRight	Right Thalamus
-(0x0299,0x000e)	NQRight	Right Caudate
-(0x0299,0x000f)	NQRight	Right Putamen
-(0x0299,0x0010)	NQRight	Right Pallidum
-(0x0299,0x0011)	NQRight	Right Ventral Diencephalon
-(0x0299,0x0012)	NQRight	Right Nucleus Accumbens
-(0x0299,0x0013)	NQRight	Right Brain Stem
-(0x0299,0x0014)	NQRight	Right Exterior CSF
-(0x0299,0x0015)	NQRight	Right WM Hypo
-(0x0299,0x0016)	NQRight	Right Other
-(0x2005,0x000D)	Philips MR Imaging DD 001	Scale Intercept
-(0x2005,0x000E)	Philips MR Imaging DD 001	Scale Slope
-(0x0119,0x0000)	SIEMENS Ultrasound SC2000	Acoustic Meta Information Version
-(0x0119,0x0001)	SIEMENS Ultrasound SC2000	Common Acoustic Meta Information
-(0x0119,0x0002)	SIEMENS Ultrasound SC2000	Multi Stream Sequence
-(0x0119,0x0003)	SIEMENS Ultrasound SC2000	Acoustic Data Sequence
-(0x0119,0x0004)	SIEMENS Ultrasound SC2000	Per Transaction Acoustic Control Information
-(0x0119,0x0005)	SIEMENS Ultrasound SC2000	Acoustic Data Offset
-(0x0119,0x0006)	SIEMENS Ultrasound SC2000	Acoustic Data Length
-(0x0119,0x0007)	SIEMENS Ultrasound SC2000	Footer Offset
-(0x0119,0x0008)	SIEMENS Ultrasound SC2000	Footer Length
-(0x0119,0x0009)	SIEMENS Ultrasound SC2000	Acoustic Stream Number
-(0x0119,0x0010)	SIEMENS Ultrasound SC2000	Acoustic Stream Type
-(0x0119,0x0011)	SIEMENS Ultrasound SC2000	Stage Timer Time
-(0x0119,0x0012)	SIEMENS Ultrasound SC2000	Stop Watch Time
-(0x0119,0x0013)	SIEMENS Ultrasound SC2000	Volume Rate
-(0x0119,0x0021)	SIEMENS Ultrasound SC2000	
-(0x0129,0x0000)	SIEMENS Ultrasound SC2000	MPR View Sequence
-(0x0129,0x0002)	SIEMENS Ultrasound SC2000	Bookmark UID
-(0x0129,0x0003)	SIEMENS Ultrasound SC2000	Plane Origin Vector
-(0x0129,0x0004)	SIEMENS Ultrasound SC2000	Row Vector
-(0x0129,0x0005)	SIEMENS Ultrasound SC2000	Column Vector
-(0x0129,0x0006)	SIEMENS Ultrasound SC2000	Visualization Sequence
-(0x0129,0x0007)	SIEMENS Ultrasound SC2000	Bookmark UID
-(0x0129,0x0008)	SIEMENS Ultrasound SC2000	Visualization Information
-(0x0129,0x0009)	SIEMENS Ultrasound SC2000	Application State Sequence
-(0x0129,0x0010)	SIEMENS Ultrasound SC2000	Application State Information
-(0x0129,0x0011)	SIEMENS Ultrasound SC2000	Referenced Bookmark Sequence
-(0x0129,0x0012)	SIEMENS Ultrasound SC2000	Referenced Bookmark UID
-(0x0129,0x0020)	SIEMENS Ultrasound SC2000	Cine Parameters Sequence
-(0x0129,0x0021)	SIEMENS Ultrasound SC2000	Cine Parameters Schema
-(0x0129,0x0022)	SIEMENS Ultrasound SC2000	Values of Cine Parameters
-(0x0129,0x0029)	SIEMENS Ultrasound SC2000	
-(0x0129,0x0030)	SIEMENS Ultrasound SC2000	Raw Data Object Type
-(0x0139,0x0001)	SIEMENS Ultrasound SC2000	Physio Capture ROI
-(0x0149,0x0001)	SIEMENS Ultrasound SC2000	Vector of BROI Points
-(0x0149,0x0002)	SIEMENS Ultrasound SC2000	Start/End Timestamps of Strip Stream
-(0x0149,0x0003)	SIEMENS Ultrasound SC2000	Timestamps of Visible R-waves
-(0x7FD1,0x0001)	SIEMENS Ultrasound SC2000	Acoustic Image and Footer Data
-(0x7FD1,0x0009)	SIEMENS Ultrasound SC2000	Volume Version ID
-(0x7FD1,0x0010)	SIEMENS Ultrasound SC2000	Volume Payload
-(0x7FD1,0x0011)	SIEMENS Ultrasound SC2000	After Payload
-(0x7FD1,0x0001)	SIEMENS SYNGO ULTRA-SOUND TOYON DATA STREAMING	Padding
-(0x7FD1,0x0009)	SIEMENS SYNGO ULTRA-SOUND TOYON DATA STREAMING	Version ID
-(0x7FD1,0x0010)	SIEMENS SYNGO ULTRA-SOUND TOYON DATA STREAMING	Volume Payload
-(0x7FD1,0x0011)	SIEMENS SYNGO ULTRA-SOUND TOYON DATA STREAMING	After Payload
+(7053,0000)	Philips PET Private Group	SUV Factor - Multiplying stored pixel values by Rescale Slope then this factor results in SUVbw in g/l
+(7053,0009)	Philips PET Private Group	Activity Concentration Factor - Multiplying stored pixel values by Rescale Slope then this factor results in MBq/ml.
+(00E1,0021)	ELSCINT1	DLP
+(00E1,0050)	ELSCINT1	Acquisition Duration
+(01E1,0026)	ELSCINT1	Phantom Type
+(01F1,0001)	ELSCINT1	Acquisition Type
+(01F1,0007)	ELSCINT1	Table Velocity
+(01F1,0026)	ELSCINT1	Pitch
+(01F1,0027)	ELSCINT1	Rotation Time
+(0019,0023)	GEMS_ACQU_01	Table Speed [mm/rotation]
+(0019,0024)	GEMS_ACQU_01	Mid Scan Time [sec]
+(0019,0027)	GEMS_ACQU_01	Rotation Speed (Gantry Period)
+(0019,009E)	GEMS_ACQU_01	Internal Pulse Sequence Name
+(0043,0027)	GEMS_PARM_01	"Scan Pitch Ratio in the form ""n.nnn:1"""
+(0045,0001)	GEMS_HELIOS_01	Number of Macro Rows in Detector
+(0045,0002)	GEMS_HELIOS_01	Macro width at ISO Center
+(0903,0010)	GEIIS PACS	Reject Image Flag
+(0903,0011)	GEIIS PACS	Significant Flag
+(0903,0012)	GEIIS PACS	Confidential Flag
+(2001,0001)	Philips Imaging DD 001	MR Image Chemical Shift
+(2001,0002)	Philips Imaging DD 001	MR Image Chemical Shift Number
+(2001,0003)	Philips Imaging DD 001	MR Image Diffusion B-Factor
+(2001,0004)	Philips Imaging DD 001	MR Image Diffusion Direction
+(2001,0005)	Philips Imaging DD 001	Graphic Annotation Parent ID
+(2001,0006)	Philips Imaging DD 001	MR Image Enhanced
+(2001,0007)	Philips Imaging DD 001	MR Image Type Edes
+(2001,0008)	Philips Imaging DD 001	MR Image Phase Number
+(2001,0009)	Philips Imaging DD 001	MR Image Prepulse Delay
+(2001,000a)	Philips Imaging DD 001	Image Plane Number
+(2001,000b)	Philips Imaging DD 001	Image Plane Orientation
+(2001,000c)	Philips Imaging DD 001	MR Series Arrhythmia Rejection
+(2001,000e)	Philips Imaging DD 001	MR Series Cardiac Cycled
+(2001,000f)	Philips Imaging DD 001	MR Series Cardiac Gate Width
+(2001,0010)	Philips Imaging DD 001	MR Series Cardiac Sync
+(2001,0011)	Philips Imaging DD 001	MR Series Diffusion Echo Time
+(2001,0012)	Philips Imaging DD 001	MR Series Dynamic Series
+(2001,0013)	Philips Imaging DD 001	MR Series Epi Factor
+(2001,0014)	Philips Imaging DD 001	MR Series Nr Of Echoes
+(2001,0015)	Philips Imaging DD 001	MR Series Nr Of Locations
+(2001,0016)	Philips Imaging DD 001	MR Series Nr Of Phase Contrast Directions
+(2001,0017)	Philips Imaging DD 001	MR Series Nr Of Phases
+(2001,0018)	Philips Imaging DD 001	MR Series Nr Of Slices
+(2001,0019)	Philips Imaging DD 001	MR Series Partial Matrix Scanned
+(2001,001a)	Philips Imaging DD 001	MR Series Pc Velocity
+(2001,001b)	Philips Imaging DD 001	MR Series Prepulse Delay
+(2001,001c)	Philips Imaging DD 001	MR Series Prepulse Type
+(2001,001d)	Philips Imaging DD 001	MR Series Reconstruction Number
+(2001,001e)	Philips Imaging DD 001	MR Series Reformat Accuracy
+(2001,001f)	Philips Imaging DD 001	MR Series Respiration Sync
+(2001,0021)	Philips Imaging DD 001	MR Series Sel Part Inversion Recovery
+(2001,0022)	Philips Imaging DD 001	MR Series Water Fat Shift
+(2001,0023)	Philips Imaging DD 001	MR Series Flip Angle
+(2001,0024)	Philips Imaging DD 001	MR Series Is Interactive
+(2001,0025)	Philips Imaging DD 001	MR Series Echo Time Display
+(2001,0026)	Philips Imaging DD 001	Presentation State Subtraction Active
+(2001,0027)	Philips Imaging DD 001	Edge Enhancement Kernel Size
+(2001,0028)	Philips Imaging DD 001	Edge Enhancement Gain Factor Sub
+(2001,0029)	Philips Imaging DD 001	Edge Enhancement Gain Factor
+(2001,002a)	Philips Imaging DD 001	Edge Enhancement Taste Adapt Sub
+(2001,002b)	Philips Imaging DD 001	Edge Enhancement Taste Adapt
+(2001,002c)	Philips Imaging DD 001	Harmonization Factor
+(2001,002d)	Philips Imaging DD 001	Stack Number Of Slices
+(2001,002e)	Philips Imaging DD 001	Harmonization Kernel Size
+(2001,002f)	Philips Imaging DD 001	Harmonization Gain
+(2001,0030)	Philips Imaging DD 001	Log Subtraction Gain Step Taste
+(2001,0031)	Philips Imaging DD 001	Mixing Nr Of Mask Image Numbers
+(2001,0032)	Philips Imaging DD 001	Stack Radial Angle
+(2001,0033)	Philips Imaging DD 001	Stack Radial Axis
+(2001,0034)	Philips Imaging DD 001	Mixing Mask Operation Type
+(2001,0035)	Philips Imaging DD 001	Stack Slice Number
+(2001,0036)	Philips Imaging DD 001	Stack Type
+(2001,0037)	Philips Imaging DD 001	Mixing Operation Type
+(2001,0038)	Philips Imaging DD 001	Overlay Mix Factor
+(2001,0039)	Philips Imaging DD 001	Overscan Factor
+(2001,003a)	Philips Imaging DD 001	Pixel Shift
+(2001,003b)	Philips Imaging DD 001	Pixel Shift Split Line Coordinates
+(2001,003c)	Philips Imaging DD 001	Pixel Shift Shift Vectora
+(2001,003d)	Philips Imaging DD 001	Contour Fill Color
+(2001,003e)	Philips Imaging DD 001	Pixel Shift Shift Vectorb
+(2001,003f)	Philips Imaging DD 001	Displayed Area Zoom Interpolation Meth
+(2001,0040)	Philips Imaging DD 001	Pixel Shift Split Screen
+(2001,0041)	Philips Imaging DD 001	Subtraction Land Marking Factor
+(2001,0042)	Philips Imaging DD 001	Subtraction Land Marking Active
+(2001,0043)	Philips Imaging DD 001	Ellips Displ Shut Major Ax Frst End Pnt
+(2001,0044)	Philips Imaging DD 001	Ellips Displ Shut Major Ax Scnd End Pnt
+(2001,0045)	Philips Imaging DD 001	Ellips Displ Shut Other Ax Frst End Pnt
+(2001,0046)	Philips Imaging DD 001	Graphic Line Style
+(2001,0047)	Philips Imaging DD 001	Graphic Line Width
+(2001,0048)	Philips Imaging DD 001	Graphic Annotation Id
+(2001,0049)	Philips Imaging DD 001	Trace First Image
+(2001,004a)	Philips Imaging DD 001	Trace Taste
+(2001,004b)	Philips Imaging DD 001	Interpolation Method
+(2001,004c)	Philips Imaging DD 001	Poly Line Begin Point Style
+(2001,004d)	Philips Imaging DD 001	Poly Line End Point Style
+(2001,004e)	Philips Imaging DD 001	Window Smoothing Taste
+(2001,004f)	Philips Imaging DD 001	Harmonization Offset
+(2001,0050)	Philips Imaging DD 001	Graphic Marker Type
+(2001,0051)	Philips Imaging DD 001	Overlay Plane Id
+(2001,0053)	Philips Imaging DD 001	Presentation Gl Trafo Invert
+(2001,0054)	Philips Imaging DD 001	Contour Fill Transparency
+(2001,0055)	Philips Imaging DD 001	Graphic Line Color
+(2001,0056)	Philips Imaging DD 001	Graphic Type
+(2001,0057)	Philips Imaging DD 001	Log Subtraction Taste
+(2001,0058)	Philips Imaging DD 001	Series Xray Contrast Transfer Taste
+(2001,0059)	Philips Imaging DD 001	Curve Id
+(2001,005a)	Philips Imaging DD 001	Graphic Annotation Model
+(2001,005d)	Philips Imaging DD 001	Measurement Text Units
+(2001,005e)	Philips Imaging DD 001	Measurement Text Type
+(2001,005f)	Philips Imaging DD 001	Stack Sequence
+(2001,0060)	Philips Imaging DD 001	MR Series Nr Of Stacks
+(2001,0061)	Philips Imaging DD 001	Series Transmitted
+(2001,0062)	Philips Imaging DD 001	Series Committed
+(2001,0063)	Philips Imaging DD 001	Examination Source
+(2001,0064)	Philips Imaging DD 001	Text Type
+(2001,0065)	Philips Imaging DD 001	Overlay Plane Sequence
+(2001,0066)	Philips Imaging DD 001	Image Curve
+(2001,0067)	Philips Imaging DD 001	Linear Presentation Gl Trafo Shape Sub
+(2001,0068)	Philips Imaging DD 001	Modality Gl Trafo Sequence
+(2001,0069)	Philips Imaging DD 001	Display Shutter Sequence
+(2001,006a)	Philips Imaging DD 001	Spatial Transformation Sequence
+(2001,006b)	Philips Imaging DD 001	Edge Enhancement Sequence
+(2001,006d)	Philips Imaging DD 001	Text Font
+(2001,006e)	Philips Imaging DD 001	Series Type
+(2001,006f)	Philips Imaging DD 001	Mixing Sequence
+(2001,0071)	Philips Imaging DD 001	Graphic Constraint
+(2001,0072)	Philips Imaging DD 001	Ellips Displ Shut Other Ax Scnd End Pnt
+(2001,0073)	Philips Imaging DD 001	Referenced Mask Image Sequence
+(2001,0074)	Philips Imaging DD 001	Window Center Sub
+(2001,0075)	Philips Imaging DD 001	Window Width Sub
+(2001,0076)	Philips Imaging DD 001	Presentation State Xray Contrast Transfer Taste
+(2001,0077)	Philips Imaging DD 001	Gl Trafo Type
+(2001,0079)	Philips Imaging DD 001	Harmonisation Sequence
+(2001,007a)	Philips Imaging DD 001	Window Rounding Factor
+(2001,007b)	Philips Imaging DD 001	MR Series Acquisition Number
+(2001,007c)	Philips Imaging DD 001	Frame Number
+(2001,007d)	Philips Imaging DD 001	Frame Pixel Data
+(2001,007e)	Philips Imaging DD 001	Edge Enhancement Gain Taste
+(2001,007f)	Philips Imaging DD 001	Edge Enhancement Gain Taste Sub
+(2001,0080)	Philips Imaging DD 001	Text Anchor Point Alignment
+(2001,0081)	Philips Imaging DD 001	MR Series Nr Of Dynamic Scans
+(2001,0082)	Philips Imaging DD 001	MR Series Echo Train Length
+(2001,0083)	Philips Imaging DD 001	MR Series Imaging Frequency
+(2001,0084)	Philips Imaging DD 001	MR Series Inversion Time
+(2001,0085)	Philips Imaging DD 001	MR Series Magnetic Field Strength
+(2001,0086)	Philips Imaging DD 001	MR Series Nr Of Phase Encoding Steps
+(2001,0087)	Philips Imaging DD 001	MR Series Nucleus
+(2001,0088)	Philips Imaging DD 001	MR Series Number Of Averages
+(2001,0089)	Philips Imaging DD 001	MR Series Percent Phase Field Of View
+(2001,008a)	Philips Imaging DD 001	MR Series Percent Sampling
+(2001,008b)	Philips Imaging DD 001	MR Series Transmitting Coil
+(2001,008c)	Philips Imaging DD 001	Needs Processing
+(2001,0090)	Philips Imaging DD 001	Text Foreground Color
+(2001,0091)	Philips Imaging DD 001	Text Background Color
+(2001,0092)	Philips Imaging DD 001	Text Shadow Color
+(2001,0093)	Philips Imaging DD 001	Text Style
+(2001,0094)	Philips Imaging DD 001	Processing Order Specialization
+(2001,009a)	Philips Imaging DD 001	Graphic Number Sequence
+(2001,009b)	Philips Imaging DD 001	Graphic Number
+(2001,009d)	Philips Imaging DD 001	Subtraction Type
+(2001,009f)	Philips Imaging DD 001	Pixel Processing Kernel Size
+(2001,00a1)	Philips Imaging DD 001	Is Raw Image
+(2001,00a2)	Philips Imaging DD 001	Log Subtraction Curve Taste
+(2001,00a3)	Philips Imaging DD 001	Text Color Foreground
+(2001,00a4)	Philips Imaging DD 001	Text Color Background
+(2001,00a5)	Philips Imaging DD 001	Text Color Shadow
+(2001,00c0)	Philips Imaging DD 001	Content Item Identifier
+(2001,00c1)	Philips Imaging DD 001	Nested Object Type Name
+(2001,00c2)	Philips Imaging DD 001	Subtraction Rescale Factor
+(2001,00c3)	Philips Imaging DD 001	Subtraction Offset
+(2001,00c5)	Philips Imaging DD 001	Mask Image Lut Sequence
+(2001,00c6)	Philips Imaging DD 001	Gain Lut Sequence
+(2001,00c7)	Philips Imaging DD 001	Contrast Image Lut Sequence
+(2001,00ca)	Philips Imaging DD 001	Reversed Modality Lut
+(2001,00cb)	Philips Imaging DD 001	Redundant Overlay Plane Id
+(2001,00d0)	Philips Imaging DD 001	Frame Index Pointer
+(2001,00d1)	Philips Imaging DD 001	Index Number Vector
+(2001,00d2)	Philips Imaging DD 001	Frame Detector Number
+(2001,00d3)	Philips Imaging DD 001	Frame Phase Number
+(2001,00d4)	Philips Imaging DD 001	Frame Rotation Number
+(2001,00d5)	Philips Imaging DD 001	Frame Rr Interval Number
+(2001,00d6)	Philips Imaging DD 001	Frame Time Slot Number
+(2001,00d7)	Philips Imaging DD 001	Frame Slice Number
+(2001,00d8)	Philips Imaging DD 001	Frame Angular View Number
+(2001,00d9)	Philips Imaging DD 001	Frame Time Slice Number
+(2001,00da)	Philips Imaging DD 001	Is Arrowhead
+(2001,00db)	Philips Imaging DD 001	PET Rr Interval Index
+(2001,00dc)	Philips Imaging DD 001	PET Time Slot Index
+(2001,00dd)	Philips Imaging DD 001	PET Time Slice Index
+(2001,00de)	Philips Imaging DD 001	PET Slice Index
+(2001,00df)	Philips Imaging DD 001	Voxel Number
+(2001,00e9)	Philips Imaging DD 001	Per Frame Voxels Functional Group
+(2001,00f1)	Philips Imaging DD 001	MR Image Prospective Motion Correction
+(2001,00f2)	Philips Imaging DD 001	MR Image Retrospective Motion Correction
+(2001,00f3)	Philips Imaging DD 001	Dynamic Linear Voigl Trafo
+(2001,00f4)	Philips Imaging DD 001	Color Key
+(2001,00f5)	Philips Imaging DD 001	Rotated Text Allowed
+(2001,00f6)	Philips Imaging DD 001	Number Of Represented Images
+(2001,00f7)	Philips Imaging DD 001	Data Type Icons
+(2001,00f9)	Philips Imaging DD 001	Flagging Sequence
+(2001,00fb)	Philips Imaging DD 001	Bookmark Sequence
+(2001,00fc)	Philips Imaging DD 001	Ris Code Sequence
+(2001,00fd)	Philips Imaging DD 001	Workflow Step Sequence
+(2001,00ff)	Philips Imaging DD 001	Volume Pixel
+(2001,0001)	Philips Imaging DD 002	Edr Setgp
+(2001,0002)	Philips Imaging DD 002	Edr Setsk
+(2001,0003)	Philips Imaging DD 002	Um Rank Type
+(2001,0004)	Philips Imaging DD 002	Um Rank Number
+(2001,0005)	Philips Imaging DD 002	Um Rank Enhancement
+(2001,0006)	Philips Imaging DD 002	Um Kernel Size
+(2001,0007)	Philips Imaging DD 002	Um Gamma Type
+(2001,0008)	Philips Imaging DD 002	Um Gamma Angle
+(2001,0009)	Philips Imaging DD 002	Um Gamma Shift
+(2001,000a)	Philips Imaging DD 002	Um Gamma Center
+(2001,000b)	Philips Imaging DD 002	Drr Contrast Equalization
+(2001,000c)	Philips Imaging DD 002	Drr Contrast Equalization Kernel Size
+(2001,000d)	Philips Imaging DD 002	Drr Sharp Lut Type
+(2001,000e)	Philips Imaging DD 002	Drr Sharpening
+(2001,000f)	Philips Imaging DD 002	Drr Sharp Kernel Size
+(2001,0010)	Philips Imaging DD 002	Drr Window Width
+(2001,0011)	Philips Imaging DD 002	Drr Window Level
+(2001,0012)	Philips Imaging DD 002	Drr Lut Type
+(2001,0013)	Philips Imaging DD 002	Unique Processing Mode
+(2001,0014)	Philips Imaging DD 002	Unique Contrast Balance
+(2001,0015)	Philips Imaging DD 002	Unique Center Density
+(2001,0016)	Philips Imaging DD 002	Unique Bright Density
+(2001,0017)	Philips Imaging DD 002	Unique Detail Contrast
+(2001,0018)	Philips Imaging DD 002	Unique Density Curve
+(2001,0019)	Philips Imaging DD 002	Unique Density Min
+(2001,001a)	Philips Imaging DD 002	Unique Density Max
+(2001,001b)	Philips Imaging DD 002	Unique Gamma
+(2001,001c)	Philips Imaging DD 002	Unique Gamma Min
+(2001,001d)	Philips Imaging DD 002	Unique Gamma Max
+(2001,001e)	Philips Imaging DD 002	Unique Structure Preference
+(2001,001f)	Philips Imaging DD 002	Unique Noise Limit
+(2001,0020)	Philips Imaging DD 002	Unique Noise Band
+(2001,0021)	Philips Imaging DD 002	Unique Noise Step
+(2001,0022)	Philips Imaging DD 002	Unique Noise Compensation
+(2001,0023)	Philips Imaging DD 002	Unique Structure Boost
+(2001,0024)	Philips Imaging DD 002	Unique Strong Contrast Limit
+(2001,0025)	Philips Imaging DD 002	Unique Strong Contrast Factor
+(2001,0026)	Philips Imaging DD 002	Unique Structure Boost Offset
+(2001,0027)	Philips Imaging DD 002	Unique Weak Contrast Limit
+(2001,0028)	Philips Imaging DD 002	Unique Smooth Gain
+(2001,0029)	Philips Imaging DD 002	Unique Level
+(2001,002a)	Philips Imaging DD 002	Unique Gain Up Single
+(2001,002b)	Philips Imaging DD 002	Unique Smh Limit One
+(2001,002c)	Philips Imaging DD 002	Unique Film Density Min
+(2001,002d)	Philips Imaging DD 002	Unique Film Density Max
+(2001,002e)	Philips Imaging DD 002	Unique Version
+(2001,002f)	Philips Imaging DD 002	Ranger Version
+(2001,0030)	Philips Imaging DD 002	Ranger Mode
+(2001,0031)	Philips Imaging DD 002	Ranger Field1
+(2001,0032)	Philips Imaging DD 002	Ranger Field2
+(2001,0033)	Philips Imaging DD 002	Ranger Percentile Key1
+(2001,0034)	Philips Imaging DD 002	Ranger Percentile Key2
+(2001,0035)	Philips Imaging DD 002	Ranger Dose1
+(2001,0036)	Philips Imaging DD 002	Ranger Dose2
+(2001,0037)	Philips Imaging DD 002	Ranger Manual Dose1
+(2001,0038)	Philips Imaging DD 002	Ranger Manual Dose2
+(2001,0039)	Philips Imaging DD 002	Unique Rox Shape
+(2001,003a)	Philips Imaging DD 002	Ranger Set Sequence
+(2001,003b)	Philips Imaging DD 002	Rox Sequence
+(2001,003c)	Philips Imaging DD 002	Xray Edge Enhancement Sequence
+(2001,003d)	Philips Imaging DD 002	Edr Lut Sequence
+(2001,003e)	Philips Imaging DD 002	Unique Dose Decades
+(2001,003f)	Philips Imaging DD 002	Unique Dose Unit
+(2001,0040)	Philips Imaging DD 002	Unique Density Unit
+(2001,0050)	Philips Imaging DD 002	Workflow Status
+(2001,0052)	Philips Imaging DD 002	Workflow Step Id
+(2001,0053)	Philips Imaging DD 002	Workflow Step Status
+(2001,0057)	Philips Imaging DD 002	Workflow Step Input Sequence
+(2001,0058)	Philips Imaging DD 002	Workflow Step Output Sequence
+(2001,005a)	Philips Imaging DD 002	Workflow Step Type
+(2001,005c)	Philips Imaging DD 002	Workflow Id
+(2001,005d)	Philips Imaging DD 002	Pixel Data Representation Rows
+(2001,005e)	Philips Imaging DD 002	Pixel Data Representation Columns
+(2001,005f)	Philips Imaging DD 002	Private Dicom Extension Sequence
+(2001,0063)	Philips Imaging DD 002	Isyntax Reference
+(2001,0064)	Philips Imaging DD 002	Workflow Step Job Params Sequence
+(2001,0065)	Philips Imaging DD 002	Preserve Aspect
+(2001,0066)	Philips Imaging DD 002	Interpolated
+(2001,0067)	Philips Imaging DD 002	Error Flag
+(2001,0068)	Philips Imaging DD 002	Error Message Id
+(2001,006b)	Philips Imaging DD 002	Suitable For
+(2001,0071)	Philips Imaging DD 002	Submit Mpps Job
+(2001,0072)	Philips Imaging DD 002	Displayed Area Bottom Right Hand Corner Fraction
+(2001,0073)	Philips Imaging DD 002	Displayed Area Top Left Hand Corner Fraction
+(2001,0074)	Philips Imaging DD 002	Interpolation Mode
+(2001,0075)	Philips Imaging DD 002	Graphic Annotation Id Reference
+(2001,0001)	Philips Imaging DD 097	View Geometry
+(2001,0002)	Philips Imaging DD 097	Frame Geometry Origin
+(2001,0003)	Philips Imaging DD 097	Frame Geometry Extent
+(2001,0004)	Philips Imaging DD 097	Frame Geometry Orientation
+(2001,0005)	Philips Imaging DD 097	Visual Sequence
+(2001,0006)	Philips Imaging DD 097	Cut Sequence
+(2001,0007)	Philips Imaging DD 097	Visual Opacity
+(2001,0008)	Philips Imaging DD 097	Opacity Map Sequence
+(2001,000a)	Philips Imaging DD 097	Light Sequence
+(2001,000b)	Philips Imaging DD 097	Color Map Sequence
+(2001,000d)	Philips Imaging DD 097	Visual Threshold
+(2001,000e)	Philips Imaging DD 097	Scene Sequence
+(2001,000f)	Philips Imaging DD 097	Frame Geometry Slab
+(2001,0012)	Philips Imaging DD 097	Gradient Map Sequence
+(2001,0017)	Philips Imaging DD 097	Display Rows
+(2001,0018)	Philips Imaging DD 097	Display Columns
+(2001,0019)	Philips Imaging DD 097	Frame Geometry Type
+(2001,001a)	Philips Imaging DD 097	Light Intensity
+(2001,001b)	Philips Imaging DD 097	Light Color
+(2001,001c)	Philips Imaging DD 097	Light Origin
+(2001,001d)	Philips Imaging DD 097	Light Direction
+(2001,001e)	Philips Imaging DD 097	Color Map Samples
+(2001,001f)	Philips Imaging DD 097	Opacity Map Samples
+(2001,0021)	Philips Imaging DD 097	Visual Color
+(2001,0022)	Philips Imaging DD 097	Illumination Ambient
+(2001,0023)	Philips Imaging DD 097	Illumination Diffuse
+(2001,0024)	Philips Imaging DD 097	Illumination Specular
+(2001,0025)	Philips Imaging DD 097	Illumination Specular Power
+(2001,0026)	Philips Imaging DD 097	Depth Cue Begin
+(2001,0027)	Philips Imaging DD 097	Depth Cue Lambda
+(2001,0028)	Philips Imaging DD 097	Depth Cue Function
+(2001,002a)	Philips Imaging DD 097	Cut Set Type
+(2001,002b)	Philips Imaging DD 097	Cut Plane Origin
+(2001,002c)	Philips Imaging DD 097	Cut Plane Normal
+(2001,002d)	Philips Imaging DD 097	Volume Definition Number
+(2001,002e)	Philips Imaging DD 097	Volume Mask Sequence
+(2001,002f)	Philips Imaging DD 097	Volume Mask Data
+(2001,0030)	Philips Imaging DD 097	Volume Mask Offset
+(2001,0031)	Philips Imaging DD 097	Volume Mask Size
+(2001,0032)	Philips Imaging DD 097	Volume Mask Alignment
+(2001,0036)	Philips Imaging DD 097	Light Anchor
+(2001,0037)	Philips Imaging DD 097	Cone Geometry Origin
+(2001,0038)	Philips Imaging DD 097	Cone Geometry Orientation
+(2001,0039)	Philips Imaging DD 097	Cone Geometry View Distance
+(2001,003a)	Philips Imaging DD 097	Cone Geometry Slab Extent
+(2001,003b)	Philips Imaging DD 097	Cone Geometry Field Of View
+(2001,003c)	Philips Imaging DD 097	Intensity Map Sequence
+(2001,003d)	Philips Imaging DD 097	Intensity Map Samples
+(2001,003e)	Philips Imaging DD 097	Mesh Sequence
+(2001,0040)	Philips Imaging DD 097	Mesh Color
+(2001,0041)	Philips Imaging DD 097	Mesh Draw Style
+(2001,0042)	Philips Imaging DD 097	Mesh Section Sequence
+(2001,0044)	Philips Imaging DD 097	Mesh Section Vertex Connectivity
+(2001,0045)	Philips Imaging DD 097	Mesh Section Vertex Size
+(2001,0046)	Philips Imaging DD 097	Mesh Section Vertex Format
+(2001,0047)	Philips Imaging DD 097	Mesh Section Vertex Data
+(2001,0049)	Philips Imaging DD 097	Referenced Volume Definition Sequence
+(2001,004a)	Philips Imaging DD 097	Mesh Section Index Data
+(2001,004b)	Philips Imaging DD 097	Mesh Section Index Size
+(2001,004c)	Philips Imaging DD 097	Shutter Interaction Type
+(2001,00a1)	Philips Imaging DD 097	Volume Type
+(2001,00a2)	Philips Imaging DD 097	Volume Origin
+(2001,00a3)	Philips Imaging DD 097	Volume Axis
+(2001,00a4)	Philips Imaging DD 097	Volume Pixel Spacing
+(2001,00a5)	Philips Imaging DD 097	Volume Slice Spacing
+(2001,00a6)	Philips Imaging DD 097	Volume Slices
+(2001,00a8)	Philips Imaging DD 097	Referenced Volume Definition Number
+(2001,00a9)	Philips Imaging DD 097	Linear Modality Gl Trafo Sequence
+(2001,00aa)	Philips Imaging DD 097	Volume Slice Offsets
+(2001,00ab)	Philips Imaging DD 097	Number Of Volume Definitions
+(2001,0000)	Philips Imaging DD 129	Presentation State Sequence
+(2001,0001)	Philips Imaging DD 129	Embedded Original Presentation State Sequence
+(2001,0002)	Philips Imaging DD 129	Planar Intersection Sequence
+(2001,0003)	Philips Imaging DD 129	Plane Separator Line Color
+(2001,0004)	Philips Imaging DD 129	Plane Sequence
+(2001,0005)	Philips Imaging DD 129	Plane Equation
+(2001,0006)	Philips Imaging DD 129	Plane Opacity
+(2001,0007)	Philips Imaging DD 129	Plane Enabled
+(2001,0008)	Philips Imaging DD 129	Plane Selected
+(2001,0009)	Philips Imaging DD 129	Plane Highlight Color
+(0025,0001)	Philips ST80i	ST80i Stress Study file data
+(0019,000C)	SIEMENS MR HEADER	B Value
+(0019,000D)	SIEMENS MR HEADER	Diffusion Directionality
+(0019,000E)	SIEMENS MR HEADER	Diffusion Gradient Direction
+(0019,0027)	SIEMENS MR HEADER	B Matrix
+(0043,0039)	GEMS_PARM_01	1stvalue is B Value
+(0043,006F)	GEMS_PARM_01	Scanner Table Entry + Gradient Coil Selected
+(0025,0007)	GEMS_SERS_01	Images in Series
+(7E01,0001)	HOLOGIC, Inc.	Codec Version
+(7E01,0002)	HOLOGIC, Inc.	Codec Content Type
+(7E01,0010)	HOLOGIC, Inc.	High Resolution Data Sequence
+(7E01,0011)	HOLOGIC, Inc.	Low Resolution Data Sequence
+(7E01,0012)	HOLOGIC, Inc.	Codec Content
+(0099,0001)	NQHeader	Version
+(0099,0002)	NQHeader	Analyzed Series UID
+(0099,0004)	NQHeader	Return Code
+(0099,0005)	NQHeader	Return Message
+(0099,0010)	NQHeader	MI
+(0099,0020)	NQHeader	Units
+(0099,0021)	NQHeader	ICV
+(0199,0001)	NQLeft	Left Cortical White Matter
+(0199,0002)	NQLeft	Left Cortical Gray Matter
+(0199,0003)	NQLeft	Left 3rd Ventricle
+(0199,0004)	NQLeft	Left 4th Ventricle
+(0199,0005)	NQLeft	Left 5th Ventricle
+(0199,0006)	NQLeft	Left Lateral Ventricle
+(0199,0007)	NQLeft	Left Inferior Lateral Ventricle
+(0199,0008)	NQLeft	Left Inferior CSF
+(0199,0009)	NQLeft	Left Cerebellar White Matter
+(0199,000a)	NQLeft	Left Cerebellar Gray Matter
+(0199,000b)	NQLeft	Left Hippocampus
+(0199,000c)	NQLeft	Left Amygdala
+(0199,000d)	NQLeft	Left Thalamus
+(0199,000e)	NQLeft	Left Caudate
+(0199,000f)	NQLeft	Left Putamen
+(0199,0010)	NQLeft	Left Pallidum
+(0199,0011)	NQLeft	Left Ventral Diencephalon
+(0199,0012)	NQLeft	Left Nucleus Accumbens
+(0199,0013)	NQLeft	Left Brain Stem
+(0199,0014)	NQLeft	Left Exterior CSF
+(0199,0015)	NQLeft	Left WM Hypo
+(0199,0016)	NQLeft	Left Other
+(0299,0001)	NQRight	Right Cortical White Matter
+(0299,0002)	NQRight	Right Cortical Gray Matter
+(0299,0003)	NQRight	Right 3rd Ventricle
+(0299,0004)	NQRight	Right 4th Ventricle
+(0299,0005)	NQRight	Right 5th Ventricle
+(0299,0006)	NQRight	Right Lateral Ventricle
+(0299,0007)	NQRight	Right Inferior Lateral Ventricle
+(0299,0008)	NQRight	Right Inferior CSF
+(0299,0009)	NQRight	Right Cerebellar White Matter
+(0299,000a)	NQRight	Right Cerebellar Gray Matter
+(0299,000b)	NQRight	Right Hippocampus
+(0299,000c)	NQRight	Right Amygdala
+(0299,000d)	NQRight	Right Thalamus
+(0299,000e)	NQRight	Right Caudate
+(0299,000f)	NQRight	Right Putamen
+(0299,0010)	NQRight	Right Pallidum
+(0299,0011)	NQRight	Right Ventral Diencephalon
+(0299,0012)	NQRight	Right Nucleus Accumbens
+(0299,0013)	NQRight	Right Brain Stem
+(0299,0014)	NQRight	Right Exterior CSF
+(0299,0015)	NQRight	Right WM Hypo
+(0299,0016)	NQRight	Right Other
+(2005,000D)	Philips MR Imaging DD 001	Scale Intercept
+(2005,000E)	Philips MR Imaging DD 001	Scale Slope
+(0119,0000)	SIEMENS Ultrasound SC2000	Acoustic Meta Information Version
+(0119,0001)	SIEMENS Ultrasound SC2000	Common Acoustic Meta Information
+(0119,0002)	SIEMENS Ultrasound SC2000	Multi Stream Sequence
+(0119,0003)	SIEMENS Ultrasound SC2000	Acoustic Data Sequence
+(0119,0004)	SIEMENS Ultrasound SC2000	Per Transaction Acoustic Control Information
+(0119,0005)	SIEMENS Ultrasound SC2000	Acoustic Data Offset
+(0119,0006)	SIEMENS Ultrasound SC2000	Acoustic Data Length
+(0119,0007)	SIEMENS Ultrasound SC2000	Footer Offset
+(0119,0008)	SIEMENS Ultrasound SC2000	Footer Length
+(0119,0009)	SIEMENS Ultrasound SC2000	Acoustic Stream Number
+(0119,0010)	SIEMENS Ultrasound SC2000	Acoustic Stream Type
+(0119,0011)	SIEMENS Ultrasound SC2000	Stage Timer Time
+(0119,0012)	SIEMENS Ultrasound SC2000	Stop Watch Time
+(0119,0013)	SIEMENS Ultrasound SC2000	Volume Rate
+(0119,0021)	SIEMENS Ultrasound SC2000	
+(0129,0000)	SIEMENS Ultrasound SC2000	MPR View Sequence
+(0129,0002)	SIEMENS Ultrasound SC2000	Bookmark UID
+(0129,0003)	SIEMENS Ultrasound SC2000	Plane Origin Vector
+(0129,0004)	SIEMENS Ultrasound SC2000	Row Vector
+(0129,0005)	SIEMENS Ultrasound SC2000	Column Vector
+(0129,0006)	SIEMENS Ultrasound SC2000	Visualization Sequence
+(0129,0007)	SIEMENS Ultrasound SC2000	Bookmark UID
+(0129,0008)	SIEMENS Ultrasound SC2000	Visualization Information
+(0129,0009)	SIEMENS Ultrasound SC2000	Application State Sequence
+(0129,0010)	SIEMENS Ultrasound SC2000	Application State Information
+(0129,0011)	SIEMENS Ultrasound SC2000	Referenced Bookmark Sequence
+(0129,0012)	SIEMENS Ultrasound SC2000	Referenced Bookmark UID
+(0129,0020)	SIEMENS Ultrasound SC2000	Cine Parameters Sequence
+(0129,0021)	SIEMENS Ultrasound SC2000	Cine Parameters Schema
+(0129,0022)	SIEMENS Ultrasound SC2000	Values of Cine Parameters
+(0129,0029)	SIEMENS Ultrasound SC2000	
+(0129,0030)	SIEMENS Ultrasound SC2000	Raw Data Object Type
+(0139,0001)	SIEMENS Ultrasound SC2000	Physio Capture ROI
+(0149,0001)	SIEMENS Ultrasound SC2000	Vector of BROI Points
+(0149,0002)	SIEMENS Ultrasound SC2000	Start/End Timestamps of Strip Stream
+(0149,0003)	SIEMENS Ultrasound SC2000	Timestamps of Visible R-waves
+(7FD1,0001)	SIEMENS Ultrasound SC2000	Acoustic Image and Footer Data
+(7FD1,0009)	SIEMENS Ultrasound SC2000	Volume Version ID
+(7FD1,0010)	SIEMENS Ultrasound SC2000	Volume Payload
+(7FD1,0011)	SIEMENS Ultrasound SC2000	After Payload
+(7FD1,0001)	SIEMENS SYNGO ULTRA-SOUND TOYON DATA STREAMING	Padding
+(7FD1,0009)	SIEMENS SYNGO ULTRA-SOUND TOYON DATA STREAMING	Version ID
+(7FD1,0010)	SIEMENS SYNGO ULTRA-SOUND TOYON DATA STREAMING	Volume Payload
+(7FD1,0011)	SIEMENS SYNGO ULTRA-SOUND TOYON DATA STREAMING	After Payload
