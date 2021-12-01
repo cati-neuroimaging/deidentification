@@ -17,7 +17,7 @@ from deidentification.archive import unpack_first
 from deidentification.config import load_config_profile
 
 
-class DeidentificationValueError(Exception):
+class DeidentificationError(Exception):
     def __init__(self, message):
         super().__init__(message)
 
@@ -70,14 +70,14 @@ def anonymize(dicom_in, dicom_out,
     config_profile : str, optional
     """
     if not os.path.exists(dicom_in):
-        raise DeidentificationValueError('The DICOM input does not exists.')
+        raise DeidentificationError('The DICOM input does not exists.')
     if not os.path.isfile(dicom_in) and not os.path.isdir(dicom_in):
-        raise DeidentificationValueError('The DICOM input file type is not handled by this tool.')
+        raise DeidentificationError('The DICOM input file type is not handled by this tool.')
     if not os.path.isfile(dicom_in) and os.path.isfile(dicom_out):
-        raise DeidentificationValueError('The DICOM out could not be a file if DICOM in is not a file.')
+        raise DeidentificationError('The DICOM out could not be a file if DICOM in is not a file.')
     if config_profile:
         if tags_to_keep:
-            raise DeidentificationValueError('Both tags_to_keep and config_profile have been specified.')
+            raise DeidentificationError('Both tags_to_keep and config_profile have been specified.')
         tags_to_keep = load_config_profile(config_profile)
 
     # Handle archives
@@ -88,7 +88,7 @@ def anonymize(dicom_in, dicom_out,
         try:
             unpack(dicom_in, wip_dicom_in)
         except Exception:
-            raise DeidentificationValueError('Unpacking compressed file failed.')
+            raise DeidentificationError('Unpacking compressed file failed.')
     else:
         wip_dicom_in = os.path.abspath(dicom_in)
     if is_dicom_out_archive:
@@ -116,7 +116,7 @@ def anonymize(dicom_in, dicom_out,
             pack(os.path.abspath(dicom_out),
                  glob(os.path.join(wip_dicom_out, '*')))
         except Exception:
-            raise DeidentificationValueError('Compress deidentification results failed.')
+            raise DeidentificationError('Compress deidentification results failed.')
         finally:
             shutil.rmtree(wip_dicom_out)
 
@@ -199,7 +199,7 @@ def check_folder_anonymize(dicom_folder,
     return True
 
 
-class AnonymizerError(Exception):
+class AnonymizerError(DeidentificationError):
     def __init__(self, message='', complement='', anonymous=False):
         self.message = message
         self.complement = complement
