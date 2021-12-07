@@ -96,7 +96,7 @@ python anon_example.py -in myInputFolder -out myOutputFolder -ID 0001XXXX
 ```python
 from deidentification import anonymizer
 
-dicom_input_path = '/path/to/dicom_input_file_or_foled'
+dicom_input_path = '/path/to/dicom_input_file_or_folder'
 dicom_output_path = '/path/to/dicom_output_file_or_folder'
 
 anonymizer.anonymize(
