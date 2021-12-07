@@ -18,14 +18,14 @@ from deidentification.config import load_config_profile
 
 
 class DeidentificationError(Exception):
-    def __init__(self, message):
-        super().__init__(message)
+    pass
 
 
 def anonymize_file(dicom_file_in, dicom_folder_out,
                    tags_to_keep=None,
                    forced_values=None,
-                   config_profile=None):
+                   config_profile=None,
+                   anonymous=False):
     """Configures the Anonymizer and runs it on a DICOM file
 
     Parameters
@@ -35,15 +35,19 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
     tags_to_keep : list, optional
     forced_values : dict, optional
     config_profile : str, optional
-
+    anonymous : bool, optional
     """
     if os.path.isfile(dicom_folder_out):
-        raise ValueError('The DICOM output has to be a folder.')
+        raise DeidentificationError('The DICOM output has to be a folder.')
     
     if config_profile:
         if tags_to_keep:
-            raise AttributeError('Both tags_to_keep and config_profile have been specified.')
-        tags_to_keep = load_config_profile(config_profile)
+            raise DeidentificationError('Both tags_to_keep and config_profile have been specified.')
+        
+        if anonymous:
+            tags_to_keep = load_config_anonymous(config_profile)
+        else:
+            tags_to_keep = load_config_profile(config_profile)
     
     if not os.path.exists(dicom_folder_out):
         os.makedirs(dicom_folder_out)
@@ -51,14 +55,27 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
                                   os.path.basename(dicom_file_in))
 
     anon = Anonymizer(dicom_file_in, dicom_file_out,
-                      tags_to_keep, forced_values)
+                      tags_to_keep, forced_values,
+                      anonymous=anonymous)
     anon.run_ano()
+
+
+def load_config_anonymous(config_profile):
+    load_error = ''
+    try:
+        tags_to_keep = load_config_profile(config_profile)
+    except (ValueError, AttributeError):
+        load_error = 'Error occurs during config profile load.'
+    if load_error:
+        raise DeidentificationError(load_error)
+    return tags_to_keep
 
 
 def anonymize(dicom_in, dicom_out,
               tags_to_keep=None,
               forced_values=None,
-              config_profile=None):
+              config_profile=None,
+              anonymous=False):
     """Configures the Anonymizer and runs it on DICOM files.
     
     Parameters
@@ -68,6 +85,7 @@ def anonymize(dicom_in, dicom_out,
     tags_to_keep : list, optional
     forced_values : dict, optional
     config_profile : str, optional
+    anonymous : bool, optional
     """
     if not os.path.exists(dicom_in):
         raise DeidentificationError('The DICOM input does not exists.')
@@ -99,7 +117,8 @@ def anonymize(dicom_in, dicom_out,
     # Launch deidentification
     if os.path.isfile(wip_dicom_in):
         anonymize_file(wip_dicom_in, wip_dicom_out,
-                       tags_to_keep, forced_values)
+                       tags_to_keep, forced_values,
+                       anonymous=anonymous)
 
     elif os.path.isdir(wip_dicom_in):
         for root, dirs, files in os.walk(wip_dicom_in):
@@ -107,7 +126,8 @@ def anonymize(dicom_in, dicom_out,
             for name in files:
                 current_file = os.path.join(root, name)
                 anonymize_file(current_file, folder_out,
-                               tags_to_keep, forced_values)
+                               tags_to_keep, forced_values,
+                               anonymous=anonymous)
                 
     if is_dicom_in_archive:
         shutil.rmtree(wip_dicom_in)
@@ -129,8 +149,7 @@ def check_anonymize_fast(dicom_in,
     """
         
     if not os.path.exists(dicom_in):
-        print("The DICOM input does not exist.")
-        return
+        raise DeidentificationError('The DICOM input does not exists.')
     
     if is_archive(dicom_in):
         dicom_tmp = mkdtemp()
@@ -141,14 +160,14 @@ def check_anonymize_fast(dicom_in,
         items_in_folder = glob.glob(os.path.join(dicom_in, '*'))
         wip_dicom_in = next(filter(os.path.isfile, items_in_folder), '')
     else:
-        raise AttributeError("The dicom_in type is not handled by this tool.")
+        raise DeidentificationError('File input type is not handled by this tool.')
         
     if os.path.isfile(wip_dicom_in):
         anon = Anonymizer(wip_dicom_in, '',
                           tags_to_keep, forced_values)
         anon.runCheck()
     else:
-        raise AttributeError("The dicom_in type is not handled by this tool.")
+        raise DeidentificationError('File input type is not handled by this tool.')
     
     return anon.result
 
@@ -161,8 +180,7 @@ def check_anonymize(dicom_in,
     Input can be DICOM file/folder or archive of DICOM files/folder
     """
     if not os.path.exists(dicom_in):
-        print("The DICOM input does not exist.")
-        return
+        raise DeidentificationError('The DICOM input does not exists.')
     
     if is_archive(dicom_in):
         wip_dicom_in = mkdtemp()
@@ -180,14 +198,14 @@ def check_anonymize(dicom_in,
         return check_folder_anonymize(wip_dicom_in, tags_to_keep, forced_values)
     
     else:
-        raise AttributeError("Input is not a data type handled.")
+        raise DeidentificationError('File input type is not handled by this tool.')
         
 
 def check_folder_anonymize(dicom_folder,
                            tags_to_keep=None,
                            forced_values=None):
     if not os.path.isdir(dicom_folder):
-        raise AttributeError('Dicom_folder input is not a folder path.')
+        raise DeidentificationError('DICOM folder input is not a folder path.')
     
     for root, dirs, files in os.walk(dicom_folder):
         for filename in files:
@@ -318,9 +336,9 @@ class Anonymizer():
             if (group, block) not in tag_lists.safe_private_attributes[private_creator_value]:
                 self.originalDict[data_element.tag] = data_element.value
                 del ds[data_element.tag]
-        #else:
-            #self.originalDict[data_element.tag] = data_element.value
-            #self.outputDict[data_element.tag] = data_element.value
+        # else:
+            # self.originalDict[data_element.tag] = data_element.value
+            # self.outputDict[data_element.tag] = data_element.value
                 
     def _find_in_conf_profile(self, group: int, element: int) -> str:
         """

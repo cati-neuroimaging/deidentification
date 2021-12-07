@@ -11,9 +11,15 @@ def tag_to_tuple(tag_str: str) -> tuple:
 
     tag_tuple = tag.split(',')
     if len(tag_tuple) != 2:
-        raise AttributeError("Input tag '{}' must contains 2 elements".format(tag_str))
+        raise ValueError("Input tag '{}' must contains 2 elements".format(tag_str))
     
-    tag_tuple = tuple(eval('0x' + t) for t in tag_tuple)
+    try:
+        tag_tuple = tuple(int(t, 16) for t in tag_tuple)
+    except ValueError:
+        raise ValueError("Input tag '{}' must contains hexadecimal values".format(tag_str))
+    for tag in tag_tuple:
+        if tag > 0xFFFF:
+            raise ValueError("Input tag '{}' must contains values between '0x0000' and '0xFFFF'".format(tag_str))
     return tag_tuple
 
 
