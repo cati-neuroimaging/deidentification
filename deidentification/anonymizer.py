@@ -115,22 +115,26 @@ def anonymize(dicom_in, dicom_out,
         wip_dicom_out = os.path.abspath(dicom_out)
 
     # Launch deidentification
-    if os.path.isfile(wip_dicom_in):
-        anonymize_file(wip_dicom_in, wip_dicom_out,
-                       tags_to_keep, forced_values,
-                       anonymous=anonymous)
+    try:
+        if os.path.isfile(wip_dicom_in):
+            anonymize_file(wip_dicom_in, wip_dicom_out,
+                           tags_to_keep, forced_values,
+                           anonymous=anonymous)
 
-    elif os.path.isdir(wip_dicom_in):
-        for root, dirs, files in os.walk(wip_dicom_in):
-            folder_out = root.replace(wip_dicom_in, wip_dicom_out)
-            for name in files:
-                current_file = os.path.join(root, name)
-                anonymize_file(current_file, folder_out,
-                               tags_to_keep, forced_values,
-                               anonymous=anonymous)
-                
-    if is_dicom_in_archive:
-        shutil.rmtree(wip_dicom_in)
+        elif os.path.isdir(wip_dicom_in):
+            for root, dirs, files in os.walk(wip_dicom_in):
+                folder_out = root.replace(wip_dicom_in, wip_dicom_out)
+                for name in files:
+                    current_file = os.path.join(root, name)
+                    anonymize_file(current_file, folder_out,
+                                   tags_to_keep, forced_values,
+                                   anonymous=anonymous)
+    finally:
+        if is_dicom_in_archive and os.path.exists(wip_dicom_in):
+            shutil.rmtree(wip_dicom_in)
+        if is_dicom_out_archive and os.path.exists(wip_dicom_out):
+            shutil.rmtree(wip_dicom_out)
+    
     if is_dicom_out_archive:
         try:
             pack(os.path.abspath(dicom_out),
