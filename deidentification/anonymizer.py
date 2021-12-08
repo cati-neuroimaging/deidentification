@@ -87,6 +87,7 @@ def anonymize(dicom_in, dicom_out,
     forced_values : dict, optional
     config_profile : str, optional
     anonymous : bool, optional
+    tempdir_prefix : str, optional
     """
     if not os.path.exists(dicom_in):
         raise DeidentificationError('The DICOM input does not exists.')
