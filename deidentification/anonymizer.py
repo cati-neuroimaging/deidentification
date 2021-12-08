@@ -75,7 +75,8 @@ def anonymize(dicom_in, dicom_out,
               tags_to_keep=None,
               forced_values=None,
               config_profile=None,
-              anonymous=False):
+              anonymous=False,
+              tempdir_prefix=None):
     """Configures the Anonymizer and runs it on DICOM files.
     
     Parameters
@@ -102,7 +103,7 @@ def anonymize(dicom_in, dicom_out,
     is_dicom_in_archive = is_archive(dicom_in)
     is_dicom_out_archive = is_archive(dicom_out)
     if is_dicom_in_archive:
-        wip_dicom_in = mkdtemp()
+        wip_dicom_in = mkdtemp(prefix=tempdir_prefix)
         try:
             unpack(dicom_in, wip_dicom_in)
         except Exception:
@@ -110,7 +111,7 @@ def anonymize(dicom_in, dicom_out,
     else:
         wip_dicom_in = os.path.abspath(dicom_in)
     if is_dicom_out_archive:
-        wip_dicom_out = mkdtemp()
+        wip_dicom_out = mkdtemp(prefix=tempdir_prefix)
     else:
         wip_dicom_out = os.path.abspath(dicom_out)
 
