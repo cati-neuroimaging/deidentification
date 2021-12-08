@@ -155,6 +155,7 @@ def check_anonymize_fast(dicom_in,
     if not os.path.exists(dicom_in):
         raise DeidentificationError('The DICOM input does not exists.')
     
+    dicom_tmp = ''
     if is_archive(dicom_in):
         dicom_tmp = mkdtemp()
         wip_dicom_in = unpack_first(dicom_in, dicom_tmp)
@@ -167,9 +168,13 @@ def check_anonymize_fast(dicom_in,
         raise DeidentificationError('File input type is not handled by this tool.')
         
     if os.path.isfile(wip_dicom_in):
-        anon = Anonymizer(wip_dicom_in, '',
-                          tags_to_keep, forced_values)
-        anon.runCheck()
+        try:
+            anon = Anonymizer(wip_dicom_in, '',
+                              tags_to_keep, forced_values)
+            anon.runCheck()
+        finally:
+            if dicom_tmp and os.path.exists(dicom_tmp):
+                shutil.rmtree(dicom_tmp)
     else:
         raise DeidentificationError('File input type is not handled by this tool.')
     
@@ -193,10 +198,14 @@ def check_anonymize(dicom_in,
         wip_dicom_in = dicom_in
         
     if os.path.isfile(wip_dicom_in):
-        anon = Anonymizer(wip_dicom_in, '',
-                          tags_to_keep, forced_values)
-        anon.runCheck()
-        return anon.result
+        try:
+            anon = Anonymizer(wip_dicom_in, '',
+                              tags_to_keep, forced_values)
+            anon.runCheck()
+            return anon.result
+        finally:
+            if is_archive(dicom_in) and os.path.exists(wip_dicom_in):
+                shutil.rmtree(wip_dicom_in)
         
     elif os.path.isdir(wip_dicom_in):
         return check_folder_anonymize(wip_dicom_in, tags_to_keep, forced_values)
