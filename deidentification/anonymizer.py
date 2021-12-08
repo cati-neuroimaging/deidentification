@@ -129,11 +129,13 @@ def anonymize(dicom_in, dicom_out,
                     anonymize_file(current_file, folder_out,
                                    tags_to_keep, forced_values,
                                    anonymous=anonymous)
+    except Exception as e:
+        if is_dicom_out_archive and os.path.exists(wip_dicom_out):
+            shutil.rmtree(wip_dicom_out)
+        raise e
     finally:
         if is_dicom_in_archive and os.path.exists(wip_dicom_in):
             shutil.rmtree(wip_dicom_in)
-        if is_dicom_out_archive and os.path.exists(wip_dicom_out):
-            shutil.rmtree(wip_dicom_out)
     
     if is_dicom_out_archive:
         try:
