@@ -98,7 +98,11 @@ def anonymize(dicom_in, dicom_out,
     if config_profile:
         if tags_to_keep:
             raise DeidentificationError('Both tags_to_keep and config_profile have been specified.')
-        tags_to_keep = load_config_profile(config_profile)
+
+        if anonymous:
+            tags_to_keep = load_config_anonymous(config_profile)
+        else:
+            tags_to_keep = load_config_profile(config_profile)
 
     # Handle archives
     is_dicom_in_archive = is_archive(dicom_in)
@@ -192,16 +196,27 @@ def check_anonymize_fast(dicom_in,
 
 def check_anonymize(dicom_in,
                     tags_to_keep=None,
-                    forced_values=None):
+                    forced_values=None,
+                    config_profile=None,
+                    anonymous=False,
+                    tempdir_prefix=None):
     """
     Check if dicom_in is an anonymized DICOM.
     Input can be DICOM file/folder or archive of DICOM files/folder
     """
     if not os.path.exists(dicom_in):
         raise DeidentificationError('The DICOM input does not exists.')
+    if config_profile:
+        if tags_to_keep:
+            raise DeidentificationError('Both tags_to_keep and config_profile have been specified.')
+
+        if anonymous:
+            tags_to_keep = load_config_anonymous(config_profile)
+        else:
+            tags_to_keep = load_config_profile(config_profile)
     
     if is_archive(dicom_in):
-        wip_dicom_in = mkdtemp()
+        wip_dicom_in = mkdtemp(prefix=tempdir_prefix)
         try:
             unpack(dicom_in, wip_dicom_in)
         except Exception:
@@ -213,7 +228,8 @@ def check_anonymize(dicom_in,
     if os.path.isfile(wip_dicom_in):
         try:
             anon = Anonymizer(wip_dicom_in, '',
-                              tags_to_keep, forced_values)
+                              tags_to_keep, forced_values,
+                              anonymous=anonymous)
             anon.runCheck()
             return anon.result
         finally:
@@ -229,9 +245,34 @@ def check_anonymize(dicom_in,
 
 def check_folder_anonymize(dicom_folder,
                            tags_to_keep=None,
-                           forced_values=None):
+                           forced_values=None,
+                           config_profile=None,
+                           anonymous=False):
+    """Check deidentification for all files in the input folder.
+    All the files in the folder have to be DICOM files.
+
+    Parameters
+    ----------
+    dicom_folder : str
+    tags_to_keep : list, optional
+    forced_values : dict, optional
+    config_profile : str, optional
+    anonymous : bool, optional
+
+    Returns
+    -------
+    bool
+    """
     if not os.path.isdir(dicom_folder):
         raise DeidentificationError('DICOM folder input is not a folder path.')
+    if config_profile:
+        if tags_to_keep:
+            raise DeidentificationError('Both tags_to_keep and config_profile have been specified.')
+
+        if anonymous:
+            tags_to_keep = load_config_anonymous(config_profile)
+        else:
+            tags_to_keep = load_config_profile(config_profile)
     
     for root, dirs, files in os.walk(dicom_folder):
         for filename in files:
