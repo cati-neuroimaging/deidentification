@@ -156,17 +156,28 @@ def anonymize(dicom_in, dicom_out,
 
 def check_anonymize_fast(dicom_in,
                          tags_to_keep=None,
-                         forced_values=None):
+                         forced_values=None,
+                         config_profile=None,
+                         anonymous=False,
+                         tempdir_prefix=None):
     """
     Configures the Anonymizer and runs it on one DICOM file to check if anonymization already done.
     """
         
     if not os.path.exists(dicom_in):
         raise DeidentificationError('The DICOM input does not exists.')
+    if config_profile:
+        if tags_to_keep:
+            raise DeidentificationError('Both tags_to_keep and config_profile have been specified.')
+
+        if anonymous:
+            tags_to_keep = load_config_anonymous(config_profile)
+        else:
+            tags_to_keep = load_config_profile(config_profile)
     
     dicom_tmp = ''
     if is_archive(dicom_in):
-        dicom_tmp = mkdtemp()
+        dicom_tmp = mkdtemp(prefix=tempdir_prefix)
         try:
             wip_dicom_in = unpack_first(dicom_in, dicom_tmp)
         except Exception:
@@ -183,15 +194,16 @@ def check_anonymize_fast(dicom_in,
     if os.path.isfile(wip_dicom_in):
         try:
             anon = Anonymizer(wip_dicom_in, '',
-                              tags_to_keep, forced_values)
+                              tags_to_keep, forced_values,
+                              anonymous=anonymous)
             anon.runCheck()
+            return anon.result
         finally:
             if dicom_tmp and os.path.exists(dicom_tmp):
                 shutil.rmtree(dicom_tmp)
     else:
         raise DeidentificationError('File input type is not handled by this tool.')
     
-    return anon.result
 
 
 def check_anonymize(dicom_in,
