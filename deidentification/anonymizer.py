@@ -108,6 +108,7 @@ def anonymize(dicom_in, dicom_out,
         try:
             unpack(dicom_in, wip_dicom_in)
         except Exception:
+            shutil.rmtree(wip_dicom_in)
             raise DeidentificationError('Unpacking compressed file failed.')
     else:
         wip_dicom_in = os.path.abspath(dicom_in)
@@ -162,7 +163,11 @@ def check_anonymize_fast(dicom_in,
     dicom_tmp = ''
     if is_archive(dicom_in):
         dicom_tmp = mkdtemp()
-        wip_dicom_in = unpack_first(dicom_in, dicom_tmp)
+        try:
+            wip_dicom_in = unpack_first(dicom_in, dicom_tmp)
+        except Exception:
+            shutil.rmtree(dicom_tmp)
+            raise DeidentificationError('Unpacking compressed file failed.')
     elif os.path.isfile(dicom_in):
         wip_dicom_in = dicom_in
     elif os.path.isdir(dicom_in):
@@ -197,7 +202,11 @@ def check_anonymize(dicom_in,
     
     if is_archive(dicom_in):
         wip_dicom_in = mkdtemp()
-        unpack(dicom_in, wip_dicom_in)
+        try:
+            unpack(dicom_in, wip_dicom_in)
+        except Exception:
+            shutil.rmtree(wip_dicom_in)
+            raise DeidentificationError('Unpacking compressed file failed.')
     else:
         wip_dicom_in = dicom_in
         
