@@ -53,6 +53,9 @@ def pack(output_filename, sources):
     """
     Packs the source_dir directory in the output_filename archive.
     """
+    dirname = os.path.dirname(output_filename)
+    if not os.path.exists(dirname):
+        os.makedirs(dirname)
     ext = os.path.splitext(output_filename)[1][1:]
     if ext == 'zip':
         pack_zip(output_filename, sources)
