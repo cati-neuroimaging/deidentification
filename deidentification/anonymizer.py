@@ -317,7 +317,7 @@ class Anonymizer():
 
     def __init__(self, dicom_filein, dicom_fileout,
                  tags_to_keep=None, forced_values=None,
-                 anonymous=False):
+                 anonymous=False, config_profile=None):
         """
         dicom_filein: the DICOM file to anonymize
         dicom_fileout: the file to write the output of the anonymization
@@ -330,6 +330,7 @@ class Anonymizer():
         self._tags_to_keep = tags_to_keep
         self._forced_values = forced_values
         self.anonymous = anonymous
+        self.config_profile = config_profile
 
         self.originalDict = {}
         self.outputDict = {}
@@ -345,11 +346,14 @@ class Anonymizer():
             self._dataset.walk(self._anonymize_check)
         
         # Patient Identity Removed
-        ds.add_new((0x0012, 0x0062), 'CS', 'YES')
+        self._dataset.add_new((0x0012, 0x0062), 'CS', 'YES')
         # De-identification Method
-        ds.add_new((0x0012, 0x0063), 'LO', f'CATI DEIDENTIFICATION - {deid.__version__}')
+        method = f'CATI DEIDENTIFICATION - {deid.__version__}'
+        if self.config_profile:
+            method += f' - {self.config_profile}'
+        self._dataset.add_new((0x0012, 0x0063), 'LO', method)
 
-        pydicom.write_file(self._dicom_fileout, ds)
+        pydicom.write_file(self._dicom_fileout, self._dataset)
         return 1
     
     def runCheck(self):
