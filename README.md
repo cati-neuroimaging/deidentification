@@ -23,27 +23,6 @@ According to DICOM standard public tags can be kept, except a list of tags that 
 
 [DICOM attribute confidentiality Profiles](http://dicom.nema.org/medical/dicom/current/output/html/part15.html#chapter_E)
 
-Tool to remove metadata allowing to identify a subject from DICOM images used in neuroimaging research. Can anonymize dicom files or archives of dicoms.
-Deidentification is based on DICOM Standard deinfinition, based on Supplement 142. This Supplement has evolved among time, and this tool aims to use last version of this standard.
-
-According to this standard :
-
-- Public Tags are allowed except a list of identifying Tags
-- Private Tags are removed except a list of safe Tags containing data about acquisition
-
-This tool can be personnalized with deidentification profiles to force keeping some tags that could be removed by DICOM standard.
-
-## Dependencies
-
-- Python >= 3.6
-- Pydicom >= 1.4.2
-
-## Deidentification standard
-
-According to DICOM standard public tags can be kept, except a list of tags that may contains indentifying data. Those tags are defined in _Confidentiality profile`
-
-[DICOM attribute confidentiality Profiles](http://dicom.nema.org/medical/dicom/current/output/html/part15.html#chapter_E)
-
 - X means the attribute must be removed
 - U means the attribute must be replaced with a cleaned but internally consistent UUID
 - D means replace with a non-zero length dummy value
