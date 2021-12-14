@@ -1,0 +1,42 @@
+Tags	Name
+(0018,1060)	Trigger Time
+(0019,100C)	B Value
+(0019,100A)	Number of slices
+(0019,101E)	Display field of view
+(0019,105A)	Acquisition duration
+(0019,107E)	Number of echoes
+(0019,109F)	Transmitting Coil Type
+(0019,10BB)	User data 20
+(0019,10BC)	User data 21
+(0019,10BD)	User data 22
+(0021,105A)	Diffusion direction
+(0021,105E)	RTIA timer
+(0025,1007)	Images in Series (Number of slices)
+(0025,101B)	Protocol Data Block (compressed)
+(0027,1060)	Image dimension - X (Reconstruction matrix)
+(0043,102A)	User defined data
+(0043,102C)	Effective echo spacing
+(0043,102F)	Image Type (real,imaginary,phase,magnitude)
+(0043,1039)	Slop_int_6... slopt_int_9 (B value)
+(0051,100A)	Acquistion duration
+(0051,100B)	Reconstruction matrix
+(0051,100C)	Field of view
+(0051,100E)	Acquisition orientation
+(0051,100F)	Coil
+(0051,1011)	Parallel acquisition
+(0051,1016)	"fourre tout" p2 M/NORM/DIS3D
+(2001,1003)	Diffusion B-Factor
+(2001,100B)	Slice orientation (Acquisition orientation)
+(2001,1013)	EPI Factor
+(2001,1014)	Number of echoes
+(2001,1018)	Number of slices MR
+(2001,1020)	Scanning Technique Description MR
+(2001,101B)	Prepulse Delay
+(2001,1081)	Number of dynamic scans (Time points)
+(2005,101D)	Unknown (Reconstruction matrix)
+(2005,1074)	Unknown
+(2005,1075)	Unknown
+(2005,1076)	Unknown
+(2005,10A1)	Syncra Scan type (correction B1)
+(2005,10A9)	Unknown (Correction distorsions)
+(2005,1013)	Unknown
