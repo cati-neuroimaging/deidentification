@@ -1,125 +1,111 @@
 # deidentification
-Tool to remove metadata allowing to identify a subject from DICOM images used in neuroimaging research
 
-**Anonymization script**
+Tool to remove metadata allowing to identify a subject from DICOM images used in neuroimaging research. Can anonymize dicom files or archives of dicoms.
+Deidentification is based on DICOM Standard deinfinition, based on Supplement 142. This Supplement has evolved among time, and this tool aims to use last version of this standard.
 
-Le script d'anonymisation est composé de 6 fichiers.
+According to this standard :
 
-- aggregator.py :  lecture des dicom
-- ano_function.py : fonction principale pour lancer le script pour les ARCs
-- anon_example.py : fonction principale pour lancer le script
-- anonymizer.py : parcours des dicom et anonymisation 
-- archive.py : gere les archives et compressions de dossiers/fichiers pour donner n’importe quel format en entrée
-- tag_lists.py : procédure d’anonymisation construite à partir de l’annexe E de la partie 15 du standard dicom
+- Public Tags are allowed except a list of identifying Tags
+- Private Tags are removed except a list of safe Tags containing data about acquisition
 
+This tool can be personnalized with deidentification profiles to force keeping some tags that could be removed by DICOM standard.
 
-**prérequis :**
-*Python*
-*Pydicom*
+## Dependencies
 
+- Python >= 3.6
+- Pydicom >= 1.4.2
 
+## Deidentification standard
 
-**Norme d’anonymisation :**
+According to DICOM standard public tags can be kept, except a list of tags that may contains indentifying data. Those tags are defined in _Confidentiality profile`
 
-http://dicom.nema.org/medical/dicom/current/output/html/part15.html#chapter_E
+[DICOM attribute confidentiality Profiles](http://dicom.nema.org/medical/dicom/current/output/html/part15.html#chapter_E)
 
- - X means the attribute must be removed
- - U means the attribute must be replaced with a cleaned but internally consistent UUID
- - D means replace with a non-zero length dummy value
- - Z means replace with a zero or non-zero length dummy value
- - C means the attribute can be kept if it is cleaned
+- X means the attribute must be removed
+- U means the attribute must be replaced with a cleaned but internally consistent UUID
+- D means replace with a non-zero length dummy value
+- Z means replace with a zero or non-zero length dummy value
+- C means the attribute can be kept if it is cleaned
 
+| Tag | Action| Description |
+| :---: | :---: | :---: |
+| (0x0008,0x2111) | X | Derivation Description |
+| (0x0008,0x2112) | X/Z/U* | Source Image Sequence |
+| (0x0008,0x3010) | U | Irradiation Event UID |
+| (0x0008,0x4000) | X | Identifying Comments |
+| (0x0010,0x0010) | Z | Patient's Name |
+| (0x0010,0x0020) | Z | Patient ID |
+| (0x0010,0x0021) | X | Issuer of Patient ID |
+| (0x0010,0x0030) | Z | Patient's Birth Date |
+| (0x0010,0x0032) | X | Patient's Birth Time |
+| ... | ... | ... |
+
+In the other hand, private tags have to be deleted excepting a list of safe private tags that may only contains data acquisition information without identifying data.
+
+| Data Element | Private Creator | Meaning |
+| :---: | :---: | :--- |
+| (0x2001,0x0003)| Philips Imaging DD 001 | MR Image Diffusion B-Factor |
+| (0x2001,0x0004)| Philips Imaging DD 001 | MR Image Diffusion Direction |
+| (0x2001,0x0005)| Philips Imaging DD 001 | Graphic Annotation Parent ID |
+| (0x0019,0x000C)| SIEMENS MR HEADER | B Value |
+| (0x0019,0x000D)| SIEMENS MR HEADER | Diffusion Directionality |
+| (0x0019,0x000E)| SIEMENS MR HEADER | Diffusion Gradient Direction |
+| (0x0019,0x0027)| SIEMENS MR HEADER | B Matrix |
+| (0x0043,0x0039)| GEMS_PARM_01 | 1stvalue is B Value |
+| ... | ... | ... |
+
+## Deidentification profile
+
+It is possible to personnalize deidentification tool using deidentification profiles. A profile is defined by a _.tsv_ file in the folder _deidentification/config/profiles/._ This file references all the DICOM tags to keep during deidentification, even if this tag have to be deleted/modified according to DICOM deidentification standard.
+
+An exemple of deidentification profile :
+
+| Tag | Name |
+| :---: | :---: |
+| (0018,1060) | Trigger Time |
+| (0019,100C) | B Value |
+| (0019,100A) | Number of slices |
+| (0019,101E) | Display field of view |
+| ... | ... |
+
+Two deidentification profiles are already defined in deidentification module.
+
+- `cati_collector` keeps some private tags about acquisition parameters and tags to help to identify acquisition. This profile is used internally by the CATI to deidentify data incoming from hospitals. **It is not a profile recommended to use in other case of deidentification** as identifying data could stay.
+- `data_sharing` keeps some private tafs about acquisition parameters. Those tags came from the CATI experience about neuroimaging data, and are supposed to contains only non indentifying acquisition data.
+
+## How to use it?
+
+### As a script
+
+Launch anon_example.py function to anonymize a dicom file.
+
+Whitout subject id (set as "Unknown" by default):
+
+```sh
+python anon_example.py -in myInputFolder -out myOutputFolder
 ```
-annex_e = {
-    (0x0008, 0x0050): ['N', 'Y', 'Z', '', '', '', '', '', '', '', '', ''],  # Accession Number
-    (0x0018, 0x4000): ['Y', 'N', 'X', '', '', '', '', '', '', 'C', '', ''],  # Acquisition Comments
-    (0x0040, 0x0555): ['N', 'Y', 'X', '', '', '', '', '', '', '', 'C', ''],  # Acquisition Context Sequence
-    (0x0008, 0x0022): ['N', 'Y', 'X/Z', '', '', '', '', 'K', 'C', '', '', ''],  # Acquisition Date
-    (0x0008, 0x002A): ['N', 'Y', 'X/D', '', '', '', '', 'K', 'C', '', '', ''],  # Acquisition DateTime
-    (0x0018, 0x1400): ['N', 'Y', 'X/D', '', '', '', '', '', '', 'C', '', ''],  # Acquisition Device Processing Description
-    (0x0018, 0x9424): ['N', 'Y', 'X', '', '', '', '', '', '', 'C', '', ''],  # Acquisition Protocol Description
-    (0x0008, 0x0032): ['N', 'Y', 'X/Z', '', '', '', '', 'K', 'C', '', '', ''],  # Acquisition Time
-    (0x0040, 0x4035): ['N', 'N', 'X', '', '', '', '', '', '', '', '', ''],  # Actual Human Performers Sequence
-    (0x0010, 0x21B0): ['N', 'Y', 'X', '', '', '', '', '', '', 'C', '', ''],  # Additional Patient's History
-    (0x0038, 0x0010): ['N', 'Y', 'X', '', '', '', '', '', '', '', '', ''],  # Admission ID
-    (0x0038, 0x0020): ['N', 'N', 'X', '', '', '', '', 'K', 'C', '', '', ''],  # Admitting Date
-    (0x0008, 0x1084): ['N', 'Y', 'X', '', '', '', '', '', '', 'C', '', ''],  # Admitting Diagnoses Code Sequence
-    (0x0008, 0x1080): ['N', 'Y', 'X', '', '', '', '', '', '', 'C', '', ''],  # Admitting Diagnoses Description
-    (0x0038, 0x0021): ['N', 'N', 'X', '', '', '', '', 'K', 'C', '', '', ''],  # Admitting Time
 
-[....]
+With a subject id:
 
-}
+```sh
+python anon_example.py -in myInputFolder -out myOutputFolder -ID 0001XXXX
 ```
 
+### Using python module
 
-**Fichier de config**
-Tag à garder pour le CATI :
+```python
+from deidentification import anonymizer
 
-```
-tags_to_keep = [
-    (0x0008, 0x0020), (0x0008, 0x0031), (0x0008, 0x0032), (0x0008, 0x0033),
-    (0x0008, 0x103E), (0x0010, 0x0010), (0x0019, 0x100A), (0x0019, 0x100C),
-    (0x0019, 0x101E), (0x0019, 0x105A), (0x0019, 0x107E), (0x0019, 0x109F),
-    (0x0021, 0x105A), (0x0025, 0x1007), (0x0027, 0x1060), (0x0043, 0x102C),
-    (0x0043, 0x102F), (0x0043, 0x1039), (0x0051, 0x100A), (0x0051, 0x100B),
-    (0x0051, 0x100C), (0x0051, 0x100E), (0x0051, 0x100F), (0x0051, 0x1011),
-    (0x0051, 0x1016), (0x2001, 0x1003), (0x2001, 0x100B), (0x2001, 0x1013),
-    (0x2001, 0x1014), (0x2001, 0x1018), (0x2001, 0x101B), (0x2001, 0x1081),
-    (0x2005, 0x101D), (0x2005, 0x1074), (0x2005, 0x1075), (0x2005, 0x1076),
-    (0x2005, 0x10A1), (0x2005, 0x10A9)
-]
+dicom_input_path = '/path/to/dicom_input_file_or_folder'
+dicom_output_path = '/path/to/dicom_output_file_or_folder'
+
+anonymizer.anonymize(
+    dicom_input_path,
+    dicom_output_path,
+)
 ```
 
+## Improvements
 
-Prévoir le cas de la version XA11
-Que faire du CSA header ?
-
-**Méthode Normale**
-
-
-Lancer la fonction anon_example.py
-
-Exemple:
-
-Sans choisir d’identifiant sujet (il sera mis à “Unknown” par défaut) :
-``python anon_example.py -in myInputFolder -out myOutputFolder``
-
-
-
-Pour forcer l’identifiant sujet :
-``python anon_example.py -in myInputFolder -out myOutputFolder -ID 0001XXXX``
-
-
-
-
-**Méthode ARC**
-
-*Pour lancer le scirpt en singlesubject:*
-
-lancer un python / ipython / spyder,...
-Ouvrir en parallèle le fichier ano_function.py
-
-Remplir les champs:
-tag to keep
-forced_values
-
-lancer la fonction ‘run_ano_function’ avec comme parametres l’identifiant sujet, le chemin dicom d’entrée et le chemin dicom de sortie. Le dicom en entrée peut etre zippé ou non. Si le chemin du dicom en sortie est le même que je le chemin du dicom en entrée, celui-ci sera écrasé.
-
-*Pour lancer le scirpt en multisubjects:*
-
-lancer un python / ipython / spyder,...
-Ouvrir en parallèle le fichier ano_function.py
-
-Remplir les champs:
-tag to keep
-forced_values
-
-lancer la fonction run_ano_function_MultiSubjects avec comme parametres une liste. Cette liste condiendra des sous listes de 3 éléments:  l’identifiant sujet, le chemin dicom d’entrée et le chemin dicom de sortie. Le dicom en entrée peut etre zippé ou non. Si le chemin du dicom en sortie est le même que je le chemin du dicom en entrée, celui-ci sera écrasé.
-
-Si besoin il est possible de créer la liste a donner en entrée à l’aide de la fonction fileToList.
-fileToList prend en entrée un fichier texte avec sur chaque ligne l’identifiant sujet, le chemin dicom d’entrée et le chemin dicom de sortie, séparés par un ‘;’.
-fileToList retourne la liste
-
-
-
+- Take into account XA11 version
+- What to do with CSA header ?
