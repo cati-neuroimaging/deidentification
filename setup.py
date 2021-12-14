@@ -15,6 +15,6 @@ setup(
     packages=modules,
     install_requires=['pydicom'],
     package_data={
-        '': ['*.tsv'],
+        '': ['config/*.tsv', 'config/profiles/*.tsv'],
     },
 )
