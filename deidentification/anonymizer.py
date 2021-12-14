@@ -12,14 +12,10 @@ from tempfile import mkdtemp
 import pydicom
 
 import deidentification as deid
-from deidentification import tag_lists
+from deidentification import tag_lists, DeidentificationError
 from deidentification.archive import is_archive, pack, unpack
 from deidentification.archive import unpack_first
 from deidentification.config import load_config_profile
-
-
-class DeidentificationError(Exception):
-    pass
 
 
 def anonymize_file(dicom_file_in, dicom_folder_out,

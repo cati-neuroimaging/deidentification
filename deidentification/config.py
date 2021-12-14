@@ -1,11 +1,8 @@
 import csv
 import os
 
-from deidentification import CONFIG_FOLDER
+from deidentification import CONFIG_FOLDER, DeidentificationError
 
-
-class DeidentificationError(Exception):
-    pass
 
 def tag_to_tuple(tag_str: str) -> tuple:
     tag = tag_str
