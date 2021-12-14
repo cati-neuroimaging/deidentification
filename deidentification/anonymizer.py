@@ -11,14 +11,11 @@ from tempfile import mkdtemp
 
 import pydicom
 
-from deidentification import tag_lists
+import deidentification as deid
+from deidentification import tag_lists, DeidentificationError
 from deidentification.archive import is_archive, pack, unpack
 from deidentification.archive import unpack_first
 from deidentification.config import load_config_profile
-
-
-class DeidentificationError(Exception):
-    pass
 
 
 def anonymize_file(dicom_file_in, dicom_folder_out,
@@ -41,13 +38,11 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
         raise DeidentificationError('The DICOM output has to be a folder.')
     
     if config_profile:
-        if tags_to_keep:
+        config_tags = load_config_profile(config_profile, anonymous)
+        if tags_to_keep and set(config_tags) != set(tags_to_keep):
             raise DeidentificationError('Both tags_to_keep and config_profile have been specified.')
         
-        if anonymous:
-            tags_to_keep = load_config_anonymous(config_profile)
-        else:
-            tags_to_keep = load_config_profile(config_profile)
+        tags_to_keep = load_config_profile(config_profile, anonymous)
     
     if not os.path.exists(dicom_folder_out):
         os.makedirs(dicom_folder_out)
@@ -56,19 +51,9 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
 
     anon = Anonymizer(dicom_file_in, dicom_file_out,
                       tags_to_keep, forced_values,
-                      anonymous=anonymous)
+                      anonymous=anonymous,
+                      config_profile=config_profile)
     anon.run_ano()
-
-
-def load_config_anonymous(config_profile):
-    load_error = ''
-    try:
-        tags_to_keep = load_config_profile(config_profile)
-    except (ValueError, AttributeError):
-        load_error = 'Error occurs during config profile load.'
-    if load_error:
-        raise DeidentificationError(load_error)
-    return tags_to_keep
 
 
 def anonymize(dicom_in, dicom_out,
@@ -82,7 +67,9 @@ def anonymize(dicom_in, dicom_out,
     Parameters
     ----------
     dicom_in : str
+        Path of DICOM to deidentify. Can be archive, folder or file.
     dicom_out : str
+        Path where to save deidentified DICOM. Can be archive or folder.
     tags_to_keep : list, optional
     forced_values : dict, optional
     config_profile : str, optional
@@ -99,10 +86,7 @@ def anonymize(dicom_in, dicom_out,
         if tags_to_keep:
             raise DeidentificationError('Both tags_to_keep and config_profile have been specified.')
 
-        if anonymous:
-            tags_to_keep = load_config_anonymous(config_profile)
-        else:
-            tags_to_keep = load_config_profile(config_profile)
+        tags_to_keep = load_config_profile(config_profile, anonymous)
 
     # Handle archives
     is_dicom_in_archive = is_archive(dicom_in)
@@ -126,7 +110,8 @@ def anonymize(dicom_in, dicom_out,
         if os.path.isfile(wip_dicom_in):
             anonymize_file(wip_dicom_in, wip_dicom_out,
                            tags_to_keep, forced_values,
-                           anonymous=anonymous)
+                           anonymous=anonymous,
+                           config_profile=config_profile)
 
         elif os.path.isdir(wip_dicom_in):
             for root, dirs, files in os.walk(wip_dicom_in):
@@ -135,7 +120,8 @@ def anonymize(dicom_in, dicom_out,
                     current_file = os.path.join(root, name)
                     anonymize_file(current_file, folder_out,
                                    tags_to_keep, forced_values,
-                                   anonymous=anonymous)
+                                   anonymous=anonymous,
+                                   config_profile=config_profile)
     except Exception as e:
         if is_dicom_out_archive and os.path.exists(wip_dicom_out):
             shutil.rmtree(wip_dicom_out)
@@ -170,10 +156,7 @@ def check_anonymize_fast(dicom_in,
         if tags_to_keep:
             raise DeidentificationError('Both tags_to_keep and config_profile have been specified.')
 
-        if anonymous:
-            tags_to_keep = load_config_anonymous(config_profile)
-        else:
-            tags_to_keep = load_config_profile(config_profile)
+        tags_to_keep = load_config_profile(config_profile, anonymous)
     
     dicom_tmp = ''
     if is_archive(dicom_in):
@@ -205,7 +188,6 @@ def check_anonymize_fast(dicom_in,
         raise DeidentificationError('File input type is not handled by this tool.')
     
 
-
 def check_anonymize(dicom_in,
                     tags_to_keep=None,
                     forced_values=None,
@@ -222,10 +204,7 @@ def check_anonymize(dicom_in,
         if tags_to_keep:
             raise DeidentificationError('Both tags_to_keep and config_profile have been specified.')
 
-        if anonymous:
-            tags_to_keep = load_config_anonymous(config_profile)
-        else:
-            tags_to_keep = load_config_profile(config_profile)
+        tags_to_keep = load_config_profile(config_profile, anonymous)
     
     if is_archive(dicom_in):
         wip_dicom_in = mkdtemp(prefix=tempdir_prefix)
@@ -281,10 +260,7 @@ def check_folder_anonymize(dicom_folder,
         if tags_to_keep:
             raise DeidentificationError('Both tags_to_keep and config_profile have been specified.')
 
-        if anonymous:
-            tags_to_keep = load_config_anonymous(config_profile)
-        else:
-            tags_to_keep = load_config_profile(config_profile)
+        tags_to_keep = load_config_profile(config_profile, anonymous)
     
     for root, dirs, files in os.walk(dicom_folder):
         for filename in files:
@@ -316,7 +292,7 @@ class Anonymizer():
 
     def __init__(self, dicom_filein, dicom_fileout,
                  tags_to_keep=None, forced_values=None,
-                 anonymous=False):
+                 anonymous=False, config_profile=None):
         """
         dicom_filein: the DICOM file to anonymize
         dicom_fileout: the file to write the output of the anonymization
@@ -329,6 +305,7 @@ class Anonymizer():
         self._tags_to_keep = tags_to_keep
         self._forced_values = forced_values
         self.anonymous = anonymous
+        self.config_profile = config_profile
 
         self.originalDict = {}
         self.outputDict = {}
@@ -343,7 +320,16 @@ class Anonymizer():
         if not self.ano_run:
             self._dataset.walk(self._anonymize_check)
         
+        # Patient Identity Removed
+        self._dataset.add_new((0x0012, 0x0062), 'CS', 'YES')
+        # De-identification Method
+        method = f'CATI DEIDENTIFICATION - {deid.__version__}'
+        if self.config_profile:
+            method += f' - {self.config_profile}'
+        self._dataset.add_new((0x0012, 0x0063), 'LO', method)
+
         pydicom.write_file(self._dicom_fileout, self._dataset)
+        return 1
     
     def runCheck(self):
         """
