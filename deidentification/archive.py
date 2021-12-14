@@ -14,7 +14,7 @@ def is_archive(filename):
         try:
             tarfile.open(filename)
             return True
-        except:
+        except Exception:
             pass
     if os.path.splitext(filename)[1] in get_archive_extensions():
         return True
