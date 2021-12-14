@@ -4,6 +4,9 @@ import os
 from deidentification import CONFIG_FOLDER
 
 
+class DeidentificationError(Exception):
+    pass
+
 def tag_to_tuple(tag_str: str) -> tuple:
     tag = tag_str
     for char in '() ':
@@ -23,15 +26,24 @@ def tag_to_tuple(tag_str: str) -> tuple:
     return tag_tuple
 
 
-def load_config_profile(profile: str):
+def load_config_profile(profile: str, anonymous: bool = False):
     profile_path = os.path.join(CONFIG_FOLDER, 'profiles', profile + '.tsv')
     if not os.path.exists(profile_path):
-        raise AttributeError('Profile {} does not exists.'.format(profile))
+        raise DeidentificationError('Profile {} does not exists.'.format(profile))
     
-    with open(profile_path, 'r') as tsv_file:
-        tsv_reader = csv.reader(tsv_file, delimiter='\t')
-        _ = next(tsv_reader)  # header
-        data = [tag_to_tuple(d[0]) for d in tsv_reader]
+    tag_load_error = ''
+    try:
+        with open(profile_path, 'r') as tsv_file:
+            tsv_reader = csv.reader(tsv_file, delimiter='\t')
+            _ = next(tsv_reader)  # header
+            data = [tag_to_tuple(d[0]) for d in tsv_reader]
+    except ValueError as e:
+        if anonymous:
+            tag_load_error = 'Error occurs during config profile load.'
+        else:
+            raise e
+    if tag_load_error:
+        raise DeidentificationError(tag_load_error)
 
     return data
     
