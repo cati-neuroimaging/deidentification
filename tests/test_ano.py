@@ -18,15 +18,23 @@ def path_ano(filepath):
     return filepath.replace(filename_wo_ext, filename_wo_ext + '_ano')
 
 
+def clean_outputs(filepath):
+    filepath_ano = path_ano(filepath)
+    if osp.exists(filepath_ano):
+        if osp.isfile(filepath_ano):
+            os.remove(filepath_ano)
+        else:
+            shutil.rmtree(filepath_ano)
+    if osp.exists(OUTPUT_DIR):
+        shutil.rmtree(OUTPUT_DIR)
+
+
 @pytest.fixture(params=glob.glob(DICOM_DATA_DIR + '/*[!.tar.gz]'))
 def dicom_path(request):
     file_path = request.param
     if osp.isfile(file_path):
         yield file_path
-    if osp.exists(path_ano(file_path)):
-        os.remove(path_ano(file_path))
-    if osp.exists(OUTPUT_DIR):
-        shutil.rmtree(OUTPUT_DIR)
+    clean_outputs(file_path)
 
 
 @pytest.fixture(params=glob.glob(DICOM_DATA_DIR + '/*.tar.gz'))
@@ -34,10 +42,7 @@ def dicom_archives_path(request):
     file_path = request.param
     if osp.isfile(file_path):
         yield file_path
-    if osp.exists(path_ano(file_path)):
-        os.remove(path_ano(file_path))
-    if osp.exists(OUTPUT_DIR):
-        shutil.rmtree(OUTPUT_DIR)
+    clean_outputs(file_path)
     
 
 @pytest.fixture(params=glob.glob(DICOM_DATA_DIR + '/bad_format/*.tar.gz'))
@@ -45,10 +50,7 @@ def dicom_bad_archives_path(request):
     file_path = request.param
     if osp.isfile(file_path):
         yield file_path
-    if osp.exists(path_ano(file_path)):
-        os.remove(path_ano(file_path))
-    if osp.exists(OUTPUT_DIR):
-        shutil.rmtree(OUTPUT_DIR)
+    clean_outputs(file_path)
 
 
 @pytest.fixture(params=glob.glob(FILES_DATA_DIR + '/*'))
@@ -56,12 +58,7 @@ def file_path(request):
     file_path = request.param
     if osp.exists(file_path):
         yield file_path
-    path_ano_ = path_ano(file_path)
-    if osp.exists(path_ano_):
-        if osp.isfile(path_ano_):
-            os.remove(path_ano_)
-        else:
-            shutil.rmtree(path_ano_)
+    clean_outputs(file_path)
 
 
 # Anonymizer class tests
