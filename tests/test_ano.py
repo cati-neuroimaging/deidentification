@@ -1,11 +1,15 @@
+import glob
 import os
-from os.path import join
+import os.path as osp
 import pytest
 import shutil
 
 import pydicom
 
-OUTPUT_DIR = 'tests/data/dicoms/output_dir'
+DATA_DIR = 'tests/data/'
+DICOM_DATA_DIR = osp.join(DATA_DIR, 'dicoms')
+FILES_DATA_DIR = osp.join(DATA_DIR, 'files')
+OUTPUT_DIR = osp.join(DICOM_DATA_DIR, 'output_dir')
 
 
 def path_ano(filepath):
@@ -14,53 +18,47 @@ def path_ano(filepath):
     return filepath.replace(filename_wo_ext, filename_wo_ext + '_ano')
 
 
-@pytest.fixture(params=[p for p in os.listdir('tests/data/dicoms')
-                        if os.path.isfile(join('tests/data/dicoms', p))
-                        and not p.endswith('.tar.gz')])
+@pytest.fixture(params=glob.glob(DICOM_DATA_DIR + '/*[!.tar.gz]'))
 def dicom_path(request):
-    file_path = os.path.join('tests/data/dicoms', request.param)
-    if os.path.isfile(file_path):
+    file_path = request.param
+    if osp.isfile(file_path):
         yield file_path
-    if os.path.exists(path_ano(file_path)):
+    if osp.exists(path_ano(file_path)):
         os.remove(path_ano(file_path))
-    if os.path.exists(OUTPUT_DIR):
+    if osp.exists(OUTPUT_DIR):
         shutil.rmtree(OUTPUT_DIR)
 
 
-@pytest.fixture(params=[p for p in os.listdir('tests/data/dicoms')
-                        if os.path.isfile(join('tests/data/dicoms', p))
-                        and p.endswith('.tar.gz')])
+@pytest.fixture(params=glob.glob(DICOM_DATA_DIR + '/*.tar.gz'))
 def dicom_archives_path(request):
-    file_path = os.path.join('tests/data/dicoms', request.param)
-    if os.path.isfile(file_path):
+    file_path = request.param
+    if osp.isfile(file_path):
         yield file_path
-    if os.path.exists(path_ano(file_path)):
+    if osp.exists(path_ano(file_path)):
         os.remove(path_ano(file_path))
-    if os.path.exists(OUTPUT_DIR):
+    if osp.exists(OUTPUT_DIR):
         shutil.rmtree(OUTPUT_DIR)
     
 
-@pytest.fixture(params=[p for p in os.listdir('tests/data/dicoms/bad_format')
-                        if os.path.isfile(join('tests/data/dicoms/bad_format', p))
-                        and p.endswith('.tar.gz')])
+@pytest.fixture(params=glob.glob(DICOM_DATA_DIR + '/bad_format/*.tar.gz'))
 def dicom_bad_archives_path(request):
-    file_path = os.path.join('tests/data/dicoms/bad_format', request.param)
-    if os.path.isfile(file_path):
+    file_path = request.param
+    if osp.isfile(file_path):
         yield file_path
-    if os.path.exists(path_ano(file_path)):
+    if osp.exists(path_ano(file_path)):
         os.remove(path_ano(file_path))
-    if os.path.exists(OUTPUT_DIR):
+    if osp.exists(OUTPUT_DIR):
         shutil.rmtree(OUTPUT_DIR)
 
 
-@pytest.fixture(params=os.listdir('tests/data/files'))
+@pytest.fixture(params=glob.glob(FILES_DATA_DIR + '/*'))
 def file_path(request):
-    path = os.path.join('tests/data/files', request.param)
-    if os.path.exists(path):
-        yield path
-    path_ano_ = path_ano(path)
-    if os.path.exists(path_ano_):
-        if os.path.isfile(path_ano_):
+    file_path = request.param
+    if osp.exists(file_path):
+        yield file_path
+    path_ano_ = path_ano(file_path)
+    if osp.exists(path_ano_):
+        if osp.isfile(path_ano_):
             os.remove(path_ano_)
         else:
             shutil.rmtree(path_ano_)
@@ -159,19 +157,19 @@ def test_anonymizer_anonymous(dicom_archives_path):
 def test_anonymize_basic(dicom_path):
     from deidentification.anonymizer import anonymize
     anonymize(dicom_path, OUTPUT_DIR)
-    assert os.path.basename(dicom_path) in os.listdir(OUTPUT_DIR)
+    assert osp.basename(dicom_path) in os.listdir(OUTPUT_DIR)
 
 
 def test_anonymize_data_sharing_profile(dicom_path):
     from deidentification.anonymizer import anonymize
     anonymize(dicom_path, OUTPUT_DIR, config_profile='data_sharing')
-    assert os.path.basename(dicom_path) in os.listdir(OUTPUT_DIR)
+    assert osp.basename(dicom_path) in os.listdir(OUTPUT_DIR)
 
 
 def test_anonymize_archive_basic(dicom_archives_path):
     from deidentification.anonymizer import anonymize
     anonymize(dicom_archives_path, path_ano(dicom_archives_path))
-    assert os.path.exists(path_ano(dicom_archives_path))
+    assert osp.exists(path_ano(dicom_archives_path))
 
 
 def test_anonymize_bad_archive_basic(dicom_bad_archives_path):
@@ -183,7 +181,7 @@ def test_anonymize_bad_archive_basic(dicom_bad_archives_path):
 def test_anonymize_archive_data_sharing_progile(dicom_archives_path):
     from deidentification.anonymizer import anonymize
     anonymize(dicom_archives_path, path_ano(dicom_archives_path))
-    assert(os.path.exists(path_ano(dicom_archives_path)))
+    assert(osp.exists(path_ano(dicom_archives_path)))
 
 
 def test_anonymize_anonymous(file_path):
