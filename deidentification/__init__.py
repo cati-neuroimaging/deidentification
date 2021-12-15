@@ -1,4 +1,4 @@
-__version__ = '0.2.0'
+__version__ = '1.0.0'
 
 from pathlib import Path
 CONFIG_FOLDER = Path(__file__).parent.joinpath('config')
