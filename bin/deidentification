@@ -4,7 +4,7 @@ import os
 import argparse
 
 from deidentification import anonymizer
-from deidentification.config import tags_to_keep, forced_values
+from deidentification.config import tags_to_keep
 
 
 if __name__ == '__main__':

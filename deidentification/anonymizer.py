@@ -62,7 +62,8 @@ def anonymize(dicom_in, dicom_out,
               config_profile=None,
               anonymous=False,
               tempdir_prefix=None):
-    """Configures the Anonymizer and runs it on DICOM files.
+    """Configures the Anonymizer and runs it on DICOM files. It can configured using tags_to_keep
+    or config_profile, and forced_values (ex: {(0x0010, 0x0010) : 'XXXX')})
     
     Parameters
     ----------
