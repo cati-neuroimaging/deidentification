@@ -2,34 +2,54 @@
 import tarfile
 import zipfile
 import os
+from deidentification import DeidentificationError
 
 
-def is_archive(filename):
+
+def is_archive_in(filepath):
     """
-    Returns true if filename is an archive and false otherwise.
+    Returns True if the file is an archive and False otherwise.
+    Raise an error if the file is not a ZIP or a TAR file
     """
-    if zipfile.is_zipfile(filename):
+
+    file_extension = os.path.splitext(filepath)[1].lower()
+    if file_extension == ".zip":
+        if not zipfile.is_zipfile(filepath):
+            raise DeidentificationError(
+                "The ZIP file has the .zip extension but it is not a ZIP file")
+        else:
+            return True
+    elif file_extension in get_archive_extensions():
+        if not tarfile.is_tarfile(filepath):
+            raise DeidentificationError(
+                "The file has an archive extension but it is not a TAR file")
+        else:
+            return True
+    else:
+        return False
+
+
+def is_archive_out(filepath):
+    """
+    Return True if the file has a archive extension and False ortherwise
+    """
+    file_extension = os.path.splitext(filepath)[1].lower()
+    if file_extension in get_archive_extensions():
         return True
     else:
-        try:
-            tarfile.open(filename)
-            return True
-        except Exception:
-            pass
-    if os.path.splitext(filename)[1] in get_archive_extensions():
-        return True
-    return False
+        return False
 
 
 def get_archive_extensions():
     return ['.zip', '.gz', '.tar', '.bz2', '.tgz']
 
 
+
 def unpack(input_filename, extract_dir):
     """
     Unpacks the input_filename archive to the extract_dir directory.
     """
-    if not is_archive(input_filename):
+    if not is_archive_in(input_filename):
         raise AttributeError("Input_filename must be an archive (ex: .tar.gz, .zip)")
     if zipfile.is_zipfile(input_filename):
         unzip(input_filename, extract_dir)
@@ -41,7 +61,7 @@ def unpack_first(input_filename: str, extract_dir: str) -> str:
     """
     Unpacks the first file in input_filename archive to the extract_dir directory.
     """
-    if not is_archive(input_filename):
+    if not is_archive_in(input_filename):
         raise AttributeError("Input_filename must be an archive (ex: .tar.gz, .zip)")
     if zipfile.is_zipfile(input_filename):
         return unzip_first(input_filename, extract_dir)
