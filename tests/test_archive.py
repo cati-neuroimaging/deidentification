@@ -1,5 +1,4 @@
 import pytest
-import os
 import glob
 
 
@@ -8,17 +7,17 @@ ARCHIVES_NOT_OPENING_DIR = 'tests/data/archives/not_opening_archives'
 FILES_DIR = 'tests/data/files'
 
 
-@pytest.fixture(params=glob.glob(ARCHIVES_OPENING_DIR+'/*'))
+@pytest.fixture(params=glob.glob(ARCHIVES_OPENING_DIR + '/*'))
 def opening_archive_path(request):
     return request.param
 
 
-@pytest.fixture(params=glob.glob(ARCHIVES_NOT_OPENING_DIR+'/*'))
+@pytest.fixture(params=glob.glob(ARCHIVES_NOT_OPENING_DIR + '/*'))
 def not_opening_archive_path(request):
     return request.param
 
 
-@pytest.fixture(params=glob.glob(FILES_DIR+'/*'))
+@pytest.fixture(params=glob.glob(FILES_DIR + '/*'))
 def non_archive_path(request):
     return request.param
 
@@ -30,37 +29,34 @@ def test_get_archive_ext():
         assert ext in get_archive_extensions()
 
 
-def test_is_archive_in_for_opening_archive(opening_archive_path):
-    # Test if the function is_archive_in returns True for an archive that is a TAR or a ZIP
-    from deidentification.archive import is_archive_in
-    assert is_archive_in(opening_archive_path)
+def test_is_archive_file_for_opening_archive(opening_archive_path):
+    # Test if the function is_archive_file returns True for an archive that is a TAR or a ZIP
+    from deidentification.archive import is_archive_file
+    assert is_archive_file(opening_archive_path)
 
 
-def test_is_archive_in_for_not_opening_archive(not_opening_archive_path):
-    # Test if the is_archive_in raise an error for file that are not TAR or ZIP.
+def test_is_archive_file_for_not_opening_archive(not_opening_archive_path):
+    # Test if the is_archive_file raise an error for file that are not TAR or ZIP.
     # IRL files could have good extensions but tarlib or ziplib could not openened it
-    from deidentification.archive import is_archive_in
+    from deidentification.archive import is_archive_file
     from deidentification.anonymizer import DeidentificationError
     with pytest.raises(DeidentificationError):
-        is_archive_in(not_opening_archive_path)
+        is_archive_file(not_opening_archive_path)
 
 
-def test_is_archive_in_for_files(non_archive_path):
-    # Test if is_archive_in return False when an non archive file is on input
-    from deidentification.archive import is_archive_in
-    assert not is_archive_in(non_archive_path)
+def test_is_archive_file_for_files(non_archive_path):
+    # Test if is_archive_file return False when an non archive file is on input
+    from deidentification.archive import is_archive_file
+    assert not is_archive_file(non_archive_path)
 
 
-def test_is_archive_out_for_archives_paths(opening_archive_path):
-    # Test if is_archive_out returns True if the path has an archive extension
-    # Note : is_archive_out check only the file extension (not opening the file)
-    from deidentification.archive import is_archive_out
-    assert is_archive_out(opening_archive_path)
+def test_is_archive_ext_for_archives_paths(opening_archive_path):
+    # Test if is_archive_ext returns True if the path has an archive extension
+    from deidentification.archive import is_archive_ext
+    assert is_archive_ext(opening_archive_path)
 
 
-def test_is_archive_out_for_files_paths(non_archive_path):
-    # Test if is_archive_out returns False if the path has no archive extension
-    # Note : is_archive_out check only the file extension (not opening the file)
-
-    from deidentification.archive import is_archive_out
-    assert not is_archive_out(non_archive_path)
+def test_is_archive_ext_for_files_paths(non_archive_path):
+    # Test if is_archive_ext returns False if the path has no archive extension
+    from deidentification.archive import is_archive_ext
+    assert not is_archive_ext(non_archive_path)

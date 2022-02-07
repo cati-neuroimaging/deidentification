@@ -5,8 +5,7 @@ import os
 from deidentification import DeidentificationError
 
 
-
-def is_archive_in(filepath):
+def is_archive_file(filepath):
     """
     Returns True if the file is an archive and False otherwise.
     Raise an error if the file is not a ZIP or a TAR file
@@ -29,7 +28,7 @@ def is_archive_in(filepath):
         return False
 
 
-def is_archive_out(filepath):
+def is_archive_ext(filepath):
     """
     Return True if the file has a archive extension and False ortherwise
     """
@@ -44,12 +43,11 @@ def get_archive_extensions():
     return ['.zip', '.gz', '.tar', '.bz2', '.tgz']
 
 
-
 def unpack(input_filename, extract_dir):
     """
     Unpacks the input_filename archive to the extract_dir directory.
     """
-    if not is_archive_in(input_filename):
+    if not is_archive_file(input_filename):
         raise AttributeError("Input_filename must be an archive (ex: .tar.gz, .zip)")
     if zipfile.is_zipfile(input_filename):
         unzip(input_filename, extract_dir)
@@ -61,7 +59,7 @@ def unpack_first(input_filename: str, extract_dir: str) -> str:
     """
     Unpacks the first file in input_filename archive to the extract_dir directory.
     """
-    if not is_archive_in(input_filename):
+    if not is_archive_file(input_filename):
         raise AttributeError("Input_filename must be an archive (ex: .tar.gz, .zip)")
     if zipfile.is_zipfile(input_filename):
         return unzip_first(input_filename, extract_dir)
