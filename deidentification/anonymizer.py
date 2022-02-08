@@ -13,7 +13,7 @@ import pydicom
 
 import deidentification as deid
 from deidentification import tag_lists, DeidentificationError
-from deidentification.archive import is_archive, pack, unpack
+from deidentification.archive import is_archive_file, is_archive_ext, pack, unpack
 from deidentification.archive import unpack_first
 from deidentification.config import load_config_profile
 
@@ -90,8 +90,8 @@ def anonymize(dicom_in, dicom_out,
         tags_to_keep = load_config_profile(config_profile, anonymous)
 
     # Handle archives
-    is_dicom_in_archive = is_archive(dicom_in)
-    is_dicom_out_archive = is_archive(dicom_out)
+    is_dicom_in_archive = is_archive_file(dicom_in)
+    is_dicom_out_archive = is_archive_ext(dicom_out)
     if is_dicom_in_archive:
         wip_dicom_in = mkdtemp(prefix=tempdir_prefix)
         try:
@@ -160,7 +160,7 @@ def check_anonymize_fast(dicom_in,
         tags_to_keep = load_config_profile(config_profile, anonymous)
     
     dicom_tmp = ''
-    if is_archive(dicom_in):
+    if is_archive_file(dicom_in):
         dicom_tmp = mkdtemp(prefix=tempdir_prefix)
         try:
             wip_dicom_in = unpack_first(dicom_in, dicom_tmp)
@@ -207,7 +207,8 @@ def check_anonymize(dicom_in,
 
         tags_to_keep = load_config_profile(config_profile, anonymous)
     
-    if is_archive(dicom_in):
+    is_archive_in = is_archive_file(dicom_in)
+    if is_archive_in:
         wip_dicom_in = mkdtemp(prefix=tempdir_prefix)
         try:
             unpack(dicom_in, wip_dicom_in)
@@ -225,7 +226,7 @@ def check_anonymize(dicom_in,
             anon.runCheck()
             return anon.result
         finally:
-            if is_archive(dicom_in) and os.path.exists(wip_dicom_in):
+            if is_archive_in and os.path.exists(wip_dicom_in):
                 shutil.rmtree(wip_dicom_in)
         
     elif os.path.isdir(wip_dicom_in):
