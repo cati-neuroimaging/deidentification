@@ -46,6 +46,3 @@ def load_config_profile(profile: str, anonymous: bool = False):
     
     
 # /!\ Siemens VIDA and CSA header ?
-
-# To force anonymization of patient Name into patient ID
-forced_values = {(0x0010, 0x0010): 'xxxxx'}

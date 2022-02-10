@@ -1,5 +1,7 @@
 # deidentification
 
+[![Python tests](https://github.com/cati-neuroimaging/deidentification/actions/workflows/python-package.yml/badge.svg)](https://github.com/cati-neuroimaging/deidentification/actions/workflows/python-package.yml)
+
 Tool to remove metadata allowing to identify a subject from DICOM images used in neuroimaging research. Can anonymize dicom files or archives of dicoms.
 Deidentification is based on DICOM Standard deinfinition, based on Supplement 142. This Supplement has evolved among time, and this tool aims to use last version of this standard.
 
