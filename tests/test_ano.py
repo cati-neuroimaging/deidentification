@@ -79,6 +79,17 @@ def test_anonymizer_public_tags(dicom_path):
     assert not ds.get((0x0008, 0x0032))
 
 
+def test_anonymizer_input_tags(dicom_path):
+    from deidentification import anonymizer
+    a = anonymizer.Anonymizer(dicom_path, path_ano(dicom_path),
+                              tags_to_keep=[(0x0008, 0x0032)],  # Usually deleted
+                              tags_to_delete=[(0x0008, 0x0008)])  # Usually kept
+    a.run_ano()
+    ds = pydicom.read_file(path_ano(dicom_path))
+    assert not ds.get((0x0008, 0x0008))
+    assert ds.get((0x0008, 0x0032))
+
+
 def test_anonymizer_private_tags(dicom_path):
     from deidentification import anonymizer
     a = anonymizer.Anonymizer(dicom_path, path_ano(dicom_path))
