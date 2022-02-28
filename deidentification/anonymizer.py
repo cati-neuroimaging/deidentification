@@ -38,12 +38,18 @@ def _load_config(config_profile, tags_to_keep, tags_to_delete, anonymous):
     DeidentificationError
         In case of config profile AND tags_to_keep/tags_to_delete defined
     """
+    tags_config = {}
     if config_profile:
         if tags_to_keep or tags_to_delete:
             raise DeidentificationError('Both tags_to_keep/tags_to_delete and config_profile have been specified.')
         
-        tags_to_keep, tags_to_delete = load_config_profile(config_profile, anonymous)
-    return tags_to_keep, tags_to_delete
+        tags_config = load_config_profile(config_profile, anonymous)
+    else:
+        if tags_to_keep:
+            tags_config.update({k: {'action': 'K'} for k in tags_to_keep})
+        if tags_to_delete:
+            tags_config.update({k: {'action': 'X'} for k in tags_to_delete})
+    return tags_config
 
 
 def anonymize_file(dicom_file_in, dicom_folder_out,
@@ -67,8 +73,8 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
     if os.path.isfile(dicom_folder_out):
         raise DeidentificationError('The DICOM output has to be a folder.')
     
-    tags_to_keep, tags_to_delete = _load_config(config_profile, tags_to_keep,
-                                                tags_to_delete, anonymous)
+    tags_config = _load_config(config_profile, tags_to_keep,
+                               tags_to_delete, anonymous)
     
     if not os.path.exists(dicom_folder_out):
         os.makedirs(dicom_folder_out)
@@ -76,8 +82,7 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
                                   os.path.basename(dicom_file_in))
 
     anon = Anonymizer(dicom_file_in, dicom_file_out,
-                      tags_to_keep, tags_to_delete,
-                      forced_values=forced_values,
+                      tags_config, forced_values,
                       anonymous=anonymous,
                       config_profile=config_profile)
     anon.run_ano()
@@ -113,8 +118,8 @@ def anonymize(dicom_in, dicom_out,
     if not os.path.isfile(dicom_in) and os.path.isfile(dicom_out):
         raise DeidentificationError('The DICOM out could not be a file if DICOM in is not a file.')
 
-    _, _ = _load_config(config_profile, tags_to_keep,
-                        tags_to_delete, anonymous)
+    _ = _load_config(config_profile, tags_to_keep,
+                     tags_to_delete, anonymous)
 
     # Handle archives
     is_dicom_in_archive = is_archive_file(dicom_in)
@@ -184,8 +189,8 @@ def check_anonymize_fast(dicom_in,
     if not os.path.exists(dicom_in):
         raise DeidentificationError('The DICOM input does not exists.')
 
-    tags_to_keep, tags_to_delete = _load_config(config_profile, tags_to_keep,
-                                                tags_to_delete, anonymous)
+    tags_config = _load_config(config_profile, tags_to_keep,
+                               tags_to_delete, anonymous)
     
     dicom_tmp = ''
     if is_archive_file(dicom_in):
@@ -206,8 +211,7 @@ def check_anonymize_fast(dicom_in,
     if os.path.isfile(wip_dicom_in):
         try:
             anon = Anonymizer(wip_dicom_in, '',
-                              tags_to_keep, tags_to_delete,
-                              forced_values=forced_values,
+                              tags_config, forced_values,
                               anonymous=anonymous)
             anon.runCheck()
             return anon.result
@@ -232,8 +236,8 @@ def check_anonymize(dicom_in,
     if not os.path.exists(dicom_in):
         raise DeidentificationError('The DICOM input does not exists.')
 
-    tags_to_keep, tags_to_delete = _load_config(config_profile, tags_to_keep,
-                                                tags_to_delete, anonymous)
+    tags_config = _load_config(config_profile, tags_to_keep,
+                               tags_to_delete, anonymous)
     
     is_archive_in = is_archive_file(dicom_in)
     if is_archive_in:
@@ -249,8 +253,7 @@ def check_anonymize(dicom_in,
     if os.path.isfile(wip_dicom_in):
         try:
             anon = Anonymizer(wip_dicom_in, '',
-                              tags_to_keep, tags_to_delete,
-                              forced_values=forced_values,
+                              tags_config, forced_values,
                               anonymous=anonymous)
             anon.runCheck()
             return anon.result
@@ -259,8 +262,9 @@ def check_anonymize(dicom_in,
                 shutil.rmtree(wip_dicom_in)
         
     elif os.path.isdir(wip_dicom_in):
-        return check_folder_anonymize(wip_dicom_in, tags_to_keep,
-                                      tags_to_delete, forced_values)
+        return check_folder_anonymize(wip_dicom_in,
+                                      forced_values=forced_values,
+                                      config_profile=config_profile)
     
     else:
         raise DeidentificationError('File input type is not handled by this tool.')
@@ -291,14 +295,13 @@ def check_folder_anonymize(dicom_folder,
     if not os.path.isdir(dicom_folder):
         raise DeidentificationError('DICOM folder input is not a folder path.')
 
-    tags_to_keep, tags_to_delete = _load_config(config_profile, tags_to_keep,
-                                                tags_to_delete, anonymous)
+    tags_config = _load_config(config_profile, tags_to_keep,
+                               tags_to_delete, anonymous)
     
     for root, dirs, files in os.walk(dicom_folder):
         for filename in files:
             anon = Anonymizer(os.path.join(root, filename), '',
-                              tags_to_keep, tags_to_delete,
-                              forced_values=forced_values,
+                              tags_config, forced_values,
                               anonymous=anonymous)
             anon.runCheck()
             if not anon.result:
@@ -325,21 +328,19 @@ class Anonymizer():
     """
 
     def __init__(self, dicom_filein, dicom_fileout,
-                 tags_to_keep=None, tags_to_delete=None,
+                 tags_config=None,
                  forced_values=None, config_profile=None,
                  anonymous=False):
         """
         dicom_filein: the DICOM file to anonymize
         dicom_fileout: the file to write the output of the anonymization
-        tags_to_keep: a list with tags that need to be kept
-        tags_to_delete: a list with tags that need to be deleted
+        tags_config: a dict with action to do on tags (keep ('K'), remove ('X'), ...)
         forced_values: a dictionary constructed as shown here: {(0x0010,0x0010): "My forced patient name"}
         When a tag is in forced_values, it will be kept whether or not in tags_to_keep.
         """
         self._dicom_filein = dicom_filein
         self._dicom_fileout = dicom_fileout
-        self._tags_to_keep = tags_to_keep
-        self._tags_to_delete = tags_to_delete
+        self._tags_config = tags_config
         self._forced_values = forced_values
         self.anonymous = anonymous
         self.config_profile = config_profile
@@ -406,14 +407,9 @@ class Anonymizer():
             self.outputDict[data_element.tag] = self._forced_values[tag]
             return
         # Check if the data element has to be kept
-        if self._tags_to_keep is not None and tag in self._tags_to_keep:
-            self.originalDict[data_element.tag] = data_element.value
-            self.outputDict[data_element.tag] = data_element.value
-            return
-        # Check if the data element has to be deleted
-        if self._tags_to_delete is not None and tag in self._tags_to_delete:
-            self.originalDict[data_element.tag] = data_element.value
-            del ds[data_element.tag]
+        if self._tags_config is not None and tag in self._tags_config:
+            action = self._tags_config[tag]['action']
+            self._apply_action(ds, data_element, action)
             return
         
         # Check if the data element is in the DICOM part 15/annex E tag list
@@ -464,11 +460,11 @@ class Anonymizer():
     def _apply_action(self, ds, data_element, action):
         """
         Apply confidentiality profiles action to data_element of ds
-        - X means the attribute must be removed
-        - U means the attribute must be replaced with a cleaned but internally consistent UUID
+        - X means remove
+        - U means replace with a cleaned but internally consistent UUID
         - D means replace with a non-zero length dummy value
         - Z means replace with a zero or non-zero length dummy value
-        - C means the attribute can be kept if it is cleaned
+        - K means keep
 
         Parameters
         ----------
@@ -489,6 +485,11 @@ class Anonymizer():
             self.outputDict[data_element.tag] = data_element.value
         elif action == 'U':
             data_element.value = self._generate_uuid(data_element.value.encode())
+        elif action == 'K':
+            self.originalDict[data_element.tag] = data_element.value
+            self.outputDict[data_element.tag] = data_element.value
+        else:
+            raise DeidentificationError(f'Action not recognized: {action}')
 
     def _generate_uuid(self, input):
         """

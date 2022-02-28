@@ -33,13 +33,13 @@ def load_config_profile(profile: str, anonymous: bool = False):
         with open(profile_path, 'r') as tsv_file:
             tsv_reader = csv.reader(tsv_file, delimiter='\t')
             _ = next(tsv_reader)  # header
-            to_keep = []
-            to_delete = []
+            tags_profile = {}
             for d in tsv_reader:
-                if len(d) > 2 and d[2] == 'X':
-                    to_delete.append(tag_to_tuple(d[0]))
+                if len(d) <= 2:
+                    action = 'K'
                 else:
-                    to_keep.append(tag_to_tuple(d[0]))
+                    action = d[2]
+                tags_profile[tag_to_tuple(d[0])] = {'name': d[1], 'action': action}
     except ValueError as e:
         if anonymous:
             tag_load_error = 'Error occurs during config profile load.'
@@ -48,7 +48,7 @@ def load_config_profile(profile: str, anonymous: bool = False):
     if tag_load_error:
         raise DeidentificationError(tag_load_error)
 
-    return to_keep, to_delete
+    return tags_profile
     
     
 # /!\ Siemens VIDA and CSA header ?
