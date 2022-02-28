@@ -91,10 +91,12 @@ def test_anonymizer_private_tags(dicom_path):
 def test_anonymizer_data_sharing_profile(dicom_path):
     from deidentification import anonymizer
     from deidentification.config import load_config_profile
-    tags_to_keep = load_config_profile('data_sharing')
+    tags_to_keep, tags_to_delete = load_config_profile('data_sharing')
     a = anonymizer.Anonymizer(dicom_path, path_ano(dicom_path),
                               tags_to_keep=tags_to_keep)
     a.run_ano()
+    _ds = pydicom.read_file(dicom_path)
+    assert _ds.get((0x2005, 0x101D))
     ds = pydicom.read_file(path_ano(dicom_path))
     assert ds.get((0x2005, 0x101D))
 

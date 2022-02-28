@@ -12,10 +12,10 @@ def test_tag_lists():
 def test_anonymizer_profile_load():
     from deidentification.config import load_config_profile
     from deidentification import DeidentificationError
-    tags_to_keep = load_config_profile('data_sharing')
+    tags_to_keep, tags_to_delete = load_config_profile('data_sharing')
     assert isinstance(tags_to_keep, list)
     with pytest.raises(DeidentificationError, match=r"Profile .* does not exists."):
-        tags_to_keep = load_config_profile('wrong_profile')
+        tags_to_keep, tags_to_delete = load_config_profile('wrong_profile')
 
 
 def test_tag_to_tuple():
