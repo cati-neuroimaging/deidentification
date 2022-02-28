@@ -81,9 +81,12 @@ def test_anonymizer_public_tags(dicom_path):
 
 def test_anonymizer_input_tags(dicom_path):
     from deidentification import anonymizer
+    tags_config = {
+        (0x0008, 0x0032): {'action': 'K'},  # Usually deleted
+        (0x0008, 0x0008): {'action': 'X'}  # Usually kept
+    }
     a = anonymizer.Anonymizer(dicom_path, path_ano(dicom_path),
-                              tags_to_keep=[(0x0008, 0x0032)],  # Usually deleted
-                              tags_to_delete=[(0x0008, 0x0008)])  # Usually kept
+                              tags_config=tags_config)  # Usually kept
     a.run_ano()
     ds = pydicom.read_file(path_ano(dicom_path))
     assert not ds.get((0x0008, 0x0008))
@@ -102,9 +105,9 @@ def test_anonymizer_private_tags(dicom_path):
 def test_anonymizer_data_sharing_profile(dicom_path):
     from deidentification import anonymizer
     from deidentification.config import load_config_profile
-    tags_to_keep, tags_to_delete = load_config_profile('data_sharing')
+    tags_config = load_config_profile('data_sharing')
     a = anonymizer.Anonymizer(dicom_path, path_ano(dicom_path),
-                              tags_to_keep=tags_to_keep)
+                              tags_config=tags_config)
     a.run_ano()
     _ds = pydicom.read_file(dicom_path)
     assert _ds.get((0x2005, 0x101D))
