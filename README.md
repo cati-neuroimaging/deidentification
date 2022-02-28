@@ -58,14 +58,16 @@ In the other hand, private tags have to be deleted excepting a list of safe priv
 
 ## Deidentification profile
 
-It is possible to personnalize deidentification tool using deidentification profiles. A profile is defined by a _.tsv_ file in the folder _deidentification/config/profiles/._ This file references all the DICOM tags to keep during deidentification, even if this tag have to be deleted/modified according to DICOM deidentification standard.
+It is possible to personnalize deidentification tool using deidentification profiles. A profile is defined by a _.tsv_ file in the folder _deidentification/config/profiles/._ This file references actions to be done on DICOM tags. Actions are the same as defined in the DICOM standard ([De-identification Action Codes](https://dicom.nema.org/medical/dicom/current/output/html/part15.html#table_E.1-1a), ex: 'X' -> remove, 'K' -> keep).
+Those rules override rules defined in the DICOM standard.
 
 An exemple of deidentification profile :
 
-| Tag | Name |
-| :---: | :---: |
-| (0018,1060) | Trigger Time |
-| (0019,100C) | B Value |
+| Tag | Name | Action |
+| :---: | :---: | :---: |
+| (0008,0104) | Code Meaning | X |
+| (0018,1060) | Trigger Time | K |
+| (0019,100C) | B Value | K |
 | (0019,100A) | Number of slices |
 | (0019,101E) | Display field of view |
 | ... | ... |
