@@ -48,7 +48,7 @@ def _load_config(config_profile, tags_to_keep, tags_to_delete, anonymous):
         if tags_to_keep:
             tags_config.update({k: {'action': 'K'} for k in tags_to_keep})
         if tags_to_delete:
-            tags_config.update({k: {'action': 'X'} for k in tags_to_delete})
+            tags_config.update({x: {'action': 'X'} for x in tags_to_delete})
     return tags_config
 
 
