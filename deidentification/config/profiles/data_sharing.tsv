@@ -1,4 +1,4 @@
-Tags	Name
+Tags	Name	Action
 (0018,1060)	Trigger Time
 (0019,100C)	B Value
 (0019,100A)	Number of slices
@@ -40,3 +40,4 @@ Tags	Name
 (2005,10A1)	Syncra Scan type (correction B1)
 (2005,10A9)	Unknown (Correction distorsions)
 (2005,1013)	Unknown
+(0040,0561)	Original Attributes Sequence	X
