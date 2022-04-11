@@ -3,7 +3,10 @@ version_minor = 0
 version_micro = 0
 version_extra = ''
 
-__version__ = f'{version_major}.{version_minor}.{version_micro}{version_extra}'
+__version__ = '{}.{}.{}{}'.format(version_major,
+                                  version_minor,
+                                  version_micro,
+                                  version_extra)
 
 # Main setup parameters
 NAME = 'deidentification'
