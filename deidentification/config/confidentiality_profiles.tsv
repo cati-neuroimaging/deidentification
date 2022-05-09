@@ -118,35 +118,35 @@ Tag	Action	Description
 (0016,0050)	X	Lens Model
 (0016,0051)	X	Lens Serial Number
 (0016,0070)	X	GPS Version ID
-(0016,0071)	X	GPS Latitude​ Ref
-(0016,0072)	X	GPS Latitude​
+(0016,0071)	X	GPS Latitude Ref
+(0016,0072)	X	GPS Latitude
 (0016,0073)	X	GPS Longitude Ref
 (0016,0074)	X	GPS Longitude
-(0016,0075)	X	GPS Altitude​ Ref
-(0016,0076)	X	GPS Altitude​
-(0016,0077)	X	GPS Time​ Stamp
+(0016,0075)	X	GPS Altitude Ref
+(0016,0076)	X	GPS Altitude
+(0016,0077)	X	GPS Time Stamp
 (0016,0078)	X	GPS Satellites
 (0016,0079)	X	GPS Status
-(0016,007A)	X	GPS Measure ​Mode
+(0016,007A)	X	GPS Measure Mode
 (0016,007B)	X	GPS DOP
-(0016,007C)	X	GPS Speed​ Ref
-(0016,007D)	X	GPS Speed​
-(0016,007E)	X	GPS Track ​Ref
+(0016,007C)	X	GPS Speed Ref
+(0016,007D)	X	GPS Speed
+(0016,007E)	X	GPS Track Ref
 (0016,007F)	X	GPS Track
-(0016,0080)	X	GPS Img​ Direction Ref
-(0016,0081)	X	GPS Img ​Direction
-(0016,0082)	X	GPS Map​ Datum
-(0016,0083)	X	GPS Dest​ Latitude Ref
-(0016,0084)	X	GPS Dest​ Latitude
-(0016,0085)	X	GPS Dest ​Longitude Ref
-(0016,0086)	X	GPS Dest ​Longitude
-(0016,0087)	X	GPS Dest​ Bearing Ref
-(0016,0088)	X	GPS Dest ​Bearing
-(0016,0089)	X	GPS Dest ​Distance Ref
-(0016,008A)	X	GPS Dest ​Distance
-(0016,008B)	X	GPS Processing​ Method
-(0016,008C)	X	GPS Area ​Information
-(0016,008D)	X	GPS Date​ Stamp
+(0016,0080)	X	GPS Img Direction Ref
+(0016,0081)	X	GPS Img Direction
+(0016,0082)	X	GPS Map Datum
+(0016,0083)	X	GPS Dest Latitude Ref
+(0016,0084)	X	GPS Dest Latitude
+(0016,0085)	X	GPS Dest Longitude Ref
+(0016,0086)	X	GPS Dest Longitude
+(0016,0087)	X	GPS Dest Bearing Ref
+(0016,0088)	X	GPS Dest Bearing
+(0016,0089)	X	GPS Dest Distance Ref
+(0016,008A)	X	GPS Dest Distance
+(0016,008B)	X	GPS Processing Method
+(0016,008C)	X	GPS Area Information
+(0016,008D)	X	GPS Date Stamp
 (0016,008E)	X	GPS Differential
 (0018,0010)	Z/D	Contrast/Bolus Agent
 (0018,1000)	X/Z/D	Device Serial Number
