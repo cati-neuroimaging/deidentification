@@ -35,7 +35,7 @@ def load_config_profile(profile: str, anonymous: bool = False):
             _ = next(tsv_reader)  # header
             tags_profile = {}
             for d in tsv_reader:
-                if len(d) <= 2:
+                if len(d) <= 2 or not d[2]:
                     action = 'K'
                 else:
                     action = d[2]
