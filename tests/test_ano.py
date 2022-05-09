@@ -3,6 +3,7 @@ import os
 import os.path as osp
 import pytest
 import shutil
+import subprocess
 
 import pydicom
 
@@ -10,6 +11,7 @@ DATA_DIR = 'tests/data/'
 DICOM_DATA_DIR = osp.join(DATA_DIR, 'dicoms')
 FILES_DATA_DIR = osp.join(DATA_DIR, 'files')
 OUTPUT_DIR = osp.join(DICOM_DATA_DIR, 'output_dir')
+BIN_DIR = 'bin'
 
 
 def path_ano(filepath):
@@ -169,3 +171,16 @@ def test_anonymize_anonymous(file_path):
     with pytest.raises(AnonymizerError, match=r"^((?!{}).)*$".format(file_path)):
         anonymize(file_path, path_ano(file_path), anonymous=True)
         
+
+# Anonymize bin
+
+def test_deidentification_bin(dicom_path):
+    cmd = [osp.join(BIN_DIR, 'deidentification'),
+           '-in', dicom_path,
+           '-out', OUTPUT_DIR,
+           '-c', 'cati_collector']
+    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    stdout, stderr = process.communicate()
+    
+    assert not stderr
+    assert os.listdir(OUTPUT_DIR)
