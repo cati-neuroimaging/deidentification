@@ -86,13 +86,13 @@ Launch anon_example.py function to anonymize a dicom file.
 Whitout subject id (set as "Unknown" by default):
 
 ```sh
-python anon_example.py -in myInputFolder -out myOutputFolder
+python bin/deidentification -in myInputFolder -out myOutputFolder
 ```
 
-With a subject id:
+With a subject id and configuration profile:
 
 ```sh
-python anon_example.py -in myInputFolder -out myOutputFolder -ID 0001XXXX
+python bin/deidentification -in myInputFolder -out myOutputFolder -id 0001XXXX -c data_sharing
 ```
 
 ### Using python module
@@ -103,9 +103,18 @@ from deidentification import anonymizer
 dicom_input_path = '/path/to/dicom_input_file_or_folder'
 dicom_output_path = '/path/to/dicom_output_file_or_folder'
 
+# Basic usage
 anonymizer.anonymize(
     dicom_input_path,
     dicom_output_path,
+)
+
+# With more parameters
+anonymizer.anonymize(
+    dicom_input_path,
+    dicom_output_path,
+    forced_value={(0x0010, 0x0010): '0001XXXX'},
+    config_profile='data_sharing'
 )
 ```
 
