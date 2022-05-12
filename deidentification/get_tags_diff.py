@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import difflib
 import pydicom
 import os
@@ -66,4 +68,3 @@ if __name__ == "__main__":
     parser.add_argument('-dcm2', default=True)
     args = parser.parse_args()
     get_tag_diff(args.dcm1, args.dcm2)
-
