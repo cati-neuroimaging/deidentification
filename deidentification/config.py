@@ -26,7 +26,10 @@ def tag_to_tuple(tag_str: str) -> tuple:
 def load_config_profile(profile: str, anonymous: bool = False):
     profile_path = os.path.join(CONFIG_FOLDER, 'profiles', profile + '.tsv')
     if not os.path.exists(profile_path):
-        raise DeidentificationError('Profile {} does not exists.'.format(profile))
+        if os.path.exists(profile):
+            profile_path = profile
+        else:
+            raise DeidentificationError(f'Profile {profile} does not exists.')
     
     tag_load_error = ''
     try:
