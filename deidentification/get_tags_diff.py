@@ -2,7 +2,7 @@
 
 import difflib
 import pydicom
-import os
+import os, re
 import argparse
 
 def get_tag_diff(path_raw, path_ano):
@@ -46,7 +46,7 @@ def get_tag_diff(path_raw, path_ano):
         elif tag == previous_tag and i[0] != previous_sign:
             txt = "Value modification (dcm1 -> dcm2): "
             previous_value = current_line_diff.pop(-1).split(': ')[-1].replace('\n', '')
-            tag_name = i[i.index(')') + 1: i.index('  ')]
+            tag_name = i[i.index(')') + 1: i.index(re.search(' [A-Z]{2}:', i).group())].replace("  ", "")
             i = txt + tag + tag_name + "\t\t" + previous_value + " -----> " + i.split(': ')[-1].replace('\n', '') + '\n'
             current_line_diff = global_modif
         if txt != "":
