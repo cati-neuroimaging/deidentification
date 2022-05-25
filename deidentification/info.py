@@ -17,6 +17,6 @@ AUTHOR = 'CATI'
 LICENSE = 'MIT License'
 AUTHOR_EMAIL = 'support@cati-neuroimaging.com'
 VERSION = __version__
-REQUIRES = ['pydicom']
+REQUIRES = ['pydicom<2.3,>=1.4.2']
 
 brainvisa_build_model = 'pure_python'
