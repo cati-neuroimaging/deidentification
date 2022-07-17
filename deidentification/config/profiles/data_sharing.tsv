@@ -10,8 +10,16 @@ Tags	Name	Action
 (0019,10BB)	User data 20	
 (0019,10BC)	User data 21	
 (0019,10BD)	User data 22	
+(0021,1009)	Parallel acquisition	
 (0021,105A)	Diffusion direction	
 (0021,105E)	RTIA timer	
+(0021,114f)	Coil information	
+(0021,1156)	Parallel acquisition	
+(0021,1175)	Acquisition type	
+(0021,1176)	Correction information	
+(0021,1177)	Sequence information	
+(0021,1178)	Distorsion correction	
+(0021,1179)	Distorsion correction	
 (0025,1007)	Images in Series (Number of slices)	
 (0025,101B)	Protocol Data Block (compressed)	
 (0027,1060)	Image dimension - X (Reconstruction matrix)	
