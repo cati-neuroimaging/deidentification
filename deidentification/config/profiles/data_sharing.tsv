@@ -3,6 +3,7 @@ Tags	Name	Action
 (0019,100C)	B Value	
 (0019,100A)	Number of slices	
 (0019,101E)	Display field of view	
+(0019,1028)	Bandwidth per pixel phase encode	
 (0019,105A)	Acquisition duration	
 (0019,107E)	Number of echoes	
 (0019,109F)	Transmitting Coil Type	
