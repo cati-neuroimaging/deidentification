@@ -81,10 +81,16 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
     dicom_file_out = os.path.join(dicom_folder_out,
                                   os.path.basename(dicom_file_in))
 
+    # Only keep filename in case of config_profile path
+    if config_profile:
+        profile_name = os.path.basename(config_profile).rsplit('.', 1)[0]
+    else:
+        profile_name = config_profile
+    
     anon = Anonymizer(dicom_file_in, dicom_file_out,
                       tags_config, forced_values,
                       anonymous=anonymous,
-                      config_profile=config_profile)
+                      config_profile=profile_name)
     anon.run_ano()
 
 
