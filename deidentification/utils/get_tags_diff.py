@@ -5,7 +5,7 @@ import pydicom
 import os, re
 import argparse
 
-def get_tag_diff(path_raw, path_ano):
+def get_tag_diff(path_raw, path_ano, outpath=None):
     """
     Return diff.txt file in the sam directory as path_raw which
     contain the tag difference between the 2 dcm 
@@ -13,6 +13,7 @@ def get_tag_diff(path_raw, path_ano):
     Args:
         path_dcm1 (str): path of the first dcm (ref)
         path_dcm2 (str): path of the second dcm (current)
+        outpath (str): path of the diff_file
     """
     print(f"Check difference between :\n{path_raw} and\n{path_ano}\n")
     dcm_ref = pydicom.read_file(path_raw)
@@ -41,20 +42,33 @@ def get_tag_diff(path_raw, path_ano):
             elif i[0] == "+":
                 txt = "Dcm2 only:"
                 current_line_diff = diff_from_dcm_2
-            i = txt + i[1:]
+            line = txt + i[1:]
         # between 2 diff lines : same tag + remove from first line and add to second -> value modification
         elif tag == previous_tag and i[0] != previous_sign:
-            txt = "Value modification (dcm1 -> dcm2): "
-            previous_value = current_line_diff.pop(-1).split(': ')[-1].replace('\n', '')
-            tag_name = i[i.index(')') + 1: i.index(re.search(' [A-Z]{2}:', i).group())].replace("  ", "")
-            i = txt + tag + tag_name + "\t\t" + previous_value + " -----> " + i.split(': ')[-1].replace('\n', '') + '\n'
+            line = ""
+            txt = f"Modification (dcm1 -> dcm2): {tag}"
+            previous_elem = current_line_diff.pop(-1)
+            # check tag name
+            previous_name = previous_elem.split(')')[-1].split(':')[0].split('  ')[0]
+            current_name = i[i.index(')') + 1: i.index(re.search(' [A-Z]{2}:', i).group())].replace("  ", "")
+            if current_name != previous_name:
+                line += txt + f'\tName modification\t {previous_name} ---> {current_name}\n'
+
+            # check tag value
+            previous_value = previous_elem.split(': ')[-1].replace('\n', '')
+            current_value = i.split(': ')[-1].replace('\n', '') 
+            if previous_value != current_value:
+                line += txt + "\tValue modification\t" + previous_value + " -----> " + current_value + '\n'
             current_line_diff = global_modif
+
         if txt != "":
             previous_tag = tag
             previous_sign = i[0]
-            current_line_diff.append(i)
+            current_line_diff.append(line)
 
-    with open(os.path.join(os.path.dirname(path_raw), "diff.txt"), "w") as f:
+    if not outpath:
+        outpath = os.path.join(os.path.dirname(path_raw), "diff.txt")
+    with open(outpath, "w") as f:
         f.write(f'dcm1 = {path_raw}\n')
         f.write(f'dcm2 = {path_ano}\n\n\n')
         f.writelines(diff_from_dcm1)
@@ -70,6 +84,8 @@ def get_tag_diff(path_raw, path_ano):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument('-dcm1', required=True)
-    parser.add_argument('-dcm2', default=True)
+    parser.add_argument('-dcm2', required=True)
+    parser.add_argument('-outpath', required=False)
     args = parser.parse_args()
-    get_tag_diff(args.dcm1, args.dcm2)
+    get_tag_diff(args.dcm1, args.dcm2, args.outpath)
+
