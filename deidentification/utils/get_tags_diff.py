@@ -49,7 +49,7 @@ def get_tag_diff(path_raw, path_ano, outpath=None):
             txt = f"Modification (dcm1 -> dcm2): {tag}"
             previous_elem = current_line_diff.pop(-1)
             # check tag name
-            previous_name = previous_elem.split(')')[-1].split(':')[0].split('  ')[0]
+            previous_name = previous_elem[previous_elem.index(')') + 1: previous_elem.index(re.search(' [A-Z]{2}:', previous_elem).group())].replace("  ", "")
             current_name = i[i.index(')') + 1: i.index(re.search(' [A-Z]{2}:', i).group())].replace("  ", "")
             if current_name != previous_name:
                 line += txt + f'\tName modification\t {previous_name} ---> {current_name}\n'
@@ -88,4 +88,3 @@ if __name__ == "__main__":
     parser.add_argument('-outpath', required=False)
     args = parser.parse_args()
     get_tag_diff(args.dcm1, args.dcm2, args.outpath)
-
