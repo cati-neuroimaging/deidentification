@@ -22,7 +22,7 @@ def get_tag_diff(path_raw, path_ano, outpath=None):
                          str(dcm_current).splitlines(keepends=True))
     
     diff_from_dcm1 = []
-    diff_from_dcm_2 = []
+    diff_from_dcm2 = []
     global_modif = []
     current_line_diff = None
     previous_tag = None
@@ -41,7 +41,7 @@ def get_tag_diff(path_raw, path_ano, outpath=None):
                 current_line_diff = diff_from_dcm1
             elif i[0] == "+":
                 txt = "Dcm2 only:"
-                current_line_diff = diff_from_dcm_2
+                current_line_diff = diff_from_dcm2
             line = txt + i[1:]
         # between 2 diff lines : same tag + remove from first line and add to second -> value modification
         elif tag == previous_tag and i[0] != previous_sign:
@@ -49,8 +49,9 @@ def get_tag_diff(path_raw, path_ano, outpath=None):
             txt = f"Modification (dcm1 -> dcm2): {tag}"
             previous_elem = current_line_diff.pop(-1)
             # check tag name
-            previous_name = previous_elem[previous_elem.index(')') + 1: previous_elem.index(re.search(' [A-Z]{2}:', previous_elem).group())].replace("  ", "")
-            current_name = i[i.index(')') + 1: i.index(re.search(' [A-Z]{2}:', i).group())].replace("  ", "")
+            pattern = "\) [A-Z|[].* [A-Z]{2}:"
+            previous_name = re.search(pattern, previous_elem).group()[2:-3].replace('  ', '')
+            current_name = re.search(pattern, i).group()[2:-3].replace('  ', '')
             if current_name != previous_name:
                 line += txt + f'\tName modification\t {previous_name} ---> {current_name}\n'
 
@@ -58,7 +59,7 @@ def get_tag_diff(path_raw, path_ano, outpath=None):
             previous_value = previous_elem.split(': ')[-1].replace('\n', '')
             current_value = i.split(': ')[-1].replace('\n', '') 
             if previous_value != current_value:
-                line += txt + "\tValue modification\t" + previous_value + " -----> " + current_value + '\n'
+                line += txt + f'\tValue modification\t {previous_value}  --->  {current_value}\n'
             current_line_diff = global_modif
 
         if txt != "":
@@ -73,18 +74,18 @@ def get_tag_diff(path_raw, path_ano, outpath=None):
         f.write(f'dcm2 = {path_ano}\n\n\n')
         f.writelines(diff_from_dcm1)
         f.write('\n\n')
-        f.writelines(diff_from_dcm_2)
+        f.writelines(diff_from_dcm2)
         f.write('\n\n')
         f.writelines(global_modif)
     
     print("Done\n")
-    print("Output file : " + os.path.join(os.path.dirname(path_raw), "diff.txt"))
+    print(f"Output file : {outpath}")
 
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('-dcm1', required=True)
-    parser.add_argument('-dcm2', required=True)
-    parser.add_argument('-outpath', required=False)
+    parser.add_argument('-f', '--first', required=True)
+    parser.add_argument('-s', '--second', required=True)
+    parser.add_argument('-o', '--outpath', required=False)
     args = parser.parse_args()
-    get_tag_diff(args.dcm1, args.dcm2, args.outpath)
+    get_tag_diff(args.first, args.second, args.outpath)
