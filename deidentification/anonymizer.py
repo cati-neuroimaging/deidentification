@@ -542,7 +542,7 @@ class Anonymizer():
         Gets the private creator tag of data_element.
         """
         if self._is_private_creator(data_element.tag.group, data_element.tag.element):
-            return data_element
+            return data_element.tag
         group = data_element.tag.group
         element = (data_element.tag.element & 0xff00) >> 8
         return pydicom.tag.Tag(group, element)
