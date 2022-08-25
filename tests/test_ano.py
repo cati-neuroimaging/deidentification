@@ -186,6 +186,37 @@ def test_anonymize_anonymous(file_path):
         anonymize(file_path, path_ano(file_path), anonymous=True)
         
 
+def test_anonymize_config_safe_private(dicom_path):
+    from deidentification.anonymizer import Anonymizer
+    if not os.path.exists(OUTPUT_DIR):
+        os.makedirs(OUTPUT_DIR)
+    ds = pydicom.read_file(dicom_path)
+    tags_config = {
+        # Private Creator tag to be kept
+        (0x2005, 0x0011): {
+            'name': ds.get((0x2005, 0x0011)).value,
+            'action': 'K'
+        },
+        # Private Creator tag with wrong name
+        (0x2005, 0x0012): {
+            'name': 'XX',
+            'action': 'K'
+        }
+    }
+    output_dicom_path = os.path.join(OUTPUT_DIR, os.path.basename(dicom_path))
+    anon = Anonymizer(os.path.abspath(dicom_path),
+                      os.path.abspath(output_dicom_path),
+                      tags_config)
+    anon.run_ano()
+    
+    ds = pydicom.read_file(output_dicom_path)
+    
+    assert ds.get((0x2005, 0x0011))
+    assert ds.get((0x2005, 0x1199)) and ds.get((0x2005, 0x1134))
+    assert ds.get((0x2005, 0x0012))
+    assert not ds.get((0x2005, 0x1213))
+        
+
 # Anonymize bin
 
 def test_deidentification_bin(dicom_path):

@@ -441,8 +441,14 @@ class Anonymizer():
                 del ds[data_element.tag]
                 return
             private_creator_value = private_creator.value
-            # Check if the private creator is in the safe private attribute
-            # keys
+            private_creator_tag = (private_creator.tag.group, private_creator.tag.element)
+            # Check if private creator in tag_config
+            if (self._tags_config is not None
+                    and private_creator_tag in self._tags_config
+                    and private_creator.value == self._tags_config[private_creator_tag]['name']):
+                self._apply_action(ds, data_element, self._tags_config[private_creator_tag]['action'])
+                return
+            # Check if the private creator is in the safe private attribute keys
             if private_creator_value not in list(tag_lists.safe_private_attributes.keys()):
                 self.originalDict[data_element.tag] = data_element.value
                 del ds[data_element.tag]
