@@ -1,59 +1,59 @@
-Tags	Name	Action
-(0008,0020)	Study Date	
-(0008,0031)	Series Time	
-(0008,0032)	Acquisition Time	
-(0008,0033)	Content Time	
-(0008,103E)	Series Description	
-(0010,0010)	Patient's Name	
-(0018,1060)	Trigger Time	
-(0019,100C)	B Value	
-(0019,100A)	Number of slices	
-(0019,101E)	Display field of view	
-(0019,1028)	Bandwidth per pixel phase encode	
-(0019,105A)	Acquisition duration	
-(0019,107E)	Number of echoes	
-(0019,109F)	Transmitting Coil Type	
-(0019,10BB)	User data 20	
-(0019,10BC)	User data 21	
-(0019,10BD)	User data 22	
-(0021,1009)	Parallel acquisition	
-(0021,105A)	Diffusion direction	
-(0021,105E)	RTIA timer	
-(0021,114f)	Coil information	
-(0021,1156)	Parallel acquisition	
-(0021,1175)	Acquisition type	
-(0021,1176)	Correction information	
-(0021,1177)	Sequence information	
-(0021,1178)	Distorsion correction	
-(0021,1179)	Distorsion correction	
-(0025,1007)	Images in Series (Number of slices)	
-(0025,101B)	Protocol Data Block (compressed)	
-(0027,1060)	Image dimension - X (Reconstruction matrix)	
-(0043,102A)	User defined data	
-(0043,102C)	Effective echo spacing	
-(0043,102F)	Image Type (real,imaginary,phase,magnitude)	
-(0043,1039)	B value	
-(0051,100A)	Acquistion duration	
-(0051,100B)	Reconstruction matrix	
-(0051,100C)	Field of view	
-(0051,100E)	Acquisition orientation	
-(0051,100F)	Coil	
-(0051,1011)	Parallel acquisition	
-(0051,1016)	Misc p2 M/NORM/DIS3D	
-(2001,1003)	Diffusion B-Factor	
-(2001,100B)	Slice orientation (Acquisition orientation)	
-(2001,1013)	EPI Factor	
-(2001,1014)	Number of echoes	
-(2001,1018)	Number of slices MR	
-(2001,1020)	Scanning Technique Description MR	
-(2001,101B)	Prepulse Delay	
-(2001,1081)	Number of dynamic scans (Time points)	
-(2005,101D)	Unknown (Reconstruction matrix)	
-(2005,1074)	Unknown	
-(2005,1075)	Unknown	
-(2005,1076)	Unknown	
-(2005,10A1)	Syncra Scan type (correction B1)	
-(2005,10A9)	Unknown (Correction distorsions)	
-(2005,1013)	Unknown	
-(0040,0561)	Original Attributes Sequence	X
-(7fe1,1010)	[CSA Data]	
+Tags	Name	Action	Private Creator
+(0008,0020)	Study Date	K	
+(0008,0031)	Series Time	K	
+(0008,0032)	Acquisition Time	K	
+(0008,0033)	Content Time	K	
+(0008,103E)	Series Description	K	
+(0010,0010)	Patient's Name	K	
+(0018,1060)	Trigger Time	K	
+(0019,100C)	B Value	K	
+(0019,100A)	Number of slices	K	
+(0019,101E)	Display field of view	K	
+(0019,1028)	Bandwidth per pixel phase encode	K	
+(0019,105A)	Acquisition duration	K	
+(0019,107E)	Number of echoes	K	
+(0019,109F)	Transmitting Coil Type	K	
+(0019,10BB)	User data 20	K	
+(0019,10BC)	User data 21	K	
+(0019,10BD)	User data 22	K	
+(0021,1009)	Parallel acquisition	K	
+(0021,105A)	Diffusion direction	K	
+(0021,105E)	RTIA timer	K	
+(0021,114f)	Coil information	K	
+(0021,1156)	Parallel acquisition	K	
+(0021,1175)	Acquisition type	K	
+(0021,1176)	Correction information	K	
+(0021,1177)	Sequence information	K	
+(0021,1178)	Distorsion correction	K	
+(0021,1179)	Distorsion correction	K	
+(0025,1007)	Images in Series (Number of slices)	K	
+(0025,101B)	Protocol Data Block (compressed)	K	
+(0027,1060)	Image dimension - X (Reconstruction matrix)	K	
+(0043,102A)	User defined data	K	
+(0043,102C)	Effective echo spacing	K	
+(0043,102F)	Image Type (real,imaginary,phase,magnitude)	K	
+(0043,1039)	B value	K	
+(0051,100A)	Acquistion duration	K	
+(0051,100B)	Reconstruction matrix	K	
+(0051,100C)	Field of view	K	
+(0051,100E)	Acquisition orientation	K	
+(0051,100F)	Coil	K	
+(0051,1011)	Parallel acquisition	K	
+(0051,1016)	Misc p2 M/NORM/DIS3D	K	
+(2001,1003)	Diffusion B-Factor	K	
+(2001,100B)	Slice orientation (Acquisition orientation)	K	
+(2001,1013)	EPI Factor	K	
+(2001,1014)	Number of echoes	K	
+(2001,1018)	Number of slices MR	K	
+(2001,1020)	Scanning Technique Description MR	K	
+(2001,101B)	Prepulse Delay	K	
+(2001,1081)	Number of dynamic scans (Time points)	K	
+(2005,101D)	Unknown (Reconstruction matrix)	K	
+(2005,1074)	Unknown	K	
+(2005,1075)	Unknown	K	
+(2005,1076)	Unknown	K	
+(2005,10A1)	Syncra Scan type (correction B1)	K	
+(2005,10A9)	Unknown (Correction distorsions)	K	
+(2005,1013)	Unknown	K	
+(0040,0561)	Original Attributes Sequence	X	
+(7fe1,1010)	[CSA Data]	K	

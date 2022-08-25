@@ -43,6 +43,8 @@ def load_config_profile(profile: str, anonymous: bool = False):
                 else:
                     action = d[2]
                 tags_profile[tag_to_tuple(d[0])] = {'name': d[1], 'action': action}
+                if len(d) > 3:
+                    tags_profile[tag_to_tuple(d[0])].update({'private_creator': d[3]})
     except ValueError as e:
         if anonymous:
             tag_load_error = 'Error occurs during config profile load.'

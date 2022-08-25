@@ -414,6 +414,13 @@ class Anonymizer():
             return
         # Check if the data element has to be kept
         if self._tags_config is not None and tag in self._tags_config:
+            # In case of private tag, check if private creator and check its value
+            if data_element.tag.is_private and self._tags_config[tag].get('private_creator'):
+                private_creator = ds.get(self._get_private_creator_tag(data_element), None)
+                if not private_creator.value or private_creator.value != self._tags_config[tag].get('private_creator'):
+                    del ds[data_element.tag]
+                    return
+            
             action = self._tags_config[tag]['action']
             self._apply_action(ds, data_element, action)
             return
@@ -526,6 +533,8 @@ class Anonymizer():
         """
         Gets the private creator tag of data_element.
         """
+        if self._is_private_creator(data_element.tag.group, data_element.tag.element):
+            return data_element
         group = data_element.tag.group
         element = (data_element.tag.element & 0xff00) >> 8
         return pydicom.tag.Tag(group, element)
