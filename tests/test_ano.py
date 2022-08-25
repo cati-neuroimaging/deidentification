@@ -194,12 +194,12 @@ def test_anonymize_config_safe_private(dicom_path):
     tags_config = {
         # Private Creator tag to be kept
         (0x2005, 0x0011): {
-            'name': ds.get((0x2005, 0x0011)).value,
+            'private_creator': ds.get((0x2005, 0x0011)).value,
             'action': 'K'
         },
         # Private Creator tag with wrong name
         (0x2005, 0x0012): {
-            'name': 'XX',
+            'private_creator': 'XX',
             'action': 'K'
         }
     }
