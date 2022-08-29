@@ -1,53 +1,53 @@
-Tags	Name	Action
-(0018,1060)	Trigger Time	
-(0019,100C)	B Value	
-(0019,100A)	Number of slices	
-(0019,101E)	Display field of view	
-(0019,1028)	Bandwidth per pixel phase encode	
-(0019,105A)	Acquisition duration	
-(0019,107E)	Number of echoes	
-(0019,109F)	Transmitting Coil Type	
-(0019,10BB)	User data 20	
-(0019,10BC)	User data 21	
-(0019,10BD)	User data 22	
-(0021,1009)	Parallel acquisition	
-(0021,105A)	Diffusion direction	
-(0021,105E)	RTIA timer	
-(0021,114f)	Coil information	
-(0021,1156)	Parallel acquisition	
-(0021,1175)	Acquisition type	
-(0021,1176)	Correction information	
-(0021,1177)	Sequence information	
-(0021,1178)	Distorsion correction	
-(0021,1179)	Distorsion correction	
-(0025,1007)	Images in Series (Number of slices)	
-(0025,101B)	Protocol Data Block (compressed)	
-(0027,1060)	Image dimension - X (Reconstruction matrix)	
-(0043,102A)	User defined data	
-(0043,102C)	Effective echo spacing	
-(0043,102F)	Image Type (real,imaginary,phase,magnitude)	
-(0043,1039)	B value	
-(0051,100A)	Acquistion duration	
-(0051,100B)	Reconstruction matrix	
-(0051,100C)	Field of view	
-(0051,100E)	Acquisition orientation	
-(0051,100F)	Coil	
-(0051,1011)	Parallel acquisition	
-(0051,1016)	Misc p2 M/NORM/DIS3D	
-(2001,1003)	Diffusion B-Factor	
-(2001,100B)	Slice orientation (Acquisition orientation)	
-(2001,1013)	EPI Factor	
-(2001,1014)	Number of echoes	
-(2001,1018)	Number of slices MR	
-(2001,1020)	Scanning Technique Description MR	
-(2001,101B)	Prepulse Delay	
-(2001,1081)	Number of dynamic scans (Time points)	
-(2005,101D)	Unknown (Reconstruction matrix)	
-(2005,1074)	Unknown	
-(2005,1075)	Unknown	
-(2005,1076)	Unknown	
-(2005,10A1)	Syncra Scan type (correction B1)	
-(2005,10A9)	Unknown (Correction distorsions)	
-(2005,1013)	Unknown	
-(0040,0561)	Original Attributes Sequence	X
-(7fe1,1010)	[CSA Data]	
+Tags	Name	Action	Private Creator
+(0018,1060)	Trigger Time	K	
+(0019,100C)	B Value	K	SIEMENS MR HEADER
+(0019,100A)	Number of slices	K	SIEMENS MR HEADER
+(0019,101E)	Display field of view	K	GEMS_ACQU_01
+(0019,1028)	Bandwidth per pixel phase encode	K	
+(0019,105A)	Acquisition duration	K	GEMS_ACQU_01
+(0019,107E)	Number of echoes	K	GEMS_ACQU_01
+(0019,109F)	Transmitting Coil Type	K	GEMS_ACQU_01
+(0019,10BB)	User data 20	K	GEMS_ACQU_01
+(0019,10BC)	User data 21	K	GEMS_ACQU_01
+(0019,10BD)	User data 22	K	GEMS_ACQU_01
+(0021,1009)	Parallel acquisition	K	
+(0021,105A)	Diffusion direction	K	GEMS_RELA_01
+(0021,105E)	RTIA timer	K	GEMS_RELA_01
+(0021,114f)	Coil information	K	
+(0021,1156)	Parallel acquisition	K	
+(0021,1175)	Acquisition type	K	
+(0021,1176)	Correction information	K	
+(0021,1177)	Sequence information	K	
+(0021,1178)	Distorsion correction	K	
+(0021,1179)	Distorsion correction	K	
+(0025,1007)	Images in Series (Number of slices)	K	GEMS_SERS_01
+(0025,101B)	Protocol Data Block (compressed)	K	GEMS_SERS_01
+(0027,1060)	Image dimension - X (Reconstruction matrix)	K	GEMS_PARM_01
+(0043,102A)	User defined data	K	GEMS_PARM_01
+(0043,102C)	Effective echo spacing	K	GEMS_PARM_01
+(0043,102F)	Image Type (real,imaginary,phase,magnitude)	K	GEMS_PARM_01
+(0043,1039)	B value	K	GEMS_PARM_01
+(0051,100A)	Acquistion duration	K	SIEMENS MR HEADER
+(0051,100B)	Reconstruction matrix	K	SIEMENS MR HEADER
+(0051,100C)	Field of view	K	SIEMENS MR HEADER
+(0051,100E)	Acquisition orientation	K	SIEMENS MR HEADER
+(0051,100F)	Coil	K	SIEMENS MR HEADER
+(0051,1011)	Parallel acquisition	K	SIEMENS MR HEADER
+(0051,1016)	Misc p2 M/NORM/DIS3D	K	SIEMENS MR HEADER
+(2001,1003)	Diffusion B-Factor	K	Philips Imaging DD 001
+(2001,100B)	Slice orientation (Acquisition orientation)	K	Philips Imaging DD 001
+(2001,1013)	EPI Factor	K	Philips Imaging DD 001
+(2001,1014)	Number of echoes	K	Philips Imaging DD 001
+(2001,1018)	Number of slices MR	K	Philips Imaging DD 001
+(2001,1020)	Scanning Technique Description MR	K	
+(2001,101B)	Prepulse Delay	K	Philips Imaging DD 001
+(2001,1081)	Number of dynamic scans (Time points)	K	Philips Imaging DD 001
+(2005,101D)	Unknown (Reconstruction matrix)	K	Philips MR Imaging DD 001
+(2005,1074)	Unknown	K	Philips MR Imaging DD 001
+(2005,1075)	Unknown	K	Philips MR Imaging DD 001
+(2005,1076)	Unknown	K	Philips MR Imaging DD 001
+(2005,10A1)	Syncra Scan type (correction B1)	K	Philips MR Imaging DD 001
+(2005,10A9)	Unknown (Correction distorsions)	K	Philips MR Imaging DD 001
+(2005,1013)	Unknown	K	Philips MR Imaging DD 001
+(0040,0561)	Original Attributes Sequence	X	
+(7fe1,1010)	[CSA Data]	K	
