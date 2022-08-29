@@ -107,15 +107,15 @@ def test_anonymizer_private_tags(dicom_path):
 def test_anonymizer_private_creator(dicom_path):
     from deidentification import anonymizer
     tags_config = {
-        (0x2005, 0x100d): {'action': 'K', 'private_creator': 'Philips MR Imaging DD 001'},
-        (0x2005, 0x100e): {'action': 'K', 'private_creator': 'TOTO'},
+        (0x2005, 0x101d): {'action': 'K', 'private_creator': 'Philips MR Imaging DD 001'},
+        (0x2005, 0x1013): {'action': 'K', 'private_creator': 'TOTO'},
     }
     a = anonymizer.Anonymizer(dicom_path, path_ano(dicom_path),
                               tags_config=tags_config)
     a.run_ano()
     ds = pydicom.read_file(path_ano(dicom_path))
-    assert ds.get((0x2005, 0x100d), None)
-    assert not ds.get((0x2005, 0x100e), None)
+    assert ds.get((0x2005, 0x101d), None)
+    assert not ds.get((0x2005, 0x1013), None)
 
 
 def test_anonymizer_data_sharing_profile(dicom_path):
