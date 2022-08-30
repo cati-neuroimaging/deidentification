@@ -5,7 +5,7 @@ Tags	Name	Action	Private Creator
 (0008,0033)	Content Time	K	
 (0008,103E)	Series Description	K	
 (0010,0010)	Patient's Name	K	
-(0018,1060)	Trigger Time	K	
+(0019,0010)	Private Creator	K	GEMS_ACQU_01
 (0019,100C)	B Value	K	SIEMENS MR HEADER
 (0019,100A)	Number of slices	K	SIEMENS MR HEADER
 (0019,101E)	Display field of view	K	GEMS_ACQU_01
@@ -16,19 +16,22 @@ Tags	Name	Action	Private Creator
 (0019,10BB)	User data 20	K	GEMS_ACQU_01
 (0019,10BC)	User data 21	K	GEMS_ACQU_01
 (0019,10BD)	User data 22	K	GEMS_ACQU_01
-(0021,1009)	Parallel acquisition	K	
+(0021,0010)	Private Creator	K	SIEMENS MR SDS 01
+(0021,0011)	Private Creator	K	SIEMENS MR SDS 01
+(0021,1009)	Parallel acquisition	K	SIEMENS MR SDS 01
 (0021,105A)	Diffusion direction	K	GEMS_RELA_01
 (0021,105E)	RTIA timer	K	GEMS_RELA_01
-(0021,114f)	Coil information	K	
-(0021,1156)	Parallel acquisition	K	
-(0021,1175)	Acquisition type	K	
-(0021,1176)	Correction information	K	
-(0021,1177)	Sequence information	K	
-(0021,1178)	Distorsion correction	K	
-(0021,1179)	Distorsion correction	K	
+(0021,114f)	Coil information	K	SIEMENS MR SDI 02
+(0021,1156)	Parallel acquisition	K	SIEMENS MR SDI 02
+(0021,1175)	Acquisition type	K	SIEMENS MR SDI 02
+(0021,1176)	Correction information	K	SIEMENS MR SDI 02
+(0021,1177)	Sequence information	K	SIEMENS MR SDI 02
+(0021,1178)	Distorsion correction	K	SIEMENS MR SDI 02
+(0021,1179)	Distorsion correction	K	SIEMENS MR SDI 02
 (0025,1007)	Images in Series (Number of slices)	K	GEMS_SERS_01
 (0025,101B)	Protocol Data Block (compressed)	K	GEMS_SERS_01
 (0027,1060)	Image dimension - X	K	GEMS_IMAG_01
+(0027,1062)	Number of Excitations		GEMS_IMAG_01
 (0043,102A)	User defined data	K	GEMS_PARM_01
 (0043,102C)	Effective echo spacing	K	GEMS_PARM_01
 (0043,102F)	Image Type (real,imaginary,phase,magnitude)	K	GEMS_PARM_01
@@ -45,15 +48,25 @@ Tags	Name	Action	Private Creator
 (2001,1013)	EPI Factor	K	Philips Imaging DD 001
 (2001,1014)	Number of echoes	K	Philips Imaging DD 001
 (2001,1018)	Number of slices MR	K	Philips Imaging DD 001
-(2001,1020)	Scanning Technique Description MR	K	
+(2001,1020)	Scanning Technique Description MR	K	Philips Imaging DD 001
 (2001,101B)	Prepulse Delay	K	Philips Imaging DD 001
 (2001,1081)	Number of dynamic scans (Time points)	K	Philips Imaging DD 001
+(2005,0010)	Private Creator	K	Philips MR Imaging DD 001
 (2005,101D)	Unknown (Reconstruction matrix)	K	Philips MR Imaging DD 001
+(2005,1030)	Spectro Repetition Time	K	Philips MR Imaging DD 001
+(2005,1057)	Spectro voxel dim 1	K	Philips MR Imaging DD 001
+(2005,1058)	Spectro voxel dim 2	K	Philips MR Imaging DD 001
+(2005,1059)	Spectro voxel dim 3	K	Philips MR Imaging DD 001
+(2005,105a)	Spectro voxel coordinate 1	K	Philips MR Imaging DD 001
+(2005,105b)	Spectro voxel coordinate 2	K	Philips MR Imaging DD 001
+(2005,105c)	Spectro voxel coordinate 3	K	Philips MR Imaging DD 001
 (2005,1074)	Unknown	K	Philips MR Imaging DD 001
 (2005,1075)	Unknown	K	Philips MR Imaging DD 001
 (2005,1076)	Unknown	K	Philips MR Imaging DD 001
 (2005,10A1)	Syncra Scan type (correction B1)	K	Philips MR Imaging DD 001
 (2005,10A9)	Unknown (Correction distorsions)	K	Philips MR Imaging DD 001
 (2005,1013)	Unknown	K	Philips MR Imaging DD 001
+(2005,1357)	Spectro spectral width	K	Philips MR Imaging DD 004
+(2005,140F)	Private tag data	K	GEMS_IMAG_01
 (0040,0561)	Original Attributes Sequence	X	
-(7fe1,1010)	[CSA Data]	K	
+(7fe1,1010)	[CSA Data]	K	SIEMENS CSA NON-IMAGE
