@@ -414,15 +414,16 @@ class Anonymizer():
             return
         # Check if the data element has to be kept
         if self._tags_config is not None and tag in self._tags_config:
-            skip = False
+            do_apply_action = True
             # In case of private tag, check if private creator and check its value
             if (data_element.tag.is_private
                     and self._tags_config[tag].get('private_creator')
                     and not self._is_private_creator(data_element.tag.group, data_element.tag.element)):
                 private_creator = ds.get(self._get_private_creator_tag(data_element), None)
                 if not private_creator.value or private_creator.value != self._tags_config[tag].get('private_creator'):
-                    skip = True
-            if not skip:
+                    do_apply_action = False
+            
+            if do_apply_action:
                 action = self._tags_config[tag]['action']
                 self._apply_action(ds, data_element, action)
                 return
