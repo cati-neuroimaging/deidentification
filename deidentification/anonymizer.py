@@ -412,6 +412,7 @@ class Anonymizer():
             data_element.value = self._forced_values[tag]
             self.outputDict[data_element.tag] = self._forced_values[tag]
             return
+
         # Check if the data element has to be kept
         if self._tags_config is not None and tag in self._tags_config:
             do_apply_action = True
@@ -422,7 +423,6 @@ class Anonymizer():
                 private_creator = ds.get(self._get_private_creator_tag(data_element), None)
                 if not private_creator.value or private_creator.value != self._tags_config[tag].get('private_creator'):
                     do_apply_action = False
-            
             if do_apply_action:
                 action = self._tags_config[tag]['action']
                 self._apply_action(ds, data_element, action)
