@@ -16,7 +16,7 @@ setup(
     author=release_info['AUTHOR'],
     author_email=release_info['AUTHOR_EMAIL'],
     version=release_info['VERSION'],
-    script=['bin/deidentification'],
+    scripts=['bin/deidentification', 'bin/dicom_tag_diff'],
     packages=modules,
     install_requires=release_info['REQUIRES'],
     package_data={
