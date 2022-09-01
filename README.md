@@ -59,18 +59,23 @@ In the other hand, private tags have to be deleted excepting a list of safe priv
 ## Deidentification profile
 
 It is possible to personnalize deidentification tool using deidentification profiles. A profile is defined by a _.tsv_ file in the folder _deidentification/config/profiles/._ This file references actions to be done on DICOM tags. Actions are the same as defined in the DICOM standard ([De-identification Action Codes](https://dicom.nema.org/medical/dicom/current/output/html/part15.html#table_E.1-1a), ex: 'X' -> remove, 'K' -> keep).
+
+In case of private tag, it is **highly recommended** to add the corresponding private creator value, which will be checked during deidentification. (To learn more about private creator tags: [Private Data Elements](https://dicom.nema.org/dicom/2013/output/chtml/part05/sect_7.8.html))
+
+If tag referenced in profile corresponds to a private creator tag (with its value in *private creator* column), deidentification will keep all the block of element corresponding.
+
 Those rules override rules defined in the DICOM standard.
 
 An exemple of deidentification profile :
 
-| Tag | Name | Action |
-| :---: | :---: | :---: |
-| (0008,0104) | Code Meaning | X |
-| (0018,1060) | Trigger Time | K |
-| (0019,100C) | B Value | K |
-| (0019,100A) | Number of slices |
-| (0019,101E) | Display field of view |
-| ... | ... |
+| Tag | Name | Action | Private Creator |
+| :---: | :---: | :---: | :---: |
+| (0008,0104) | Code Meaning | X | |
+| (0018,1060) | Trigger Time | K | |
+| (0019,100C) | B Value | K | SIEMENS MR HEADER |
+| (0019,100A) | Number of slices | K | SIEMENS MR HEADER |
+| (0019,101E) | Display field of view | K | GEMS_ACQU_01 |
+| ... | ... | ... | ... |
 
 Two deidentification profiles are already defined in deidentification module.
 
@@ -86,13 +91,13 @@ Launch anon_example.py function to anonymize a dicom file.
 Whitout subject id (set as "Unknown" by default):
 
 ```sh
-python bin/deidentification -in myInputFolder -out myOutputFolder
+deidentification -in myInputFolder -out myOutputFolder
 ```
 
 With a subject id and configuration profile:
 
 ```sh
-python bin/deidentification -in myInputFolder -out myOutputFolder -id 0001XXXX -c data_sharing
+deidentification -in myInputFolder -out myOutputFolder -id 0001XXXX -c data_sharing
 ```
 
 ### Using python module

@@ -412,11 +412,21 @@ class Anonymizer():
             data_element.value = self._forced_values[tag]
             self.outputDict[data_element.tag] = self._forced_values[tag]
             return
+
         # Check if the data element has to be kept
         if self._tags_config is not None and tag in self._tags_config:
-            action = self._tags_config[tag]['action']
-            self._apply_action(ds, data_element, action)
-            return
+            do_apply_action = True
+            # In case of private tag, check if private creator and check its value
+            if (data_element.tag.is_private
+                    and self._tags_config[tag].get('private_creator')
+                    and not self._is_private_creator(data_element.tag.group, data_element.tag.element)):
+                private_creator = ds.get(self._get_private_creator_tag(data_element), None)
+                if not private_creator.value or private_creator.value != self._tags_config[tag].get('private_creator'):
+                    do_apply_action = False
+            if do_apply_action:
+                action = self._tags_config[tag]['action']
+                self._apply_action(ds, data_element, action)
+                return
         
         # Check if the data element is in the DICOM part 15/annex E tag list
         action = self._find_in_conf_profile(group, element)
@@ -438,7 +448,7 @@ class Anonymizer():
             # Check if private creator in tag_config
             if (self._tags_config is not None
                     and private_creator_tag in self._tags_config
-                    and private_creator.value == self._tags_config[private_creator_tag]['name']):
+                    and private_creator.value == self._tags_config[private_creator_tag]['private_creator']):
                 self._apply_action(ds, data_element, self._tags_config[private_creator_tag]['action'])
                 return
             # Check if the private creator is in the safe private attribute keys
@@ -532,6 +542,8 @@ class Anonymizer():
         """
         Gets the private creator tag of data_element.
         """
+        if self._is_private_creator(data_element.tag.group, data_element.tag.element):
+            return data_element.tag
         group = data_element.tag.group
         element = (data_element.tag.element & 0xff00) >> 8
         return pydicom.tag.Tag(group, element)
