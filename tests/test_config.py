@@ -18,6 +18,15 @@ def test_anonymizer_profile_load():
         tags_config = load_config_profile('wrong_profile')
 
 
+def test_profile_w_private_creator():
+    from deidentification.config import load_config_profile
+    tags_config = load_config_profile('cati_collector')
+    private_creator_values = [v.get('private_creator')
+                              for v in tags_config.values()
+                              if v.get('private_creator')]
+    assert private_creator_values
+
+
 def test_tag_to_tuple():
     from deidentification.config import tag_to_tuple
     tags = {
