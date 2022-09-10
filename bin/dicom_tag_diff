@@ -1,0 +1,12 @@
+#!/usr/bin/env python3
+import argparse
+
+from deidentification.utils.get_tags_diff import get_tag_diff
+
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-f', '--first', required=True)
+    parser.add_argument('-s', '--second', required=True)
+    parser.add_argument('-o', '--outpath', required=False)
+    args = parser.parse_args()
+    get_tag_diff(args.first, args.second, args.outpath)
