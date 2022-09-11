@@ -1,6 +1,7 @@
 import glob
 import os
 import os.path as osp
+import tempfile
 import pytest
 import shutil
 import subprocess
@@ -202,6 +203,59 @@ def test_anonymize_config_safe_private(dicom_path):
     assert ds.get((0x2005, 0x1199)) and ds.get((0x2005, 0x1134))
     assert ds.get((0x2005, 0x0012))
     assert not ds.get((0x2005, 0x1213))
+
+
+def test_anonymize_private_creator_tree(dicom_path):
+    # In case of private tag and private creator tag in a block inside tag
+    # Check that Private Creator if found and tag kept
+    if not os.path.exists(OUTPUT_DIR):
+        os.makedirs(OUTPUT_DIR)
+
+    # Create :
+    # (3030, 1001)     1 item(s) ---- 
+    #    (3033, 0010) Private Creator                     LO: 'Test deidentification'
+    #    (3033, 1011) Private tag data                    SH: 'Very Important Tag'
+    #    (3035, 1011) Private tag data                    SH: 'Very Important Tag2'
+    #    ---------
+    # (3035, 0010) Private Creator                     SH: 'Test deidentification2'
+
+    ds = pydicom.read_file(osp.abspath(dicom_path))
+    sequence_block = pydicom.Dataset()
+    block = sequence_block.private_block(0x3033, 'Test deidentification', create=True)
+    block.add_new(0x11, 'SH', 'Very Important Tag')
+    block2 = sequence_block.private_block(0x3035, 'Test deidentification2', create=True)
+    block2.add_new(0X11, 'SH', 'Very Important Tag2')
+    del sequence_block[(0x3035, 0x10)]
+    ds.add_new((0x3030, 0x1001), 'SQ', [sequence_block])
+    ds.add_new((0x3035, 0x0010), 'SH', 'Test deidentification2')
+
+
+    tmp_file = tempfile.NamedTemporaryFile()
+    tmp_file_path = tmp_file.name
+    ds.save_as(tmp_file_path)
+
+    tags_config = {
+        (0x3033, 0x1011): {
+            'private_creator': 'Test deidentification',
+            'action': 'K'
+        },
+        (0x3035, 0x1011): {
+            'private_creator': 'Test deidentification2',
+            'action': 'K'
+        }
+    }
+
+    output_dicom_path = os.path.join(OUTPUT_DIR, os.path.basename(dicom_path))
+    anon = Anonymizer(tmp_file_path, 
+                      osp.abspath(output_dicom_path),
+                      tags_config)
+    anon.run_ano()
+
+    ds = pydicom.read_file(osp.abspath(output_dicom_path))
+
+    assert ds[(0x3030, 0x1001)][0][(0x3033, 0x1011)]
+    assert ds.get((0x3035, 0X0010))
+    assert not ds[(0x3030, 0x1001)][0].get((0x3035, 1011))
         
 
 # Anonymize bin
