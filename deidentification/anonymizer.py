@@ -421,7 +421,7 @@ class Anonymizer():
                     and self._tags_config[tag].get('private_creator')
                     and not self._is_private_creator(data_element.tag.group, data_element.tag.element)):
                 private_creator = ds.get(self._get_private_creator_tag(data_element), None)
-                if not private_creator.value or private_creator.value != self._tags_config[tag].get('private_creator'):
+                if not private_creator or private_creator.value != self._tags_config[tag].get('private_creator'):
                     do_apply_action = False
             if do_apply_action:
                 action = self._tags_config[tag]['action']
