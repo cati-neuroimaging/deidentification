@@ -6,6 +6,9 @@ import shutil
 import subprocess
 
 import pydicom
+from deidentification import anonymizer
+from deidentification.anonymizer import anonymize, Anonymizer, AnonymizerError
+from deidentification.config import load_config_profile
 
 DATA_DIR = 'tests/data/'
 DICOM_DATA_DIR = osp.join(DATA_DIR, 'dicoms')
@@ -66,14 +69,12 @@ def file_path(request):
 # Anonymizer class tests
 
 def test_anonymizer_basic(dicom_path):
-    from deidentification import anonymizer
     a = anonymizer.Anonymizer(dicom_path, path_ano(dicom_path))
     a.run_ano()
     assert True
 
 
 def test_anonymizer_public_tags(dicom_path):
-    from deidentification import anonymizer
     a = anonymizer.Anonymizer(dicom_path, path_ano(dicom_path))
     a.run_ano()
     ds = pydicom.read_file(path_ano(dicom_path))
@@ -82,7 +83,6 @@ def test_anonymizer_public_tags(dicom_path):
 
 
 def test_anonymizer_input_tags(dicom_path):
-    from deidentification import anonymizer
     tags_config = {
         (0x0008, 0x0032): {'action': 'K'},  # Usually deleted
         (0x0008, 0x0008): {'action': 'X'}  # Usually kept
@@ -96,7 +96,6 @@ def test_anonymizer_input_tags(dicom_path):
 
 
 def test_anonymizer_private_tags(dicom_path):
-    from deidentification import anonymizer
     a = anonymizer.Anonymizer(dicom_path, path_ano(dicom_path))
     a.run_ano()
     ds = pydicom.read_file(path_ano(dicom_path))
@@ -105,7 +104,6 @@ def test_anonymizer_private_tags(dicom_path):
 
 
 def test_anonymizer_private_creator(dicom_path):
-    from deidentification import anonymizer
     tags_config = {
         (0x2005, 0x101d): {'action': 'K', 'private_creator': 'Philips MR Imaging DD 001'},
         (0x2005, 0x1013): {'action': 'K', 'private_creator': 'TOTO'},
@@ -119,8 +117,6 @@ def test_anonymizer_private_creator(dicom_path):
 
 
 def test_anonymizer_data_sharing_profile(dicom_path):
-    from deidentification import anonymizer
-    from deidentification.config import load_config_profile
     tags_config = load_config_profile('data_sharing')
     a = anonymizer.Anonymizer(dicom_path, path_ano(dicom_path),
                               tags_config=tags_config)
@@ -132,13 +128,11 @@ def test_anonymizer_data_sharing_profile(dicom_path):
 
 
 def test_anonymizer_not_file(dicom_archives_path):
-    from deidentification import anonymizer
     with pytest.raises(anonymizer.AnonymizerError, match=r".*not a DICOM file.*{}".format(dicom_archives_path)):
         _ = anonymizer.Anonymizer(dicom_archives_path, path_ano(dicom_archives_path))
 
 
 def test_anonymizer_anonymous(dicom_archives_path):
-    from deidentification import anonymizer
     with pytest.raises(anonymizer.AnonymizerError, match=r"({})".format(dicom_archives_path)):
         _ = anonymizer.Anonymizer(dicom_archives_path, path_ano(dicom_archives_path))
     with pytest.raises(anonymizer.AnonymizerError, match=r"^((?!{}).)*$".format(dicom_archives_path)):
@@ -149,37 +143,31 @@ def test_anonymizer_anonymous(dicom_archives_path):
 # anonymize function tests
 
 def test_anonymize_basic(dicom_path):
-    from deidentification.anonymizer import anonymize
     anonymize(dicom_path, OUTPUT_DIR)
     assert osp.basename(dicom_path) in os.listdir(OUTPUT_DIR)
 
 
 def test_anonymize_data_sharing_profile(dicom_path):
-    from deidentification.anonymizer import anonymize
     anonymize(dicom_path, OUTPUT_DIR, config_profile='data_sharing')
     assert osp.basename(dicom_path) in os.listdir(OUTPUT_DIR)
 
 
 def test_anonymize_archive_basic(dicom_archives_path):
-    from deidentification.anonymizer import anonymize
     anonymize(dicom_archives_path, path_ano(dicom_archives_path))
     assert osp.exists(path_ano(dicom_archives_path))
 
 
 def test_anonymize_bad_archive_basic(dicom_bad_archives_path):
-    from deidentification.anonymizer import anonymize, AnonymizerError
     with pytest.raises(AnonymizerError):
         anonymize(dicom_bad_archives_path, path_ano(dicom_bad_archives_path))
 
 
 def test_anonymize_archive_data_sharing_progile(dicom_archives_path):
-    from deidentification.anonymizer import anonymize
     anonymize(dicom_archives_path, path_ano(dicom_archives_path))
     assert(osp.exists(path_ano(dicom_archives_path)))
 
 
 def test_anonymize_anonymous(file_path):
-    from deidentification.anonymizer import anonymize, AnonymizerError
     with pytest.raises(AnonymizerError, match=r"({})".format(file_path)):
         anonymize(file_path, path_ano(file_path))
     with pytest.raises(AnonymizerError, match=r"^((?!{}).)*$".format(file_path)):
@@ -187,7 +175,6 @@ def test_anonymize_anonymous(file_path):
         
 
 def test_anonymize_config_safe_private(dicom_path):
-    from deidentification.anonymizer import Anonymizer
     if not os.path.exists(OUTPUT_DIR):
         os.makedirs(OUTPUT_DIR)
     ds = pydicom.read_file(dicom_path)
