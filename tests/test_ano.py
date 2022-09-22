@@ -1,3 +1,4 @@
+import csv
 import glob
 import os
 import os.path as osp
@@ -10,6 +11,7 @@ import pydicom
 from deidentification import anonymizer
 from deidentification.anonymizer import anonymize, Anonymizer, AnonymizerError
 from deidentification.config import load_config_profile
+from . import create_fake_config
 
 DATA_DIR = 'tests/data/'
 DICOM_DATA_DIR = osp.join(DATA_DIR, 'dicoms')
@@ -257,6 +259,40 @@ def test_anonymize_private_creator_tree(dicom_path):
     assert ds.get((0x3035, 0X0010))
     assert not ds[(0x3030, 0x1001)][0].get((0x3035, 1011))
         
+
+def test_ano_several_private_creator_name(dicom_path):
+    if not os.path.exists(OUTPUT_DIR):
+        os.makedirs(OUTPUT_DIR)
+    tmp_config = create_fake_config([
+        ['(3033,1011)', 'VIT', 'K', 'Name1'],
+        ['(3033,1011)', 'VIT', 'K', 'Name2'],
+    ])
+
+    ds = pydicom.read_file(osp.abspath(dicom_path))
+    sequence_block = pydicom.Dataset()
+    block = sequence_block.private_block(0x3033, 'Name1', create=True)
+    block.add_new(0x11, 'SH', 'Very Important Tag')
+    sequence_block2 = pydicom.Dataset()
+    block2 = sequence_block2.private_block(0x3033, 'Name2', create=True)
+    block2.add_new(0x11, 'SH', 'Very Important Tag')
+    ds.add_new((0x3030, 0x1001), 'SQ', [sequence_block])
+    ds.add_new((0x3034, 0x1001), 'SQ', [sequence_block2])
+
+    tmp_file = tempfile.NamedTemporaryFile()
+    tmp_file_path = tmp_file.name
+    ds.save_as(tmp_file_path)
+
+    output_dicom_path = os.path.join(OUTPUT_DIR, os.path.basename(dicom_path))
+    anon = Anonymizer(tmp_file_path,
+                      osp.abspath(output_dicom_path),
+                      load_config_profile(tmp_config))
+    anon.run_ano()
+
+    ds = pydicom.read_file(osp.abspath(output_dicom_path))
+
+    assert ds[(0x3030, 0x1001)][0].get((0x3033, 0x1011))
+    assert ds[(0x3034, 0x1001)][0].get((0x3033, 0x1011))
+
 
 # Anonymize bin
 
