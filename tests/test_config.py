@@ -1,5 +1,7 @@
 import pytest
 
+from . import create_fake_config
+
 
 def test_tag_lists():
     from deidentification.tag_lists import conf_profile, conf_profile_range
@@ -41,3 +43,14 @@ def test_tag_to_tuple():
     for wrong_tag in wrong_tags:
         with pytest.raises(ValueError, match=r"Input tag .* must contains .*"):
             tag_to_tuple(wrong_tag)
+
+
+def test_multiple_private_creator_name():
+    from deidentification.config import load_config_profile
+    tmp_config = create_fake_config([
+        ['(2005,0010)', 'Private Creator', 'K', 'Name1'],
+        ['(2005,0010)', 'Private Creator', 'K', 'Name2']
+    ])
+    
+    config = load_config_profile(tmp_config)
+    assert len(config[(0x2005, 0x0010)]['private_creator']) == 2
