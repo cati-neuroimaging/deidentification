@@ -36,6 +36,12 @@ Tags	Name	Action	Private Creator
 (0025,101B)	Protocol Data Block (compressed)	K	GEMS_SERS_01
 (0027,1060)	Image dimension - X	K	GEMS_IMAG_01
 (0027,1062)	Number of Excitations	K	GEMS_IMAG_01
+(0029,1010)	CSA Image Header Info	K	SIEMENS CSA HEADER
+(0029,1020)	CSA Image Header Info	K	SIEMENS CSA HEADER
+(0029,1110)	CSA Image Header Info	K	SIEMENS CSA HEADER
+(0029,1120)	CSA Image Header Info	K	SIEMENS CSA HEADER
+(0029,1210)	CSA Image Header Info	K	SIEMENS CSA HEADER
+(0029,1220)	CSA Image Header Info	K	SIEMENS CSA HEADER
 (0040,0561)	Original Attributes Sequence	X	
 (0043,102A)	User defined data	K	GEMS_PARM_01
 (0043,102C)	Effective echo spacing	K	GEMS_PARM_01
