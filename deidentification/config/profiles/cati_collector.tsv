@@ -23,6 +23,7 @@ Tags	Name	Action	Private Creator
 (0021,0011)	Private Creator	K	SIEMENS MR SDI 02
 (0021,0011)	Private Creator	K	SIEMENS MR IMA
 (0021,1009)	Parallel acquisition	K	SIEMENS MR SDS 01
+(0021,104F)	Locations in acquisition	K	GEMS_RELA_01
 (0021,105A)	Diffusion direction	K	GEMS_RELA_01
 (0021,105E)	RTIA timer	K	GEMS_RELA_01
 (0021,114f)	Coil information	K	SIEMENS MR SDI 02
