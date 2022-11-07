@@ -77,4 +77,7 @@ Tags	Name	Action	Private Creator
 (2005,1270)	Spectro data	K	Philips MR Imaging DD 003
 (2005,1357)	Spectro spectral width	K	Philips MR Imaging DD 004
 (2005,140F)	Private tag data	K	Philips MR Imaging DD 005
+(2005,1412)	Number of the bvalue	K	Philips MR Imaging DD 005
+(2005,1413)	Slice volume	K	Philips MR Imaging DD 005
+(2005,1599)	Expected volume number	K	Philips MR Imaging DD 006
 (7fe1,1010)	[CSA Data]	K	SIEMENS CSA NON-IMAGE
