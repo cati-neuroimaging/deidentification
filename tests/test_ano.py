@@ -51,7 +51,7 @@ def dicom_archives_path(request):
     if osp.isfile(file_path):
         yield file_path
     clean_outputs(file_path)
-    
+
 
 @pytest.fixture(params=glob.glob(DICOM_DATA_DIR + '/bad_format/*.tar.gz'))
 def dicom_bad_archives_path(request):
@@ -175,7 +175,7 @@ def test_anonymize_anonymous(file_path):
         anonymize(file_path, path_ano(file_path))
     with pytest.raises(AnonymizerError, match=r"^((?!{}).)*$".format(file_path)):
         anonymize(file_path, path_ano(file_path), anonymous=True)
-        
+
 
 def test_anonymize_config_safe_private(dicom_path):
     if not os.path.exists(OUTPUT_DIR):
@@ -198,9 +198,9 @@ def test_anonymize_config_safe_private(dicom_path):
                       os.path.abspath(output_dicom_path),
                       tags_config)
     anon.run_ano()
-    
+
     ds = pydicom.read_file(output_dicom_path)
-    
+
     assert ds.get((0x2005, 0x0011))
     assert ds.get((0x2005, 0x1199)) and ds.get((0x2005, 0x1134))
     assert ds.get((0x2005, 0x0012))
@@ -214,7 +214,7 @@ def test_anonymize_private_creator_tree(dicom_path):
         os.makedirs(OUTPUT_DIR)
 
     # Create :
-    # (3030, 1001)     1 item(s) ---- 
+    # (3030, 1001)     1 item(s) ----
     #    (3033, 0010) Private Creator                     LO: 'Test deidentification'
     #    (3033, 1011) Private tag data                    SH: 'Very Important Tag'
     #    (3035, 1011) Private tag data                    SH: 'Very Important Tag2'
@@ -248,7 +248,7 @@ def test_anonymize_private_creator_tree(dicom_path):
     }
 
     output_dicom_path = os.path.join(OUTPUT_DIR, os.path.basename(dicom_path))
-    anon = Anonymizer(tmp_file_path, 
+    anon = Anonymizer(tmp_file_path,
                       osp.abspath(output_dicom_path),
                       tags_config)
     anon.run_ano()
@@ -258,7 +258,7 @@ def test_anonymize_private_creator_tree(dicom_path):
     assert ds[(0x3030, 0x1001)][0][(0x3033, 0x1011)]
     assert ds.get((0x3035, 0X0010))
     assert not ds[(0x3030, 0x1001)][0].get((0x3035, 1011))
-        
+
 
 def test_ano_several_private_creator_name(dicom_path):
     if not os.path.exists(OUTPUT_DIR):
@@ -303,6 +303,6 @@ def test_deidentification_bin(dicom_path):
            '-c', 'cati_collector']
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, stderr = process.communicate()
-    
+
     assert not stderr
     assert os.listdir(OUTPUT_DIR)

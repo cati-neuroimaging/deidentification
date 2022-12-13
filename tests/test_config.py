@@ -51,6 +51,6 @@ def test_multiple_private_creator_name():
         ['(2005,0010)', 'Private Creator', 'K', 'Name1'],
         ['(2005,0010)', 'Private Creator', 'K', 'Name2']
     ])
-    
+
     config = load_config_profile(tmp_config)
     assert len(config[(0x2005, 0x0010)]['private_creator']) == 2

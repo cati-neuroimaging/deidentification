@@ -18,7 +18,7 @@ if __name__ == '__main__':
                         help="ID of the subject")
     parser.add_argument("-c", "--config", default=None,
                         help="Deidentification configuration")
-   
+
     # Get arguments
     args = parser.parse_args()
     dicom_in = args.dicom_in
