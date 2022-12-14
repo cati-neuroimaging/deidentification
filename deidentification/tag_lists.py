@@ -6,7 +6,7 @@ from deidentification.config import tag_to_tuple
 conf_profile_path = CONFIG_FOLDER.joinpath('confidentiality_profiles.tsv')
 conf_profile = {}
 conf_profile_range = {}
-with open(conf_profile_path, 'r') as tsv_file:
+with open(conf_profile_path) as tsv_file:
     tsv_reader = csv.reader(tsv_file, delimiter='\t')
     header = next(tsv_reader)
     for d in tsv_reader:
@@ -21,7 +21,7 @@ with open(conf_profile_path, 'r') as tsv_file:
 
 safe_private_path = CONFIG_FOLDER.joinpath('safe_private.tsv')
 safe_private_attributes = {}
-with open(safe_private_path, 'r') as tsv_file:
+with open(safe_private_path) as tsv_file:
     tsv_reader = csv.reader(tsv_file, delimiter='\t')
     header = next(tsv_reader)
     for d in tsv_reader:

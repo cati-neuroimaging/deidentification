@@ -11,15 +11,15 @@ def tag_to_tuple(tag_str: str) -> tuple:
 
     tag_tuple = tag.split(',')
     if len(tag_tuple) != 2:
-        raise ValueError("Input tag '{}' must contain 2 elements".format(tag_str))
+        raise ValueError(f"Input tag '{tag_str}' must contain 2 elements")
     
     try:
         tag_tuple = tuple(int(t, 16) for t in tag_tuple)
     except ValueError:
-        raise ValueError("Input tag '{}' must contain hexadecimal values".format(tag_str))
+        raise ValueError(f"Input tag '{tag_str}' must contain hexadecimal values".format(tag_str))
     for tag in tag_tuple:
         if tag > 0xFFFF:
-            raise ValueError("Input tag '{}' must contain values between '0x0000' and '0xFFFF'".format(tag_str))
+            raise ValueError(f"Input tag '{tag_str}' must contain values between '0x0000' and '0xFFFF'")
     return tag_tuple
 
 
@@ -33,7 +33,7 @@ def load_config_profile(profile: str, anonymous: bool = False):
     
     tag_load_error = ''
     try:
-        with open(profile_path, 'r') as tsv_file:
+        with open(profile_path) as tsv_file:
             tsv_reader = csv.reader(tsv_file, delimiter='\t')
             _ = next(tsv_reader)  # header
             tags_profile = {}

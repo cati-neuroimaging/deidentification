@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import tarfile
 import zipfile
 import os
@@ -105,7 +104,7 @@ def untar_first(input_filename: str, extract_dir: str) -> str:
             file_to_extract = tar_data.next()
             
         if file_to_extract is None:
-            print('No file found in archive {}'.format(input_filename))
+            print(f'No file found in archive {input_filename}')
             res = ''
         else:
             tar_data.extract(file_to_extract, path=extract_dir)

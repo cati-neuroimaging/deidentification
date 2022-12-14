@@ -49,7 +49,7 @@ def get_tag_diff(path_raw, path_ano, outpath=None):
             txt = f"Modification (dcm1 -> dcm2): {tag}"
             previous_elem = current_line_diff.pop(-1)
             # check tag name
-            pattern = "\) [A-Z|[].* [A-Z]{2}:"
+            pattern = r"\) [A-Z|[].* [A-Z]{2}:"
             previous_name = re.search(pattern, previous_elem).group()[2:-3].replace('  ', '')
             current_name = re.search(pattern, i).group()[2:-3].replace('  ', '')
             if current_name != previous_name:
