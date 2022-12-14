@@ -1,6 +1,7 @@
+import os
 import tarfile
 import zipfile
-import os
+
 from deidentification import DeidentificationError
 
 
@@ -76,7 +77,7 @@ def pack(output_filename, sources):
     ext = os.path.splitext(output_filename)[1][1:]
     if ext == 'zip':
         pack_zip(output_filename, sources)
-    elif ext in ['gz', 'tgz', 'bz2', 'tar']:
+    elif ext in ('gz', 'tgz', 'bz2', 'tar'):
         pack_tar(output_filename, sources, ext)
     else:
         raise AttributeError('Output_filename must be an archive (ex: .tar.gz, .zip)')

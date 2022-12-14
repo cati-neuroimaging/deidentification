@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
 
-import difflib
-import pydicom
-import os, re
 import argparse
+import difflib
+import os
+import re
+
+import pydicom
+
 
 def get_tag_diff(path_raw, path_ano, outpath=None):
     """

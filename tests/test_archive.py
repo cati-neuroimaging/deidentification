@@ -1,6 +1,6 @@
-import pytest
 import glob
 
+import pytest
 
 ARCHIVES_OPENING_DIR = 'tests/data/archives/opening_archives'
 ARCHIVES_NOT_OPENING_DIR = 'tests/data/archives/not_opening_archives'
@@ -36,10 +36,10 @@ def test_is_archive_file_for_opening_archive(opening_archive_path):
 
 
 def test_is_archive_file_for_not_opening_archive(not_opening_archive_path):
-    # Test if is_archive_file raises an error for files that are not TAR or ZIP.
-    # Files may have such extensions, but tarlib or ziplib could not open them
-    from deidentification.archive import is_archive_file
+    # Test if the is_archive_file raise an error for file that are not TAR or ZIP.
+    # IRL files could have good extensions but tarlib or ziplib could not openened it
     from deidentification.anonymizer import DeidentificationError
+    from deidentification.archive import is_archive_file
     with pytest.raises(DeidentificationError):
         is_archive_file(not_opening_archive_path)
 
