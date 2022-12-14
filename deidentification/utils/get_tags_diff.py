@@ -5,6 +5,7 @@ import pydicom
 import os, re
 import argparse
 
+
 def get_tag_diff(path_raw, path_ano, outpath=None):
     """
     Return diff.txt file in the sam directory as path_raw which
@@ -26,7 +27,7 @@ def get_tag_diff(path_raw, path_ano, outpath=None):
     global_modif = []
     current_line_diff = None
     previous_tag = None
-    previous_sign =  None
+    previous_sign = None
 
     for i in diff:
         if "(" not in i or ")" not in i:
@@ -49,7 +50,7 @@ def get_tag_diff(path_raw, path_ano, outpath=None):
             txt = f"Modification (dcm1 -> dcm2): {tag}"
             previous_elem = current_line_diff.pop(-1)
             # check tag name
-            pattern = "\) [A-Z|[].* [A-Z]{2}:"
+            pattern = r"\) [A-Z|[].* [A-Z]{2}:"
             previous_name = re.search(pattern, previous_elem).group()[2:-3].replace('  ', '')
             current_name = re.search(pattern, i).group()[2:-3].replace('  ', '')
             if current_name != previous_name:
