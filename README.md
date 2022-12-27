@@ -57,7 +57,7 @@ On the other hand, private tags must be deleted, except a list of safe private t
 
 ## Deidentification profile
 
-It is possible to personnalize the deidentification tool using deidentification profiles. A profile is defined by a `.tsv` file in folder `deidentification/config/profiles/`. This file references actions to be done on DICOM tags, teh same as the actions defined in the DICOM standard ([De-identification Action Codes](https://dicom.nema.org/medical/dicom/current/output/html/part15.html#table_E.1-1a), ex: 'X' -> remove, 'K' -> keep).
+It is possible to personnalize the deidentification tool using deidentification profiles. A profile is defined by a `.tsv` file in folder `deidentification/config/profiles/`. This file references actions to be done on DICOM tags, the same as the actions defined in the DICOM standard ([De-identification Action Codes](https://dicom.nema.org/medical/dicom/current/output/html/part15.html#table_E.1-1a), ex: 'X' -> remove, 'K' -> keep).
 
 In case of private tag, it is **highly recommended** to add the corresponding private creator value, which will be checked during deidentification. (To learn more about private creator tags: [Private Data Elements](https://dicom.nema.org/dicom/2013/output/chtml/part05/sect_7.8.html))
 
