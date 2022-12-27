@@ -15,7 +15,7 @@ def get_tag_diff(path_raw, path_ano, outpath=None):
         path_dcm2 (str): path of the second dcm (current)
         outpath (str): path of the diff_file
     """
-    print(f"Check difference between :\n{path_raw} and\n{path_ano}\n")
+    print(f"Check difference between:\n{path_raw} and\n{path_ano}\n")
     dcm_ref = pydicom.read_file(path_raw)
     dcm_current = pydicom.read_file(path_ano)
     diff = difflib.ndiff(str(dcm_ref).splitlines(keepends=True),
@@ -43,7 +43,7 @@ def get_tag_diff(path_raw, path_ano, outpath=None):
                 txt = "Dcm2 only:"
                 current_line_diff = diff_from_dcm2
             line = txt + i[1:]
-        # between 2 diff lines : same tag + remove from first line and add to second -> value modification
+        # between 2 diff lines: same tag + remove from first line and add to second -> value modification
         elif tag == previous_tag and i[0] != previous_sign:
             line = ""
             txt = f"Modification (dcm1 -> dcm2): {tag}"
@@ -79,7 +79,7 @@ def get_tag_diff(path_raw, path_ano, outpath=None):
         f.writelines(global_modif)
     
     print("Done\n")
-    print(f"Output file : {outpath}")
+    print(f"Output file: {outpath}")
 
 
 if __name__ == "__main__":

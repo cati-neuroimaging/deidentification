@@ -30,14 +30,14 @@ def test_get_archive_ext():
 
 
 def test_is_archive_file_for_opening_archive(opening_archive_path):
-    # Test if the function is_archive_file returns True for an archive that is a TAR or a ZIP
+    # Test if is_archive_file returns True for TAR or ZIP archives
     from deidentification.archive import is_archive_file
     assert is_archive_file(opening_archive_path)
 
 
 def test_is_archive_file_for_not_opening_archive(not_opening_archive_path):
-    # Test if the is_archive_file raise an error for file that are not TAR or ZIP.
-    # IRL files could have good extensions but tarlib or ziplib could not openened it
+    # Test if is_archive_file raises an error for files that are not TAR or ZIP.
+    # Files may have such extensions, but tarlib or ziplib could not open them
     from deidentification.archive import is_archive_file
     from deidentification.anonymizer import DeidentificationError
     with pytest.raises(DeidentificationError):
@@ -45,7 +45,7 @@ def test_is_archive_file_for_not_opening_archive(not_opening_archive_path):
 
 
 def test_is_archive_file_for_files(non_archive_path):
-    # Test if is_archive_file return False when an non archive file is on input
+    # Test if is_archive_file return False for an non archive file
     from deidentification.archive import is_archive_file
     assert not is_archive_file(non_archive_path)
 

@@ -2,10 +2,10 @@
 
 [![Python tests](https://github.com/cati-neuroimaging/deidentification/actions/workflows/python-package.yml/badge.svg)](https://github.com/cati-neuroimaging/deidentification/actions/workflows/python-package.yml)
 
-Tool to remove metadata allowing to identify a subject from DICOM images used in neuroimaging research. Can anonymize dicom files or archives of dicoms.
-Deidentification is based on DICOM Standard deinfinition, based on Supplement 142. This Supplement has evolved among time, and this tool aims to use last version of this standard.
+Tool to remove metadata allowing to directly identify a subject from DICOM images used in neuroimaging research. Can anonymize DICOM files or archives of DICOM files.
+Deidentification is based on the last version of [Supplement 142](ftp://medical.nema.org/medical/dicom/final/sup142_ft.pdf) of the DICOM standard.
 
-According to this standard :
+According to this standard:
 
 - Public Tags are allowed except a list of identifying Tags
 - Private Tags are removed except a list of safe Tags containing data about acquisition
@@ -19,9 +19,8 @@ This tool can be personnalized with deidentification profiles to force keeping s
 
 ## Deidentification standard
 
-According to DICOM standard public tags can be kept, except a list of tags that may contains indentifying data. Those tags are defined in _Confidentiality profile`
-
-[DICOM attribute confidentiality Profiles](http://dicom.nema.org/medical/dicom/current/output/html/part15.html#chapter_E)
+According to DICOM standard, public tags can be kept, except a list of tags that may contain identifying data. Those tags are defined in
+[Attribute Confidentiality Profiles](http://dicom.nema.org/medical/dicom/current/output/html/part15.html#chapter_E).
 
 - X means the attribute must be removed
 - U means the attribute must be replaced with a cleaned but internally consistent UUID
@@ -42,7 +41,7 @@ According to DICOM standard public tags can be kept, except a list of tags that 
 | (0x0010,0x0032) | X | Patient's Birth Time |
 | ... | ... | ... |
 
-In the other hand, private tags have to be deleted excepting a list of safe private tags that may only contains data acquisition information without identifying data.
+On the other hand, private tags must be deleted, except a list of safe private tags that may only contain data acquisition information without directly identifying data.
 
 | Data Element | Private Creator | Meaning |
 | :---: | :---: | :--- |
@@ -58,7 +57,7 @@ In the other hand, private tags have to be deleted excepting a list of safe priv
 
 ## Deidentification profile
 
-It is possible to personnalize deidentification tool using deidentification profiles. A profile is defined by a _.tsv_ file in the folder _deidentification/config/profiles/._ This file references actions to be done on DICOM tags. Actions are the same as defined in the DICOM standard ([De-identification Action Codes](https://dicom.nema.org/medical/dicom/current/output/html/part15.html#table_E.1-1a), ex: 'X' -> remove, 'K' -> keep).
+It is possible to personnalize the deidentification tool using deidentification profiles. A profile is defined by a `.tsv` file in folder `deidentification/config/profiles/`. This file references actions to be done on DICOM tags, the same as the actions defined in the DICOM standard ([De-identification Action Codes](https://dicom.nema.org/medical/dicom/current/output/html/part15.html#table_E.1-1a), ex: 'X' -> remove, 'K' -> keep).
 
 In case of private tag, it is **highly recommended** to add the corresponding private creator value, which will be checked during deidentification. (To learn more about private creator tags: [Private Data Elements](https://dicom.nema.org/dicom/2013/output/chtml/part05/sect_7.8.html))
 
@@ -66,7 +65,7 @@ If tag referenced in profile corresponds to a private creator tag (with its valu
 
 Those rules override rules defined in the DICOM standard.
 
-An exemple of deidentification profile :
+An example of deidentification profile:
 
 | Tag | Name | Action | Private Creator |
 | :---: | :---: | :---: | :---: |
@@ -80,15 +79,15 @@ An exemple of deidentification profile :
 Two deidentification profiles are already defined in deidentification module.
 
 - `cati_collector` keeps some private tags about acquisition parameters and tags to help to identify acquisition. This profile is used internally by the CATI to deidentify data incoming from hospitals. **It is not a profile recommended to use in other case of deidentification** as identifying data could stay.
-- `data_sharing` keeps some private tafs about acquisition parameters. Those tags came from the CATI experience about neuroimaging data, and are supposed to contains only non indentifying acquisition data.
+- `data_sharing` keeps some private tags about acquisition parameters. Those tags came from the CATI experience about neuroimaging data, and are supposed to contains only non-identifying acquisition data.
 
 ## How to use it?
 
 ### As a script
 
-Launch anon_example.py function to anonymize a dicom file.
+Launch anon_example.py to anonymize a dicom file.
 
-Whitout subject id (set as "Unknown" by default):
+Without subject id (set as "Unknown" by default):
 
 ```sh
 deidentification -in myInputFolder -out myOutputFolder
@@ -100,7 +99,7 @@ With a subject id and configuration profile:
 deidentification -in myInputFolder -out myOutputFolder -id 0001XXXX -c data_sharing
 ```
 
-### Using python module
+### As a Python module
 
 ```python
 from deidentification import anonymizer

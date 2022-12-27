@@ -41,7 +41,7 @@ def test_tag_to_tuple():
 
     wrong_tags = ['(0010)', '0250 0010', '(2005, 1050, 0001)', '(2005, 1015a)', '000h, 2005']
     for wrong_tag in wrong_tags:
-        with pytest.raises(ValueError, match=r"Input tag .* must contains .*"):
+        with pytest.raises(ValueError, match=r"Input tag .* must contain .*"):
             tag_to_tuple(wrong_tag)
 
 
