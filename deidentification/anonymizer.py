@@ -327,6 +327,45 @@ class AnonymizerError(DeidentificationError):
         return self.message.format(self.complement)
 
 
+def _generate_uuid(input):
+    """
+    Returns an UUID according to input.
+    """
+    return hashlib.md5(input).hexdigest()
+
+
+def _get_cleaned_value(data_element):
+    """
+    Gets a cleaned value of data_element value according to its representation.
+    """
+    if data_element.VR == 'UI':
+        return _generate_uuid(data_element.value)
+    if data_element.VR in ('DT', 'TM'):
+        return "000000.00"
+    elif data_element.VR == 'DA':
+        return "20000101"
+    return "no value"
+
+
+def _is_private_creator(group, element):
+    """
+    Returns true if the (group, element) tag is a private creator and false otherwise.
+    """
+    return group % 2 != 0 and \
+        element > 0x0000 and element < 0x00ff
+
+
+def _get_private_creator_tag(data_element):
+    """
+    Gets the private creator tag of data_element.
+    """
+    if _is_private_creator(data_element.tag.group, data_element.tag.element):
+        return data_element.tag
+    group = data_element.tag.group
+    element = (data_element.tag.element & 0xff00) >> 8
+    return pydicom.tag.Tag(group, element)
+
+
 class Anonymizer():
 
     """
@@ -419,8 +458,8 @@ class Anonymizer():
             # In case of private tag, check if private creator and check its value
             if (data_element.tag.is_private
                     and self._tags_config[tag].get('private_creator')
-                    and not self._is_private_creator(data_element.tag.group, data_element.tag.element)):
-                private_creator = ds.get(self._get_private_creator_tag(data_element), None)
+                    and not _is_private_creator(data_element.tag.group, data_element.tag.element)):
+                private_creator = ds.get(_get_private_creator_tag(data_element), None)
                 if not private_creator or private_creator.value not in self._tags_config[tag].get('private_creator'):
                     do_apply_action = False
             if do_apply_action:
@@ -435,11 +474,11 @@ class Anonymizer():
         
         # Check if the data element is private
         elif data_element.tag.is_private:
-            if self._is_private_creator(group, element):
+            if _is_private_creator(group, element):
                 self.originalDict[data_element.tag] = data_element.value
                 self.outputDict[data_element.tag] = data_element.value
                 return
-            private_creator = ds.get(self._get_private_creator_tag(data_element), None)
+            private_creator = ds.get(_get_private_creator_tag(data_element), None)
             if not private_creator:
                 del ds[data_element.tag]
                 return
@@ -503,47 +542,12 @@ class Anonymizer():
             self.outputDict[data_element.tag] = data_element.value
         elif action == 'D':
             self.originalDict[data_element.tag] = data_element.value
-            data_element.value = self._get_cleaned_value(data_element)
+            data_element.value = _get_cleaned_value(data_element)
             self.outputDict[data_element.tag] = data_element.value
         elif action == 'U':
-            data_element.value = self._generate_uuid(data_element.value.encode())
+            data_element.value = _generate_uuid(data_element.value.encode())
         elif action == 'K':
             self.originalDict[data_element.tag] = data_element.value
             self.outputDict[data_element.tag] = data_element.value
         else:
             raise DeidentificationError(f'Action not recognized: {action}')
-
-    def _generate_uuid(self, input):
-        """
-        Returns an UUID according to input.
-        """
-        return hashlib.md5(input).hexdigest()
-
-    def _get_cleaned_value(self, data_element):
-        """
-        Gets a cleaned value of data_element value according to its representation.
-        """
-        if data_element.VR == 'UI':
-            return self._generate_uuid(data_element.value)
-        if data_element.VR in ('DT', 'TM'):
-            return "000000.00"
-        elif data_element.VR == 'DA':
-            return "20000101"
-        return "no value"
-
-    def _is_private_creator(self, group, element):
-        """
-        Returns true if the (group, element) tag is a private creator and false otherwise.
-        """
-        return group % 2 != 0 and \
-            element > 0x0000 and element < 0x00ff
-
-    def _get_private_creator_tag(self, data_element):
-        """
-        Gets the private creator tag of data_element.
-        """
-        if self._is_private_creator(data_element.tag.group, data_element.tag.element):
-            return data_element.tag
-        group = data_element.tag.group
-        element = (data_element.tag.element & 0xff00) >> 8
-        return pydicom.tag.Tag(group, element)
