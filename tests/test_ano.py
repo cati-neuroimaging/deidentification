@@ -2,15 +2,17 @@ import csv
 import glob
 import os
 import os.path as osp
-import tempfile
-import pytest
 import shutil
 import subprocess
+import tempfile
 
 import pydicom
+import pytest
+
 from deidentification import anonymizer
-from deidentification.anonymizer import anonymize, Anonymizer, AnonymizerError
+from deidentification.anonymizer import Anonymizer, AnonymizerError, anonymize
 from deidentification.config import load_config_profile
+
 from . import create_fake_config
 
 DATA_DIR = 'tests/data/'

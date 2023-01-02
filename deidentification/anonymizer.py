@@ -12,9 +12,9 @@ from tempfile import mkdtemp
 import pydicom
 
 import deidentification as deid
-from deidentification import tag_lists, DeidentificationError
-from deidentification.archive import is_archive_file, is_archive_ext, pack, unpack
-from deidentification.archive import unpack_first
+from deidentification import DeidentificationError, tag_lists
+from deidentification.archive import (is_archive_ext, is_archive_file, pack,
+                                      unpack, unpack_first)
 from deidentification.config import load_config_profile
 
 
@@ -525,7 +525,7 @@ class Anonymizer():
         """
         if data_element.VR == 'UI':
             return self._generate_uuid(data_element.value)
-        if data_element.VR in ['DT', 'TM']:
+        if data_element.VR in ('DT', 'TM'):
             return "000000.00"
         elif data_element.VR == 'DA':
             return "20000101"

@@ -4,16 +4,16 @@ from . import create_fake_config
 
 
 def test_tag_lists():
-    from deidentification.tag_lists import conf_profile, conf_profile_range
-    from deidentification.tag_lists import safe_private_attributes
+    from deidentification.tag_lists import (conf_profile, conf_profile_range,
+                                            safe_private_attributes)
     assert isinstance(conf_profile, dict)
     assert isinstance(conf_profile_range, dict)
     assert isinstance(safe_private_attributes, dict)
 
 
 def test_anonymizer_profile_load():
-    from deidentification.config import load_config_profile
     from deidentification import DeidentificationError
+    from deidentification.config import load_config_profile
     tags_config = load_config_profile('data_sharing')
     assert isinstance(tags_config, dict)
     with pytest.raises(DeidentificationError, match=r"Profile .* does not exists."):
