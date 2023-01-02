@@ -8,6 +8,7 @@ import re
 import pydicom
 
 
+
 def get_tag_diff(path_raw, path_ano, outpath=None):
     """
     Return diff.txt file in the sam directory as path_raw which
@@ -29,7 +30,7 @@ def get_tag_diff(path_raw, path_ano, outpath=None):
     global_modif = []
     current_line_diff = None
     previous_tag = None
-    previous_sign =  None
+    previous_sign = None
 
     for i in diff:
         if "(" not in i or ")" not in i:

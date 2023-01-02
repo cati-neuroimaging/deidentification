@@ -1,4 +1,3 @@
-import csv
 import glob
 import os
 import os.path as osp
@@ -232,7 +231,6 @@ def test_anonymize_private_creator_tree(dicom_path):
     del sequence_block[(0x3035, 0x10)]
     ds.add_new((0x3030, 0x1001), 'SQ', [sequence_block])
     ds.add_new((0x3035, 0x0010), 'SH', 'Test deidentification2')
-
 
     tmp_file = tempfile.NamedTemporaryFile()
     tmp_file_path = tmp_file.name
