@@ -328,9 +328,9 @@ class AnonymizerError(DeidentificationError):
         return self.message.format(self.complement)
 
 
-def _generate_uuid(input):
+def _generate_uuid(value):
     """
-    Generate a (not so) random UUID based on the SHA512 hash of the input.
+    Generate a (not) random UUID based on the SHA512 hash of the input value.
 
     We need reproducible UUIDs, not random UUIDs, yet the best course of
     action is probably to apply Section 4.4 of `RFC 4122`_ which specifies
@@ -346,7 +346,7 @@ def _generate_uuid(input):
     .. _ITU-T X.667: https://www.itu.int/rec/T-REC-X.667
 
     """
-    u = hashlib.sha512(input).digest()  # 64 bytes (512 bits) of SHA-512 hash
+    u = hashlib.sha512(value).digest()  # 64 bytes (512 bits) of SHA-512 hash
 
     u = bytearray(u[:16])  # keep first 16 bytes (128 bits) for UUID
 
@@ -359,12 +359,12 @@ def _generate_uuid(input):
     return UUID(bytes=bytes(u))
 
 
-def _generate_dicom_uid(input):
+def _generate_dicom_uid(value):
     """
-    Generate a DICOM UID based on a reproducible UUID hashed from the input.
+    Generate a DICOM UID based on a reproducible UUID hashed from the input value.
 
     """
-    return "2.25." + str(_generate_uuid(input).int)
+    return "2.25." + str(_generate_uuid(value).int)
 
 
 def _get_cleaned_value(data_element):
