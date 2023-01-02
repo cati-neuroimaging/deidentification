@@ -8,6 +8,7 @@ import os
 import shutil
 from glob import glob
 from tempfile import mkdtemp
+from uuid import UUID
 
 import pydicom
 
@@ -329,9 +330,41 @@ class AnonymizerError(DeidentificationError):
 
 def _generate_uuid(input):
     """
-    Returns an UUID according to input.
+    Generate a (not so) random UUID based on the SHA512 hash of the input.
+
+    We need reproducible UUIDs, not random UUIDs, yet the best course of
+    action is probably to apply Section 4.4 of `RFC 4122`_ which specifies
+    random UUIDs:
+    * The two most significant bits (bits 6 and 7) of the
+      clock_seq_hi_and_reserved must be set to zero and one, respectively.
+    * The four most significant bits (bits 12 through 15) of the
+      time_hi_and_version field must be set to 0, 0, 1, 0.
+
+    See also ISO/IEC 9834-8 / `ITU-T X.667``_.
+
+    .. _RFC 4122: https://www.rfc-editor.org/info/rfc4122
+    .. _ITU-T X.667: https://www.itu.int/rec/T-REC-X.667
+
     """
-    return hashlib.md5(input).hexdigest()
+    u = hashlib.sha512(input).digest()  # 64 bytes (512 bits) of SHA-512 hash
+
+    u = bytearray(u[:16])  # keep first 16 bytes (128 bits) for UUID
+
+    # comply with section 4.4 of RFC 4122, although the UUID is not random
+    u[6] &= 0b01001111  # set bits 12, 13, 15 of time_hi_and_version to 0
+    u[6] |= 0b01000000  # set bits 14 of time_hi_and_version to 1
+    u[8] &= 0b10111111  # set bit 6 of clock_seq_hi_and_reserved to 0
+    u[8] |= 0b10000000  # set bit 7 of clock_seq_hi_and_reserved to 1
+
+    return UUID(bytes=bytes(u))
+
+
+def _generate_dicom_uid(input):
+    """
+    Generate a DICOM UID based on a reproducible UUID hashed from the input.
+
+    """
+    return "2.25." + str(_generate_uuid(input).int)
 
 
 def _get_cleaned_value(data_element):
@@ -339,7 +372,7 @@ def _get_cleaned_value(data_element):
     Gets a cleaned value of data_element value according to its representation.
     """
     if data_element.VR == 'UI':
-        return _generate_uuid(data_element.value)
+        return _generate_dicom_uid(data_element.value)
     if data_element.VR in ('DT', 'TM'):
         return "000000.00"
     elif data_element.VR == 'DA':
@@ -545,7 +578,7 @@ class Anonymizer():
             data_element.value = _get_cleaned_value(data_element)
             self.outputDict[data_element.tag] = data_element.value
         elif action == 'U':
-            data_element.value = _generate_uuid(data_element.value.encode())
+            data_element.value = _generate_dicom_uid(data_element.value.encode())
         elif action == 'K':
             self.originalDict[data_element.tag] = data_element.value
             self.outputDict[data_element.tag] = data_element.value
