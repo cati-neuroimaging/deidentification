@@ -8,11 +8,10 @@ import re
 import pydicom
 
 
-
 def get_tag_diff(path_raw, path_ano, outpath=None):
     """
     Return diff.txt file in the sam directory as path_raw which
-    contain the tag difference between the 2 dcm 
+    contain the tag difference between the 2 dcm
 
     Args:
         path_dcm1 (str): path of the first dcm (ref)
@@ -24,7 +23,7 @@ def get_tag_diff(path_raw, path_ano, outpath=None):
     dcm_current = pydicom.read_file(path_ano)
     diff = difflib.ndiff(str(dcm_ref).splitlines(keepends=True),
                          str(dcm_current).splitlines(keepends=True))
-    
+
     diff_from_dcm1 = []
     diff_from_dcm2 = []
     global_modif = []
@@ -61,7 +60,7 @@ def get_tag_diff(path_raw, path_ano, outpath=None):
 
             # check tag value
             previous_value = previous_elem.split(': ')[-1].replace('\n', '')
-            current_value = i.split(': ')[-1].replace('\n', '') 
+            current_value = i.split(': ')[-1].replace('\n', '')
             if previous_value != current_value:
                 line += txt + f'\tValue modification\t {previous_value}  --->  {current_value}\n'
             current_line_diff = global_modif
@@ -81,7 +80,7 @@ def get_tag_diff(path_raw, path_ano, outpath=None):
         f.writelines(diff_from_dcm2)
         f.write('\n\n')
         f.writelines(global_modif)
-    
+
     print("Done\n")
     print(f"Output file: {outpath}")
 

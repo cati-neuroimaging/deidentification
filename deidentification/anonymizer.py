@@ -42,7 +42,7 @@ def _load_config(config_profile, tags_to_keep, tags_to_delete, anonymous):
     if config_profile:
         if tags_to_keep or tags_to_delete:
             raise DeidentificationError('Both tags_to_keep/tags_to_delete and config_profile have been specified.')
-        
+
         tags_config = load_config_profile(config_profile, anonymous)
     else:
         if tags_to_keep:
@@ -72,10 +72,10 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
     """
     if os.path.isfile(dicom_folder_out):
         raise DeidentificationError('The DICOM output has to be a folder.')
-    
+
     tags_config = _load_config(config_profile, tags_to_keep,
                                tags_to_delete, anonymous)
-    
+
     if not os.path.exists(dicom_folder_out):
         os.makedirs(dicom_folder_out)
     dicom_file_out = os.path.join(dicom_folder_out,
@@ -86,7 +86,7 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
         profile_name = os.path.basename(config_profile).rsplit('.', 1)[0]
     else:
         profile_name = config_profile
-    
+
     anon = Anonymizer(dicom_file_in, dicom_file_out,
                       tags_config, forced_values,
                       anonymous=anonymous,
@@ -103,7 +103,7 @@ def anonymize(dicom_in, dicom_out,
               tempdir_prefix=None):
     """Configures the Anonymizer and runs it on DICOM files. It can configured using tags_to_keep
     or config_profile, and forced_values (ex: {(0x0010, 0x0010) : 'XXXX')})
-    
+
     Parameters
     ----------
     dicom_in : str
@@ -170,7 +170,7 @@ def anonymize(dicom_in, dicom_out,
     finally:
         if is_dicom_in_archive and os.path.exists(wip_dicom_in):
             shutil.rmtree(wip_dicom_in)
-    
+
     if is_dicom_out_archive:
         try:
             pack(os.path.abspath(dicom_out),
@@ -191,13 +191,13 @@ def check_anonymize_fast(dicom_in,
     """
     Configures the Anonymizer and runs it on one DICOM file to check if anonymization already done.
     """
-        
+
     if not os.path.exists(dicom_in):
         raise DeidentificationError('The DICOM input does not exists.')
 
     tags_config = _load_config(config_profile, tags_to_keep,
                                tags_to_delete, anonymous)
-    
+
     dicom_tmp = ''
     if is_archive_file(dicom_in):
         dicom_tmp = mkdtemp(prefix=tempdir_prefix)
@@ -213,7 +213,7 @@ def check_anonymize_fast(dicom_in,
         wip_dicom_in = next(filter(os.path.isfile, items_in_folder), '')
     else:
         raise DeidentificationError('File input type is not handled by this tool.')
-        
+
     if os.path.isfile(wip_dicom_in):
         try:
             anon = Anonymizer(wip_dicom_in, '',
@@ -226,7 +226,7 @@ def check_anonymize_fast(dicom_in,
                 shutil.rmtree(dicom_tmp)
     else:
         raise DeidentificationError('File input type is not handled by this tool.')
-    
+
 
 def check_anonymize(dicom_in,
                     tags_to_keep=None,
@@ -244,7 +244,7 @@ def check_anonymize(dicom_in,
 
     tags_config = _load_config(config_profile, tags_to_keep,
                                tags_to_delete, anonymous)
-    
+
     is_archive_in = is_archive_file(dicom_in)
     if is_archive_in:
         wip_dicom_in = mkdtemp(prefix=tempdir_prefix)
@@ -255,7 +255,7 @@ def check_anonymize(dicom_in,
             raise DeidentificationError('Unpacking compressed file failed.')
     else:
         wip_dicom_in = dicom_in
-        
+
     if os.path.isfile(wip_dicom_in):
         try:
             anon = Anonymizer(wip_dicom_in, '',
@@ -266,15 +266,15 @@ def check_anonymize(dicom_in,
         finally:
             if is_archive_in and os.path.exists(wip_dicom_in):
                 shutil.rmtree(wip_dicom_in)
-        
+
     elif os.path.isdir(wip_dicom_in):
         return check_folder_anonymize(wip_dicom_in,
                                       forced_values=forced_values,
                                       config_profile=config_profile)
-    
+
     else:
         raise DeidentificationError('File input type is not handled by this tool.')
-        
+
 
 def check_folder_anonymize(dicom_folder,
                            tags_to_keep=None,
@@ -303,7 +303,7 @@ def check_folder_anonymize(dicom_folder,
 
     tags_config = _load_config(config_profile, tags_to_keep,
                                tags_to_delete, anonymous)
-    
+
     for root, dirs, files in os.walk(dicom_folder):
         for filename in files:
             anon = Anonymizer(os.path.join(root, filename), '',
@@ -320,7 +320,7 @@ class AnonymizerError(DeidentificationError):
         self.message = message
         self.complement = complement
         self.anonymous = anonymous
-        
+
     def __str__(self):
         if self.anonymous:
             return self.message.format('')
@@ -363,7 +363,7 @@ class Anonymizer():
         """
         if not self.ano_run:
             self._dataset.walk(self._anonymize_check)
-        
+
         # Patient Identity Removed
         self._dataset.add_new((0x0012, 0x0062), 'CS', 'YES')
         # De-identification Method
@@ -374,7 +374,7 @@ class Anonymizer():
 
         pydicom.write_file(self._dicom_fileout, self._dataset)
         return 1
-    
+
     def runCheck(self):
         """
         Check anonymization.
@@ -405,7 +405,7 @@ class Anonymizer():
         group = data_element.tag.group
         element = data_element.tag.element
         tag = (group, element)
-        
+
         # Check if the value must be forced
         if self._forced_values is not None and tag in self._forced_values:
             self.originalDict[data_element.tag] = data_element.value
@@ -427,12 +427,12 @@ class Anonymizer():
                 action = self._tags_config[tag]['action']
                 self._apply_action(ds, data_element, action)
                 return
-        
+
         # Check if the data element is in the DICOM part 15/annex E tag list
         action = self._find_in_conf_profile(group, element)
         if action:
             self._apply_action(ds, data_element, action)
-        
+
         # Check if the data element is private
         elif data_element.tag.is_private:
             if self._is_private_creator(group, element):
@@ -464,21 +464,21 @@ class Anonymizer():
         # else:
             # self.originalDict[data_element.tag] = data_element.value
             # self.outputDict[data_element.tag] = data_element.value
-                
+
     def _find_in_conf_profile(self, group: int, element: int) -> str:
         """
         Find (group, element) in confidentiality profiles and return action expected if found.
         """
         if (group, element) in tag_lists.conf_profile:
             return tag_lists.conf_profile[(group, element)]['profile'][0]
-        
+
         for tag_range in tag_lists.conf_profile_range:
             (group_min, element_min), (group_max, element_max) = tag_range
             if group_min <= group <= group_max and element_min <= element <= element_max:
                 return tag_lists.conf_profile_range[tag_range]['profile'][0]
-        
+
         return ''
-    
+
     def _apply_action(self, ds, data_element, action):
         """
         Apply confidentiality profiles action to data_element of ds
