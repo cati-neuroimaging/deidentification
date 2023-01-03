@@ -384,8 +384,7 @@ def _is_private_creator(group, element):
     """
     Returns true if the (group, element) tag is a private creator and false otherwise.
     """
-    return group % 2 != 0 and \
-        element > 0x0000 and element < 0x00ff
+    return group % 2 != 0 and 0x0000 < element < 0x00ff
 
 
 def _get_private_creator_tag(data_element):
