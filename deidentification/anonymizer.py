@@ -363,6 +363,16 @@ def _generate_dicom_uid(value):
     """
     Generate a DICOM UID based on a reproducible UUID hashed from the input value.
 
+    See `PS 3.5 Sect B2`_:
+
+        [ISO/IEC 9834-8] / [ITU-T X.667] defines a method by which a UID
+        may be constructed from the root "2.25." followed by a decimal
+        representation of a Universally Unique Identifier (UUID). That
+        decimal representation treats the 128 bit UUID as an integer, and
+        may thus be up to 39 digits long (leading zeros must be suppressed).
+
+    .. _PS 3.5 Sect B2: https://dicom.nema.org/medical/dicom/current/output/chtml/part05/sect_B.2.html
+
     """
     return "2.25." + str(_generate_uuid(value).int)
 
