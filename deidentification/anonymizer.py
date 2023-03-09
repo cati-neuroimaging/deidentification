@@ -382,7 +382,7 @@ def _get_cleaned_value(data_element):
     Gets a cleaned value of data_element value according to its representation.
     """
     if data_element.VR == 'UI':
-        return self._generate_uuid(data_element.value)
+        return _generate_uuid(data_element.value)
     if data_element.VR == 'DA':
         return "19700101"
     if data_element.VR == 'TM':
