@@ -103,7 +103,7 @@ def untar_first(input_filename: str, extract_dir: str) -> str:
         file_to_extract = tar_data.next()
         while file_to_extract is not None and not file_to_extract.isfile():
             file_to_extract = tar_data.next()
-            
+
         if file_to_extract is None:
             print(f'No file found in archive {input_filename}')
             res = ''
@@ -140,7 +140,7 @@ def unzip_first(input_filename: str, extract_dir: str) -> str:
             zip_file.extract(file_to_extract, extract_dir)
             res = os.path.join(extract_dir, file_to_extract.filename)
     return res
-        
+
 
 def pack_tar(output_filename, sources, type='gz'):
     """

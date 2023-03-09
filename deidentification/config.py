@@ -12,7 +12,7 @@ def tag_to_tuple(tag_str: str) -> tuple:
     tag_tuple = tag.split(',')
     if len(tag_tuple) != 2:
         raise ValueError(f"Input tag '{tag_str}' must contain 2 elements")
-    
+
     try:
         tag_tuple = tuple(int(t, 16) for t in tag_tuple)
     except ValueError:
@@ -30,7 +30,7 @@ def load_config_profile(profile: str, anonymous: bool = False):
             profile_path = profile
         else:
             raise DeidentificationError(f'Profile {profile} does not exists.')
-    
+
     tag_load_error = ''
     try:
         with open(profile_path) as tsv_file:
@@ -54,6 +54,6 @@ def load_config_profile(profile: str, anonymous: bool = False):
         raise DeidentificationError(tag_load_error)
 
     return tags_profile
-    
-    
+
+
 # /!\ Siemens VIDA and CSA header ?

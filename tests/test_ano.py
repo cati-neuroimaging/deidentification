@@ -168,7 +168,7 @@ def test_anonymize_bad_archive_basic(dicom_bad_archives_path):
 
 def test_anonymize_archive_data_sharing_progile(dicom_archives_path):
     anonymize(dicom_archives_path, path_ano(dicom_archives_path))
-    assert(osp.exists(path_ano(dicom_archives_path)))
+    assert osp.exists(path_ano(dicom_archives_path))
 
 
 def test_anonymize_anonymous(file_path):
