@@ -525,10 +525,12 @@ class Anonymizer():
         """
         if data_element.VR == 'UI':
             return self._generate_uuid(data_element.value)
-        if data_element.VR in ('DT', 'TM'):
+        if data_element.VR == 'DA':
+            return "19700101"
+        if data_element.VR == 'TM':
             return "000000.00"
-        elif data_element.VR == 'DA':
-            return "20000101"
+        if data_element.VR == 'DT':
+            return "19700101000000.00"
         return "no value"
 
     def _is_private_creator(self, group, element):
