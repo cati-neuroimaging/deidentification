@@ -382,11 +382,13 @@ def _get_cleaned_value(data_element):
     Gets a cleaned value of data_element value according to its representation.
     """
     if data_element.VR == 'UI':
-        return _generate_dicom_uid(data_element.value)
-    if data_element.VR in ('DT', 'TM'):
+        return self._generate_uuid(data_element.value)
+    if data_element.VR == 'DA':
+        return "19700101"
+    if data_element.VR == 'TM':
         return "000000.00"
-    elif data_element.VR == 'DA':
-        return "20000101"
+    if data_element.VR == 'DT':
+        return "19700101000000.00"
     return "no value"
 
 
