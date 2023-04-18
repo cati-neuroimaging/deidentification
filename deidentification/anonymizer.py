@@ -562,7 +562,7 @@ class Anonymizer():
 
         return ''
 
-    def _apply_action(self, ds, data_element, action):
+    def _apply_action(self, ds, data_element, action, save=True):
         """
         Apply confidentiality profiles action to data_element of ds
         - X means remove
@@ -578,20 +578,25 @@ class Anonymizer():
         action : str
         """
         if action == 'X':
-            self.originalDict[data_element.tag] = data_element.value
+            if save: self.originalDict[data_element.tag] = data_element.value
             del ds[data_element.tag]
         elif action == 'Z':
-            self.originalDict[data_element.tag] = data_element.value
+            if save: self.originalDict[data_element.tag] = data_element.value
             data_element.value = ""
-            self.outputDict[data_element.tag] = data_element.value
+            if save: self.outputDict[data_element.tag] = data_element.value
         elif action == 'D':
-            self.originalDict[data_element.tag] = data_element.value
-            data_element.value = _get_cleaned_value(data_element)
-            self.outputDict[data_element.tag] = data_element.value
+            if save: self.originalDict[data_element.tag] = data_element.value
+            if data_element.VR == 'SQ':
+                for dataset_seq in data_element:
+                    for data_element_seq in dataset_seq:
+                        self._apply_action(dataset_seq, data_element_seq, action, False)
+            else:
+                data_element.value = _get_cleaned_value(data_element)
+            if save: self.outputDict[data_element.tag] = data_element.value
         elif action == 'U':
             data_element.value = _generate_dicom_uid(data_element.value.encode())
         elif action == 'K':
-            self.originalDict[data_element.tag] = data_element.value
-            self.outputDict[data_element.tag] = data_element.value
+            if save: self.originalDict[data_element.tag] = data_element.value
+            if save: self.outputDict[data_element.tag] = data_element.value
         else:
             raise DeidentificationError(f'Action not recognized: {action}')
