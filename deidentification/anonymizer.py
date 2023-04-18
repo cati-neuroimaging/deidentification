@@ -346,7 +346,7 @@ def _generate_uuid(value):
     .. _ITU-T X.667: https://www.itu.int/rec/T-REC-X.667
 
     """
-    u = hashlib.sha512(value).digest()  # 64 bytes (512 bits) of SHA-512 hash
+    u = hashlib.sha512(str(value).encode('utf-8')).digest()  # 64 bytes (512 bits) of SHA-512 hash
 
     u = bytearray(u[:16])  # keep first 16 bytes (128 bits) for UUID
 
