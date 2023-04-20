@@ -383,15 +383,16 @@ def _get_cleaned_value(data_element):
     """
     if data_element.VR == 'UI':
         return _generate_dicom_uid(data_element.value)
-    if data_element.VR == 'DA':
+    elif data_element.VR == 'DA':
         return "19700101"
-    if data_element.VR == 'TM':
+    elif data_element.VR == 'TM':
         return "000000.00"
-    if data_element.VR == 'DT':
+    elif data_element.VR == 'DT':
         return "19700101000000.00"
-    if data_element.VR in ['DS', 'FL', 'FD', 'IS', 'SL', 'SS', 'UL', 'US']:
+    elif data_element.VR in ['DS', 'FL', 'FD', 'IS', 'SL', 'SS', 'UL', 'US']:
         return '0'
-    return "no value"
+    else:
+        return "no value"
 
 
 def _is_private_creator(group, element):
