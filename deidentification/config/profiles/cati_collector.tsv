@@ -48,6 +48,7 @@ Tags	Name	Action	Private Creator
 (0043,102C)	Effective echo spacing	K	GEMS_PARM_01
 (0043,102F)	Image Type (real,imaginary,phase,magnitude)	K	GEMS_PARM_01
 (0043,1039)	B value	K	GEMS_PARM_01
+(0043,1083)	Asset R Factors	K	GEMS_PARM_01
 (0051,100A)	Acquistion duration	K	SIEMENS MR HEADER
 (0051,100B)	Reconstruction matrix	K	SIEMENS MR HEADER
 (0051,100C)	Field of view	K	SIEMENS MR HEADER
