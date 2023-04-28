@@ -346,7 +346,7 @@ def _generate_uuid(value):
     .. _ITU-T X.667: https://www.itu.int/rec/T-REC-X.667
 
     """
-    u = hashlib.sha512(value).digest()  # 64 bytes (512 bits) of SHA-512 hash
+    u = hashlib.sha512(str(value).encode('utf-8')).digest()  # 64 bytes (512 bits) of SHA-512 hash
 
     u = bytearray(u[:16])  # keep first 16 bytes (128 bits) for UUID
 
@@ -382,14 +382,17 @@ def _get_cleaned_value(data_element):
     Gets a cleaned value of data_element value according to its representation.
     """
     if data_element.VR == 'UI':
-        return _generate_uuid(data_element.value)
-    if data_element.VR == 'DA':
+        return _generate_dicom_uid(data_element.value)
+    elif data_element.VR == 'DA':
         return "19700101"
-    if data_element.VR == 'TM':
+    elif data_element.VR == 'TM':
         return "000000.00"
-    if data_element.VR == 'DT':
+    elif data_element.VR == 'DT':
         return "19700101000000.00"
-    return "no value"
+    elif data_element.VR in ['DS', 'FL', 'FD', 'IS', 'SL', 'SS', 'UL', 'US']:
+        return '0'
+    else:
+        return "no value"
 
 
 def _is_private_creator(group, element):
@@ -562,7 +565,7 @@ class Anonymizer():
 
         return ''
 
-    def _apply_action(self, ds, data_element, action):
+    def _apply_action(self, ds, data_element, action, save=True):
         """
         Apply confidentiality profiles action to data_element of ds
         - X means remove
@@ -578,20 +581,25 @@ class Anonymizer():
         action : str
         """
         if action == 'X':
-            self.originalDict[data_element.tag] = data_element.value
+            if save: self.originalDict[data_element.tag] = data_element.value
             del ds[data_element.tag]
         elif action == 'Z':
-            self.originalDict[data_element.tag] = data_element.value
+            if save: self.originalDict[data_element.tag] = data_element.value
             data_element.value = ""
-            self.outputDict[data_element.tag] = data_element.value
+            if save: self.outputDict[data_element.tag] = data_element.value
         elif action == 'D':
-            self.originalDict[data_element.tag] = data_element.value
-            data_element.value = _get_cleaned_value(data_element)
-            self.outputDict[data_element.tag] = data_element.value
+            if save: self.originalDict[data_element.tag] = data_element.value
+            if data_element.VR == 'SQ':
+                for dataset_seq in data_element:
+                    for data_element_seq in dataset_seq:
+                        self._apply_action(dataset_seq, data_element_seq, action, False)
+            else:
+                data_element.value = _get_cleaned_value(data_element)
+            if save: self.outputDict[data_element.tag] = data_element.value
         elif action == 'U':
             data_element.value = _generate_dicom_uid(data_element.value.encode())
         elif action == 'K':
-            self.originalDict[data_element.tag] = data_element.value
-            self.outputDict[data_element.tag] = data_element.value
+            if save: self.originalDict[data_element.tag] = data_element.value
+            if save: self.outputDict[data_element.tag] = data_element.value
         else:
             raise DeidentificationError(f'Action not recognized: {action}')
