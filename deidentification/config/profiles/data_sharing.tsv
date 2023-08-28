@@ -1,4 +1,6 @@
 Tags	Name	Action	Private Creator
+(0009,10B2)	PET irnumiterations	K	GEMS_PETD_01
+(0009,10B3)	PET irnumsubsets	K	GEMS_PETD_01
 (0018,9074)	Frame Acquisition DateTime	X	
 (0018,9151)	Frame Reference DateTime	X	
 (0019,0010)	Private Creator	K	GEMS_ACQU_01

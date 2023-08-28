@@ -4,6 +4,8 @@ Tags	Name	Action	Private Creator
 (0008,0032)	Acquisition Time	K	
 (0008,0033)	Content Time	K	
 (0008,103E)	Series Description	K	
+(0009,10B2)	PET irnumiterations	K	GEMS_PETD_01
+(0009,10B3)	PET irnumsubsets	K	GEMS_PETD_01
 (0010,0010)	Patient's Name	K	
 (0019,0010)	Private Creator	K	GEMS_ACQU_01
 (0019,100C)	B Value	K	SIEMENS MR HEADER
