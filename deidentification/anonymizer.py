@@ -165,8 +165,12 @@ def anonymize(dicom_in, dicom_out,
                                    anonymous=anonymous,
                                    config_profile=config_profile)
     except Exception as e:
-        if is_dicom_out_archive and os.path.exists(wip_dicom_out):
-            shutil.rmtree(wip_dicom_out)
+        if os.path.exists(wip_dicom_out):
+            if is_dicom_out_archive:
+                shutil.rmtree(wip_dicom_out)
+            else:
+                for f in glob(f'{wip_dicom_out}/*'):
+                    os.remove(f)
         raise e
     finally:
         if is_dicom_in_archive and os.path.exists(wip_dicom_in):
