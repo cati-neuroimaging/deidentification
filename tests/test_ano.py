@@ -70,6 +70,18 @@ def file_path(request):
     clean_outputs(file_path)
 
 
+@pytest.fixture(params=[DICOM_DATA_DIR])
+def dicom_with_other(request):
+    # DICOM folder with DICOM and non-DICOM in it
+    folder_path = osp.abspath(request.param)
+    tmp_folder = tempfile.mkdtemp()
+    if osp.isdir(folder_path):
+        yield (folder_path, tmp_folder)
+    # clean tmp_folder
+    if osp.exists(tmp_folder):
+        shutil.rmtree(tmp_folder)
+
+
 # Anonymizer class tests
 
 def test_anonymizer_basic(dicom_path):
@@ -292,6 +304,17 @@ def test_ano_several_private_creator_name(dicom_path):
 
     assert ds[(0x3030, 0x1001)][0].get((0x3033, 0x1011))
     assert ds[(0x3034, 0x1001)][0].get((0x3033, 0x1011))
+
+
+def test_anonymize_non_dicom_w_err(dicom_with_other):
+    dicom_folder, tmp_folder = dicom_with_other
+    with pytest.raises(anonymizer.AnonymizerError, match=f".*not a DICOM file.*{dicom_folder}.*"):
+        anonymize(dicom_folder, tmp_folder, error_no_dicom=True)
+
+
+def test_anonymize_non_dicom_wo_err(dicom_with_other):
+    dicom_folder, tmp_folder = dicom_with_other
+    anonymize(DICOM_DATA_DIR, tmp_folder, error_no_dicom=False)
 
 
 # Anonymize bin

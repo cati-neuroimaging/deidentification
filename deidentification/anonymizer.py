@@ -101,7 +101,8 @@ def anonymize(dicom_in, dicom_out,
               forced_values=None,
               config_profile=None,
               anonymous=False,
-              tempdir_prefix=None):
+              tempdir_prefix=None,
+              error_no_dicom=True):
     """Configures the Anonymizer and runs it on DICOM files. It can configured using tags_to_keep
     or config_profile, and forced_values (ex: {(0x0010, 0x0010) : 'XXXX')})
 
@@ -117,6 +118,7 @@ def anonymize(dicom_in, dicom_out,
     config_profile : str, optional
     anonymous : bool, optional
     tempdir_prefix : str, optional
+    error_no_dicom : bool
     """
     if not os.path.exists(dicom_in):
         raise DeidentificationError('The DICOM input does not exists.')
@@ -159,14 +161,19 @@ def anonymize(dicom_in, dicom_out,
                 folder_out = root.replace(wip_dicom_in, wip_dicom_out)
                 for name in files:
                     current_file = os.path.join(root, name)
-                    anonymize_file(current_file, folder_out,
-                                   tags_to_keep, tags_to_delete,
-                                   forced_values=forced_values,
-                                   anonymous=anonymous,
-                                   config_profile=config_profile)
+                    try:
+                        anonymize_file(current_file, folder_out,
+                                       tags_to_keep, tags_to_delete,
+                                       forced_values=forced_values,
+                                       anonymous=anonymous,
+                                       config_profile=config_profile)
+                    except AnonymizerError as e:
+                        # Raise an error only if no DICOM file
+                        if error_no_dicom:
+                            _clean_output(wip_dicom_out, is_dicom_out_archive)
+                            raise e
     except Exception as e:
-        if is_dicom_out_archive and os.path.exists(wip_dicom_out):
-            shutil.rmtree(wip_dicom_out)
+        _clean_output(wip_dicom_out, is_dicom_out_archive)
         raise e
     finally:
         if is_dicom_in_archive and os.path.exists(wip_dicom_in):
@@ -180,6 +187,15 @@ def anonymize(dicom_in, dicom_out,
             raise DeidentificationError('Compress deidentification results failed.')
         finally:
             shutil.rmtree(wip_dicom_out)
+
+
+def _clean_output(wip_dicom_out, is_dicom_out_archive):
+    if os.path.exists(wip_dicom_out):
+        if is_dicom_out_archive:
+            shutil.rmtree(wip_dicom_out)
+        else:
+            for f in glob(f'{wip_dicom_out}/*'):
+                os.remove(f)
 
 
 def check_anonymize_fast(dicom_in,
