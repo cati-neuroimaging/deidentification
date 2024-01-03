@@ -1,6 +1,6 @@
 version_major = 1
 version_minor = 2
-version_micro = 6
+version_micro = 7
 version_extra = ''
 
 __version__ = '{}.{}.{}{}'.format(version_major,
