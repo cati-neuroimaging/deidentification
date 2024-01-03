@@ -6,6 +6,7 @@ Tags	Name	Action	Private Creator
 (0019,0010)	Private Creator	K	GEMS_ACQU_01
 (0019,100C)	B Value	K	SIEMENS MR HEADER
 (0019,100A)	Number of slices	K	SIEMENS MR HEADER
+(0019,1018)	Real Dwell Time	K	SIEMENS MR HEADER
 (0019,101E)	Display field of view	K	GEMS_ACQU_01
 (0019,1028)	Bandwidth per pixel phase encode	K	SIEMENS MR HEADER
 (0019,105A)	Acquisition duration	K	GEMS_ACQU_01
