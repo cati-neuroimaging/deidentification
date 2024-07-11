@@ -1,0 +1,7 @@
+#!/usr/bin/env python3
+
+from deidentification.utils.save_header import save_header
+
+
+filepath = 'DICOM_PATH_TEST'
+save_header(filepath, '/tmp/header.txt')
