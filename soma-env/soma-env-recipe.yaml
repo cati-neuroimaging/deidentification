@@ -8,6 +8,7 @@ soma-env:
 
   type: interpreted
 
-  internal-dependencies:
+requirements:
+  run:
     - soma
     - anatomist
