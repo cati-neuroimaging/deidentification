@@ -8,7 +8,7 @@ soma-env:
 
   type: interpreted
 
-requirements:
-  run:
-    - soma
-    - anatomist
+  requirements:
+    run:
+      - soma
+      - anatomist
