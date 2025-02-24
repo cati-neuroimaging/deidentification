@@ -5,6 +5,7 @@
 
 import hashlib
 import os
+from pathlib import Path
 import shutil
 from glob import glob
 from tempfile import mkdtemp
@@ -17,6 +18,7 @@ from deidentification import DeidentificationError, tag_lists
 from deidentification.archive import (is_archive_ext, is_archive_file, pack,
                                       unpack, unpack_first)
 from deidentification.config import load_config_profile
+from deidentification.dicom import is_imaging_modality, is_folder_empty_of_files
 
 
 def _load_config(config_profile, tags_to_keep, tags_to_delete, anonymous):
@@ -93,6 +95,10 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
                       anonymous=anonymous,
                       config_profile=profile_name)
     anon.run_ano()
+    
+    # Check if output folder is empty
+    if is_folder_empty_of_files(Path(dicom_folder_out)):
+        Path(dicom_folder_out).rmdir()
 
 
 def anonymize(dicom_in, dicom_out,
@@ -463,6 +469,9 @@ class Anonymizer():
         """
         Reads the DICOM file, anonymizes it and write the result.
         """
+        if not is_imaging_modality(self._dataset):
+            self.fill_report('removed')
+            return 0
         if not self.ano_run:
             self._dataset.walk(self._anonymize_check)
 
@@ -474,7 +483,7 @@ class Anonymizer():
             method += f' - {self.config_profile}'
         self._dataset.add_new((0x0012, 0x0063), 'LO', method)
 
-        pydicom.write_file(self._dicom_fileout, self._dataset)
+        pydicom.dcmwrite(self._dicom_fileout, self._dataset)
         return 1
 
     def runCheck(self):
@@ -489,7 +498,7 @@ class Anonymizer():
 
     def _load_dataset(self):
         try:
-            ds = pydicom.read_file(self._dicom_filein)
+            ds = pydicom.dcmread(self._dicom_filein)
             meta_data = pydicom.filereader.read_file_meta_info(self._dicom_filein)
             if (meta_data.get((0x0002, 0x0002)) and
                     meta_data.get((0x0002, 0x0002)).value == "Media Storage Directory Storage"):
