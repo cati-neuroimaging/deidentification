@@ -3,6 +3,7 @@ import os
 import os.path as osp
 import shutil
 import subprocess
+import tarfile
 import tempfile
 
 import pydicom
@@ -80,6 +81,14 @@ def dicom_with_other(request):
     # clean tmp_folder
     if osp.exists(tmp_folder):
         shutil.rmtree(tmp_folder)
+
+
+@pytest.fixture(params=glob.glob(DICOM_DATA_DIR + '/non_imaging/*.tar.gz'))
+def dicom_non_imaging_archives_path(request):
+    file_path = request.param
+    if osp.isfile(file_path):
+        yield file_path
+    clean_outputs(file_path)
 
 
 # Anonymizer class tests
@@ -305,6 +314,18 @@ def test_ano_several_private_creator_name(dicom_path):
     assert ds[(0x3030, 0x1001)][0].get((0x3033, 0x1011))
     assert ds[(0x3034, 0x1001)][0].get((0x3033, 0x1011))
 
+
+def test_anonymize_non_imaging_dicom(dicom_non_imaging_archives_path):
+    if not os.path.exists(OUTPUT_DIR):
+        os.makedirs(OUTPUT_DIR)
+
+    anonymize(dicom_non_imaging_archives_path, path_ano(dicom_non_imaging_archives_path))
+
+    # Get list of all files in the archive
+    with tarfile.open(path_ano(dicom_non_imaging_archives_path), 'r:gz') as tar:
+        files_in_tar = tar.getnames()
+    
+    assert len(files_in_tar) == 1 and files_in_tar[0] == 'deidentification_report.csv'
 
 def test_anonymize_non_dicom_w_err(dicom_with_other):
     dicom_folder, tmp_folder = dicom_with_other
