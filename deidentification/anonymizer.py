@@ -3,8 +3,10 @@
 # This script is not guaranteed to be complete.
 # In particular, the detection of burnt-in PHI is not managed.
 
+import csv
 import hashlib
 import os
+from pathlib import Path
 import shutil
 from glob import glob
 from tempfile import mkdtemp
@@ -17,6 +19,7 @@ from deidentification import DeidentificationError, tag_lists
 from deidentification.archive import (is_archive_ext, is_archive_file, pack,
                                       unpack, unpack_first)
 from deidentification.config import load_config_profile
+from deidentification.dicom import is_imaging_modality, is_folder_empty_of_files
 
 
 def _load_config(config_profile, tags_to_keep, tags_to_delete, anonymous):
@@ -58,7 +61,8 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
                    tags_to_delete=None,
                    forced_values=None,
                    config_profile=None,
-                   anonymous=False):
+                   anonymous=False,
+                   report_path=None):
     """Configures the Anonymizer and runs it on a DICOM file
 
     Parameters
@@ -91,8 +95,13 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
     anon = Anonymizer(dicom_file_in, dicom_file_out,
                       tags_config, forced_values,
                       anonymous=anonymous,
-                      config_profile=profile_name)
+                      config_profile=profile_name,
+                      report_path=report_path)
     anon.run_ano()
+    
+    # Check if output folder is empty
+    if is_folder_empty_of_files(Path(dicom_folder_out)):
+        Path(dicom_folder_out).rmdir()
 
 
 def anonymize(dicom_in, dicom_out,
@@ -147,6 +156,9 @@ def anonymize(dicom_in, dicom_out,
     else:
         wip_dicom_out = os.path.abspath(dicom_out)
 
+    # Deidentification report
+    deidentification_report = os.path.join(wip_dicom_out, 'deidentification_report.csv')
+
     # Launch deidentification
     try:
         if os.path.isfile(wip_dicom_in):
@@ -154,7 +166,8 @@ def anonymize(dicom_in, dicom_out,
                            tags_to_keep, tags_to_delete,
                            forced_values=forced_values,
                            anonymous=anonymous,
-                           config_profile=config_profile)
+                           config_profile=config_profile,
+                           report_path=deidentification_report)
 
         elif os.path.isdir(wip_dicom_in):
             for root, dirs, files in os.walk(wip_dicom_in):
@@ -166,7 +179,8 @@ def anonymize(dicom_in, dicom_out,
                                        tags_to_keep, tags_to_delete,
                                        forced_values=forced_values,
                                        anonymous=anonymous,
-                                       config_profile=config_profile)
+                                       config_profile=config_profile,
+                                       report_path=deidentification_report)
                     except AnonymizerError as e:
                         # Raise an error only if no DICOM file
                         if error_no_dicom:
@@ -438,7 +452,7 @@ class Anonymizer():
     def __init__(self, dicom_filein, dicom_fileout,
                  tags_config=None,
                  forced_values=None, config_profile=None,
-                 anonymous=False):
+                 anonymous=False, report_path=None):
         """
         dicom_filein: the DICOM file to anonymize
         dicom_fileout: the file to write the output of the anonymization
@@ -452,6 +466,7 @@ class Anonymizer():
         self._forced_values = forced_values
         self.anonymous = anonymous
         self.config_profile = config_profile
+        self.report_path = report_path
 
         self.originalDict = {}
         self.outputDict = {}
@@ -463,6 +478,9 @@ class Anonymizer():
         """
         Reads the DICOM file, anonymizes it and write the result.
         """
+        if not is_imaging_modality(self._dataset):
+            self.fill_report('removed')
+            return 0
         if not self.ano_run:
             self._dataset.walk(self._anonymize_check)
 
@@ -474,7 +492,7 @@ class Anonymizer():
             method += f' - {self.config_profile}'
         self._dataset.add_new((0x0012, 0x0063), 'LO', method)
 
-        pydicom.write_file(self._dicom_fileout, self._dataset)
+        pydicom.dcmwrite(self._dicom_fileout, self._dataset)
         return 1
 
     def runCheck(self):
@@ -487,9 +505,30 @@ class Anonymizer():
         self.result = self.originalDict == self.outputDict
         return self.result
 
+    def fill_report(self, state):
+        if self.report_path is not None:
+            write_header = not os.path.exists(self.report_path)
+            with open(self.report_path, 'a') as report_file:
+                csv_writer = csv.writer(report_file)
+                if write_header:
+                    csv_writer.writerow(['input DICOM filename', 'state', 'modality', 'SOP Class UID', 'Series Description', 'Image Type'])
+
+                image_type = self._dataset.get((0x8, 0x8), None)
+                if image_type is not None:
+                    image_type = image_type.value
+
+                csv_writer.writerow([
+                    os.path.join(Path(self._dicom_filein).parent.name, Path(self._dicom_filein).name),
+                    state,
+                    self._dataset.Modality,
+                    pydicom.uid.UID_dictionary[self._dataset.SOPClassUID][0],
+                    self._dataset.SeriesDescription,
+                    image_type
+                ])
+
     def _load_dataset(self):
         try:
-            ds = pydicom.read_file(self._dicom_filein)
+            ds = pydicom.dcmread(self._dicom_filein)
             meta_data = pydicom.filereader.read_file_meta_info(self._dicom_filein)
             if (meta_data.get((0x0002, 0x0002)) and
                     meta_data.get((0x0002, 0x0002)).value == "Media Storage Directory Storage"):
