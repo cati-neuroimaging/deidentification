@@ -517,7 +517,7 @@ class Anonymizer():
                 if image_type is not None:
                     image_type = image_type.value
 
-sop_class_uid = self._dataset.get('SOPClassUID', None)
+                sop_class_uid = self._dataset.get('SOPClassUID', None)
                 if not sop_class_uid:
                     sop_class_uid_str = 'Tag not found'
                 else:
