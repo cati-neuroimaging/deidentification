@@ -517,12 +517,18 @@ class Anonymizer():
                 if image_type is not None:
                     image_type = image_type.value
 
+sop_class_uid = self._dataset.get('SOPClassUID', None)
+                if not sop_class_uid:
+                    sop_class_uid_str = 'Tag not found'
+                else:
+                    sop_class_uid_str = pydicom.uid.UID_dictionary[sop_class_uid][0]
+
                 csv_writer.writerow([
                     os.path.join(Path(self._dicom_filein).parent.name, Path(self._dicom_filein).name),
                     state,
-                    self._dataset.Modality,
-                    pydicom.uid.UID_dictionary[self._dataset.SOPClassUID][0],
-                    self._dataset.SeriesDescription,
+                    self._dataset.get('Modality', 'Tag not found'),
+                    sop_class_uid_str,
+                    self._dataset.get('SeriesDescription', 'Tag not found'),
                     image_type
                 ])
 

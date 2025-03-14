@@ -333,6 +333,20 @@ def test_anonymize_non_dicom_w_err(dicom_with_other):
         anonymize(dicom_folder, tmp_folder, error_no_dicom=True)
 
 
+def test_anonymize_non_dicom_w_err_wo_seriesdescription(dicom_path):
+    """Check that the lack of SeriesDescription does not raise an error anymore
+    """
+    ds = pydicom.read_file(osp.abspath(dicom_path))
+    if ds.get('SeriesDescription', None) is not None:
+        del ds['SeriesDescription']
+    ds.Modality = "ANN"
+    tmp_file = tempfile.NamedTemporaryFile()
+    tmp_file_path = tmp_file.name
+    ds.save_as(tmp_file_path)
+    output_dicom_path = os.path.join(OUTPUT_DIR, os.path.basename(dicom_path))
+    anonymize(tmp_file_path, output_dicom_path)
+       
+
 def test_anonymize_non_dicom_wo_err(dicom_with_other):
     dicom_folder, tmp_folder = dicom_with_other
     anonymize(DICOM_DATA_DIR, tmp_folder, error_no_dicom=False)
