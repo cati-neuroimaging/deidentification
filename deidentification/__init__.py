@@ -1,6 +1,7 @@
 from pathlib import Path
+import importlib.metadata
 
-from deidentification.info import __version__
+__version__ = importlib.metadata.version("deidentification")
 
 CONFIG_FOLDER = Path(__file__).parent.joinpath('config')
 
