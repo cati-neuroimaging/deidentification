@@ -4,7 +4,7 @@ version = "1.2.9"
 authors = [{ name = "CATI", email = "contact@cati-neuroimaging.com" }]
 description = "Python module for DICOM deidentification"
 requires-python = ">=3.10"
-license = "MIT License"
+license = "MIT"
 license-files = ["LICENSE"]
 
 dependencies = ["pydicom<3"]
@@ -17,7 +17,7 @@ requires = ["setuptools >= 61.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
-where = ["deidentification"]
+where = ["."]
 
 [tool.setuptools]
 script-files = ["bin/deidentification"]
@@ -25,7 +25,6 @@ script-files = ["bin/deidentification"]
 [tool.pixi.workspace]
 channels = [
     "https://prefix.dev/conda-forge",
-    "https://brainvisa.info/neuro-forge",
 ]
 platforms = ["linux-64"]
 preview = ["pixi-build"]
@@ -37,6 +36,11 @@ deidentification = { path = ".", editable = true }
 python = "*"
 pip = "*"
 rattler-index = "*"
+pydicom = "<3"
+pytest = "*"
+
+[tool.pixi.tasks]
+test = "pytest"
 
 [tool.pixi.package.build]
 backend = { name = "pixi-build-python", version = "*" }
