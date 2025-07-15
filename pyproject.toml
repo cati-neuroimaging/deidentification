@@ -19,9 +19,6 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools.packages.find]
 where = ["."]
 
-# [project.scripts]
-# deidentification = "deidentification.bin:main"
-
 [tool.setuptools]
 script-files = ["bin/deidentification"]
 
