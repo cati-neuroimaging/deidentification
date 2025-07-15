@@ -1,0 +1,2 @@
+include deidentification/config/*tsv
+include deidentification/config/profiles/*tsv

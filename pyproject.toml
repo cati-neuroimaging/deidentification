@@ -19,6 +19,9 @@ build-backend = "setuptools.build_meta"
 [tool.setuptools.packages.find]
 where = ["."]
 
+# [project.scripts]
+# deidentification = "deidentification.bin:main"
+
 [tool.setuptools]
 script-files = ["bin/deidentification"]
 
@@ -33,7 +36,7 @@ preview = ["pixi-build"]
 deidentification = { path = ".", editable = true }
 
 [tool.pixi.dependencies]
-python = "*"
+python = "3.11.*"
 pip = "*"
 rattler-index = "*"
 pydicom = "<3"
