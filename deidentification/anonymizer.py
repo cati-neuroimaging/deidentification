@@ -419,8 +419,10 @@ def _get_cleaned_value(data_element):
         return "000000.00"
     elif data_element.VR == 'DT':
         return "19700101000000.00"
-    elif data_element.VR in ['DS', 'FL', 'FD', 'IS', 'SL', 'SS', 'UL', 'US']:
-        return '0'
+    elif data_element.VR in ['DS', 'IS', 'SL', 'SS', 'SV', 'UL', 'US', 'UV']:
+        return 0
+    elif data_element.VR in ['FL', 'FD']:
+        return 0.0
     else:
         return "no value"
 
