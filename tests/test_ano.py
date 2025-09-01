@@ -245,13 +245,13 @@ def test_anonymize_private_creator_tree(dicom_path):
 
     ds = pydicom.read_file(osp.abspath(dicom_path))
     sequence_block = pydicom.Dataset()
-    block = sequence_block.private_block(0x3033, 'Test deidentification', create=True)
-    block.add_new(0x11, 'SH', 'Very Important Tag')
-    block2 = sequence_block.private_block(0x3035, 'Test deidentification2', create=True)
-    block2.add_new(0X11, 'SH', 'Very Important Tag2')
+    block = sequence_block.private_block(0x3033, 'TestDeid', create=True)
+    block.add_new(0x11, 'SH', 'ImportantTag')
+    block2 = sequence_block.private_block(0x3035, 'TestDeid2', create=True)
+    block2.add_new(0X11, 'SH', 'ImportantTag2')
     del sequence_block[(0x3035, 0x10)]
     ds.add_new((0x3030, 0x1001), 'SQ', [sequence_block])
-    ds.add_new((0x3035, 0x0010), 'SH', 'Test deidentification2')
+    ds.add_new((0x3035, 0x0010), 'SH', 'TestDeid2')
 
     tmp_file = tempfile.NamedTemporaryFile()
     tmp_file_path = tmp_file.name
@@ -259,11 +259,11 @@ def test_anonymize_private_creator_tree(dicom_path):
 
     tags_config = {
         (0x3033, 0x1011): {
-            'private_creator': 'Test deidentification',
+            'private_creator': 'TestDeid',
             'action': 'K'
         },
         (0x3035, 0x1011): {
-            'private_creator': 'Test deidentification2',
+            'private_creator': 'TestDeid2',
             'action': 'K'
         }
     }
@@ -292,10 +292,10 @@ def test_ano_several_private_creator_name(dicom_path):
     ds = pydicom.read_file(osp.abspath(dicom_path))
     sequence_block = pydicom.Dataset()
     block = sequence_block.private_block(0x3033, 'Name1', create=True)
-    block.add_new(0x11, 'SH', 'Very Important Tag')
+    block.add_new(0x11, 'SH', 'ImportantTag')
     sequence_block2 = pydicom.Dataset()
     block2 = sequence_block2.private_block(0x3033, 'Name2', create=True)
-    block2.add_new(0x11, 'SH', 'Very Important Tag')
+    block2.add_new(0x11, 'SH', 'ImportantTag')
     ds.add_new((0x3030, 0x1001), 'SQ', [sequence_block])
     ds.add_new((0x3034, 0x1001), 'SQ', [sequence_block2])
 
@@ -362,5 +362,6 @@ def test_deidentification_bin(dicom_path):
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     stdout, stderr = process.communicate()
 
+    print(stderr)
     assert not stderr
     assert os.listdir(OUTPUT_DIR)
