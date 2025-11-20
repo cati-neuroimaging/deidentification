@@ -1,0 +1,27 @@
+package:
+  name: deidentification
+  version : 0.0.9
+
+build:
+  number: 3
+  noarch: python
+  script: python -m pip install $RECIPE_DIR/..
+
+requirements:
+  host:
+    - setuptools
+    - pip
+    - python >3.9,<3.13
+  run:
+    - python >3.9,<3.13
+    - pydicom <3
+tests:
+  - python:
+    script:
+      - pytest tests
+    requirements:
+      run:
+        - pytest
+    files:
+      source:
+        - tests/

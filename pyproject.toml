@@ -9,18 +9,23 @@ license-files = ["LICENSE"]
 
 dependencies = ["pydicom<3"]
 
+[project.optional-dependencies]
+dev = ["pytest"]
+
 [project.urls]
 repository = "https://github.com/cati-neuroimaging/deidentification"
+
+[tool.setuptools]
+script-files = [
+    "bin/deidentification",
+]
 
 [build-system]
 requires = ["setuptools >= 61.0"]
 build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
-where = ["."]
-
-[tool.setuptools]
-script-files = ["bin/deidentification"]
+where = ["deidentification", "tests"]
 
 [tool.pixi.workspace]
 channels = ["https://prefix.dev/conda-forge"]
@@ -32,26 +37,17 @@ deidentification = { path = ".", editable = true }
 
 [tool.pixi.dependencies]
 python = "3.11.*"
-pip = "*"
-rattler-index = "*"
 pydicom = "<3"
+
+[tool.pixi.feature.test.dependencies]
 pytest = "*"
+
+[tool.pixi.feature.test.tasks]
+test = "pytest"
+
+[tool.pixi.environments]
+test = ["test"]
 
 [tool.pixi.tasks]
 test = "pytest"
 
-[tool.pixi.package.build.backend]
-name = "pixi-build-python"
-version = "*"
-channels = [
-  "https://prefix.dev/pixi-build-backends",
-  "https://prefix.dev/conda-forge"
-]
-
-[tool.pixi.package.host-dependencies]
-pip = "*"
-setuptools = "*"
-
-[tool.pixi.package.run-dependencies]
-python = "*"
-pydicom = "<3"
