@@ -355,7 +355,7 @@ def test_anonymize_non_dicom_wo_err(dicom_with_other):
 # Anonymize bin
 
 def test_deidentification_bin(dicom_path):
-    cmd = [osp.join(BIN_DIR, 'deidentification'),
+    cmd = ['deidentification',
            '-in', dicom_path,
            '-out', OUTPUT_DIR,
            '-c', 'cati_collector']
