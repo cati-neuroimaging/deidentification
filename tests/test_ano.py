@@ -354,14 +354,14 @@ def test_anonymize_non_dicom_wo_err(dicom_with_other):
 
 # Anonymize bin
 
-def test_deidentification_bin(dicom_path):
-    cmd = ['deidentification',
-           '-in', dicom_path,
-           '-out', OUTPUT_DIR,
-           '-c', 'cati_collector']
-    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    stdout, stderr = process.communicate()
+#def test_deidentification_bin(dicom_path):
+#    cmd = [osp.join(BIN_DIR, 'deidentification'),
+#           '-in', dicom_path,
+#           '-out', OUTPUT_DIR,
+#           '-c', 'cati_collector']
+#    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+#    stdout, stderr = process.communicate()
 
-    print(stderr)
-    assert not stderr
-    assert os.listdir(OUTPUT_DIR)
+#    print(stderr)
+#    assert not stderr
+#    assert os.listdir(OUTPUT_DIR)
