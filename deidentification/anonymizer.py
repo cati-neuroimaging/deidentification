@@ -522,6 +522,8 @@ class Anonymizer():
                 sop_class_uid = self._dataset.get('SOPClassUID', None)
                 if not sop_class_uid:
                     sop_class_uid_str = 'Tag not found'
+                elif sop_class_uid not in pydicom.uid.UID_dictionary:
+                    sop_class_uid_str = f"unknown uid: {sop_class_uid}"
                 else:
                     sop_class_uid_str = pydicom.uid.UID_dictionary[sop_class_uid][0]
 
