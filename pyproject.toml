@@ -1,0 +1,53 @@
+[project]
+name = "deidentification"
+version = "1.2.9"
+authors = [{ name = "CATI", email = "contact@cati-neuroimaging.com" }]
+description = "Python module for DICOM deidentification"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+
+dependencies = ["pydicom<3"]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[project.urls]
+repository = "https://github.com/cati-neuroimaging/deidentification"
+
+[tool.setuptools]
+script-files = [
+    "bin/deidentification",
+]
+
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["deidentification"]
+
+[tool.pixi.workspace]
+channels = ["https://prefix.dev/conda-forge"]
+platforms = ["linux-64"]
+preview = ["pixi-build"]
+
+[tool.pixi.pypi-dependencies]
+deidentification = { path = ".", editable = true }
+
+[tool.pixi.dependencies]
+python = "3.11.*"
+pydicom = "<3"
+
+[tool.pixi.feature.test.dependencies]
+pytest = "*"
+
+[tool.pixi.feature.test.tasks]
+test = "pytest"
+
+[tool.pixi.environments]
+test = ["test"]
+
+[tool.pixi.tasks]
+test = "pytest"
+

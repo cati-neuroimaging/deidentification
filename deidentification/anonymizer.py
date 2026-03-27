@@ -404,7 +404,9 @@ def _generate_dicom_uid(value):
     .. _PS 3.5 Sect B2: https://dicom.nema.org/medical/dicom/current/output/chtml/part05/sect_B.2.html
 
     """
-    return "2.25." + str(_generate_uuid(value).int)
+    if isinstance(value, bytes):
+        value = value.decode('utf-8', errors='ignore')
+    return pydicom.uid.generate_uid(prefix="2.25.", entropy_srcs=[value])
 
 
 def _get_cleaned_value(data_element):
@@ -424,7 +426,7 @@ def _get_cleaned_value(data_element):
     elif data_element.VR in ['FL', 'FD']:
         return 0.0
     else:
-        return "no value"
+        return "NO VALUE"
 
 
 def _is_private_creator(group, element):
