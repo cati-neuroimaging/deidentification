@@ -424,7 +424,7 @@ def _get_cleaned_value(data_element):
     elif data_element.VR in ['FL', 'FD']:
         return 0.0
     else:
-        return "no value"
+        return "NO VALUE"
 
 
 def _is_private_creator(group, element):
