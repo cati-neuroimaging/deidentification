@@ -69,6 +69,9 @@ def get_tag_diff(path_raw, path_ano, outpath=None):
             previous_tag = tag
             previous_sign = i[0]
             current_line_diff.append(line)
+        else:
+            previous_tag = None
+            previous_sign = None
 
     if not outpath:
         outpath = os.path.join(os.path.dirname(path_raw), "diff.txt")
