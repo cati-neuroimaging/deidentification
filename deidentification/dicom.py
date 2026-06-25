@@ -1,6 +1,7 @@
 from pathlib import Path
 import puremagic
 import pydicom
+import shutil
 import subprocess
 from subprocess import DEVNULL
 import tempfile
@@ -94,6 +95,8 @@ def is_spectro(filepath):
             subprocess.run(cmd_ph, shell=False, check=True, stderr=DEVNULL, stdout=DEVNULL)
         except Exception:
             return False
+    finally:
+        shutil.rmtree(temp_folder, ignore_errors=True)
 
     return True
 
