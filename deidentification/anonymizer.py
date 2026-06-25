@@ -209,7 +209,10 @@ def _clean_output(wip_dicom_out, is_dicom_out_archive):
             shutil.rmtree(wip_dicom_out)
         else:
             for f in glob(f'{wip_dicom_out}/*'):
-                os.remove(f)
+                if os.path.isdir(f):
+                    shutil.rmtree(f)
+                else:
+                    os.remove(f)
 
 
 def check_anonymize_fast(dicom_in,
