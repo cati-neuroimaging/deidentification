@@ -1,4 +1,9 @@
 from pathlib import Path
+import puremagic
+import pydicom
+import subprocess
+from subprocess import DEVNULL
+import tempfile
 
 # List of DICOM Tag value modality (0008, 0060) that is considered as imaging data
 MODALITIES_SUPPORTED = ['CT', 'MR', 'NM', 'PT', 'ST']
@@ -31,6 +36,47 @@ def is_imaging_modality(dicom_ds):
     modality_ok = modality.value in MODALITIES_SUPPORTED
     sop_class_ok = sop_class_uid not in SOP_CLASS_UID_NOT_SUPPORTED
     return modality_ok and sop_class_ok
+
+
+def is_dicom(filepath):
+    magic = puremagic.magic_file(filepath)
+    magic_mime_type = set(m.mime_type for m in magic)
+    if "application/dicom" in magic_mime_type:
+        return True
+    return False
+
+
+def is_capture(filepath):
+    """
+    Check if filepath is a capture file. Check if jpg, png, or DICOM with class UID of capture
+    """
+    # jpg : 'image/jpeg'
+    # png : 'image/png'
+    # DICOM : 'application/dicom'
+
+    magic = puremagic.magic_file(filepath)
+    magic_mime_type = set(m.mime_type for m in magic)
+    if "image/jpeg" in magic_mime_type:
+        return "image"
+    elif "image/png" in magic_mime_type:
+        return "image"
+    elif "application/dicom" in magic_mime_type:
+        # check tag
+        ds = pydicom.read_file(filepath)
+        if is_capture_dicom(ds):
+            return "dicom"
+    return ""
+
+
+def is_capture_dicom(ds):
+    """
+    Check if an already loaded DICOM is a capture DICOM
+    """
+    # TODO Maybe add modality "SC" for Secondary Capture (modality found in DICOM conformance)
+    class_uid = ds.get("SOPClassUID")
+    if class_uid and class_uid in ["1.2.840.10008.5.1.4.1.1.7"]:
+        return True
+    return False
 
 
 def is_folder_empty_of_files(folder_path) -> bool:
