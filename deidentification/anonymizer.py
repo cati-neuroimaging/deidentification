@@ -19,8 +19,8 @@ from deidentification import DeidentificationError, tag_lists
 from deidentification.archive import (is_archive_ext, is_archive_file, pack,
                                       unpack, unpack_first)
 from deidentification.config import load_config_profile
-from deidentification.dicom import is_imaging_modality, is_folder_empty_of_files, is_capture, is_capture_dicom
-from deidentification.dicom import is_dicom, is_spectro
+from deidentification.dicom import is_imaging_modality, is_folder_empty_of_files, is_dicom
+from deidentification.dicom import is_capture, is_capture_dicom, is_spectro
 
 
 def _load_config(config_profile, tags_to_keep, tags_to_delete, anonymous):
@@ -76,6 +76,8 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
     forced_values : dict, optional
     config_profile : str, optional
     anonymous : bool, optional
+    report_path : Path, optional
+    capture_folder: None|str, optional
     """
     if os.path.isfile(dicom_folder_out):
         raise DeidentificationError('The DICOM output has to be a folder.')
@@ -108,8 +110,7 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
                 anon.run_ano()
                 return
 
-    if not os.path.exists(dicom_folder_out):
-        os.makedirs(dicom_folder_out)
+    os.makedirs(dicom_folder_out, exist_ok=True)
     dicom_file_out = os.path.join(dicom_folder_out,
                                   os.path.basename(dicom_file_in))
 
@@ -117,7 +118,6 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
     if not is_dicom(dicom_file_in) and is_spectro(dicom_file_in):
         shutil.copy2(dicom_file_in, dicom_file_out)
         return
-
 
     anon = Anonymizer(dicom_file_in, dicom_file_out,
                       tags_config, forced_values,
@@ -156,6 +156,7 @@ def anonymize(dicom_in, dicom_out,
     anonymous : bool, optional
     tempdir_prefix : str, optional
     error_no_dicom : bool
+    keep_capture : bool
     """
     if not os.path.exists(dicom_in):
         raise DeidentificationError('The DICOM input does not exists.')
@@ -187,6 +188,7 @@ def anonymize(dicom_in, dicom_out,
     # Deidentification report
     deidentification_report = os.path.join(wip_dicom_out, 'deidentification_report.csv')
 
+    capture_folder = None
     if keep_capture:
         capture_folder = os.path.join(wip_dicom_out, 'captures')
     # Launch deidentification
