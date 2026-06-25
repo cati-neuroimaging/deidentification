@@ -79,6 +79,25 @@ def is_capture_dicom(ds):
     return False
 
 
+def is_spectro(filepath):
+    # check if spec2nii peut faire la conversion en mode auto
+    # si non, vérifier avec les extension des fichiers et tenter avec les options philips_dl ou philips_dicom
+    
+    temp_folder = tempfile.mkdtemp()
+    cmd = ["spec2nii", "auto", "-o", temp_folder, filepath]
+    cmd_ph = ["spec2nii", "philips_dcm", "-o", temp_folder, filepath]
+
+    try:
+        subprocess.run(" ".join(cmd), shell=True, check=True, stderr=DEVNULL, stdout=DEVNULL)
+    except Exception:
+        try:
+            subprocess.run(cmd_ph, shell=True, check=True, stderr=DEVNULL, stdout=DEVNULL)
+        except Exception:
+            return False
+
+    return True
+
+
 def is_folder_empty_of_files(folder_path) -> bool:
     if isinstance(folder_path, str):
         folder_path = Path(folder_path)

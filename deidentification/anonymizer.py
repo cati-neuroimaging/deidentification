@@ -20,6 +20,7 @@ from deidentification.archive import (is_archive_ext, is_archive_file, pack,
                                       unpack, unpack_first)
 from deidentification.config import load_config_profile
 from deidentification.dicom import is_imaging_modality, is_folder_empty_of_files, is_capture, is_capture_dicom
+from deidentification.dicom import is_dicom, is_spectro
 
 
 def _load_config(config_profile, tags_to_keep, tags_to_delete, anonymous):
@@ -111,6 +112,12 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
         os.makedirs(dicom_folder_out)
     dicom_file_out = os.path.join(dicom_folder_out,
                                   os.path.basename(dicom_file_in))
+
+    # Keep spectro non DICOM data
+    if not is_dicom(dicom_file_in) and is_spectro(dicom_file_in):
+        shutil.copy2(dicom_file_in, dicom_file_out)
+        return
+
 
     anon = Anonymizer(dicom_file_in, dicom_file_out,
                       tags_config, forced_values,
@@ -501,7 +508,7 @@ class Anonymizer():
 
         self.originalDict = {}
         self.outputDict = {}
-        self._dataset = self._load_dataset()
+        self._dataset = self._load_dataset() # TODO Handle PNG/JPEG if necessary
         self.result = None
         self.ano_run = False
 
