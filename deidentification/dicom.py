@@ -88,10 +88,10 @@ def is_spectro(filepath):
     cmd_ph = ["spec2nii", "philips_dcm", "-o", temp_folder, filepath]
 
     try:
-        subprocess.run(" ".join(cmd), shell=True, check=True, stderr=DEVNULL, stdout=DEVNULL)
+        subprocess.run(cmd, shell=False, check=True, stderr=DEVNULL, stdout=DEVNULL)
     except Exception:
         try:
-            subprocess.run(cmd_ph, shell=True, check=True, stderr=DEVNULL, stdout=DEVNULL)
+            subprocess.run(cmd_ph, shell=False, check=True, stderr=DEVNULL, stdout=DEVNULL)
         except Exception:
             return False
 
