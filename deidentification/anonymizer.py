@@ -19,7 +19,8 @@ from deidentification import DeidentificationError, tag_lists
 from deidentification.archive import (is_archive_ext, is_archive_file, pack,
                                       unpack, unpack_first)
 from deidentification.config import load_config_profile
-from deidentification.dicom import is_imaging_modality, is_folder_empty_of_files
+from deidentification.dicom import is_imaging_modality, is_folder_empty_of_files, is_dicom
+from deidentification.dicom import is_capture, is_capture_dicom, is_spectro
 
 
 def _load_config(config_profile, tags_to_keep, tags_to_delete, anonymous):
@@ -62,7 +63,8 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
                    forced_values=None,
                    config_profile=None,
                    anonymous=False,
-                   report_path=None):
+                   report_path=None,
+                   capture_folder=None):
     """Configures the Anonymizer and runs it on a DICOM file
 
     Parameters
@@ -74,6 +76,8 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
     forced_values : dict, optional
     config_profile : str, optional
     anonymous : bool, optional
+    report_path : Path, optional
+    capture_folder: None|str, optional
     """
     if os.path.isfile(dicom_folder_out):
         raise DeidentificationError('The DICOM output has to be a folder.')
@@ -81,16 +85,39 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
     tags_config = _load_config(config_profile, tags_to_keep,
                                tags_to_delete, anonymous)
 
-    if not os.path.exists(dicom_folder_out):
-        os.makedirs(dicom_folder_out)
-    dicom_file_out = os.path.join(dicom_folder_out,
-                                  os.path.basename(dicom_file_in))
-
     # Only keep filename in case of config_profile path
     if config_profile:
         profile_name = os.path.basename(config_profile).rsplit('.', 1)[0]
     else:
         profile_name = config_profile
+    
+    # Check for screen capture files
+    if capture_type := is_capture(dicom_file_in):
+        if capture_folder:
+            os.makedirs(capture_folder, exist_ok=True)
+            if capture_type == "image":
+                # move file to a "captures" folder
+                shutil.copy2(dicom_file_in, os.path.join(capture_folder, os.path.basename(dicom_file_in)))
+                return
+            elif capture_type == "dicom":
+                file_out = os.path.join(capture_folder, os.path.basename(dicom_file_in))
+                anon = Anonymizer(dicom_file_in, file_out,
+                                tags_config, forced_values,
+                                anonymous=anonymous,
+                                config_profile=profile_name,
+                                report_path=report_path,
+                                keep_capture=True)
+                anon.run_ano()
+                return
+
+    os.makedirs(dicom_folder_out, exist_ok=True)
+    dicom_file_out = os.path.join(dicom_folder_out,
+                                  os.path.basename(dicom_file_in))
+
+    # Keep spectro non DICOM data
+    if not is_dicom(dicom_file_in) and is_spectro(dicom_file_in):
+        shutil.copy2(dicom_file_in, dicom_file_out)
+        return
 
     anon = Anonymizer(dicom_file_in, dicom_file_out,
                       tags_config, forced_values,
@@ -101,7 +128,7 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
     
     # Check if output folder is empty
     if is_folder_empty_of_files(Path(dicom_folder_out)):
-        Path(dicom_folder_out).rmdir()
+        shutil.rmtree(dicom_folder_out)
 
 
 def anonymize(dicom_in, dicom_out,
@@ -111,7 +138,8 @@ def anonymize(dicom_in, dicom_out,
               config_profile=None,
               anonymous=False,
               tempdir_prefix=None,
-              error_no_dicom=True):
+              error_no_dicom=True,
+              keep_capture=False):
     """Configures the Anonymizer and runs it on DICOM files. It can configured using tags_to_keep
     or config_profile, and forced_values (ex: {(0x0010, 0x0010) : 'XXXX')})
 
@@ -128,6 +156,7 @@ def anonymize(dicom_in, dicom_out,
     anonymous : bool, optional
     tempdir_prefix : str, optional
     error_no_dicom : bool
+    keep_capture : bool
     """
     if not os.path.exists(dicom_in):
         raise DeidentificationError('The DICOM input does not exists.')
@@ -159,6 +188,9 @@ def anonymize(dicom_in, dicom_out,
     # Deidentification report
     deidentification_report = os.path.join(wip_dicom_out, 'deidentification_report.csv')
 
+    capture_folder = None
+    if keep_capture:
+        capture_folder = os.path.join(wip_dicom_out, 'captures')
     # Launch deidentification
     try:
         if os.path.isfile(wip_dicom_in):
@@ -167,7 +199,8 @@ def anonymize(dicom_in, dicom_out,
                            forced_values=forced_values,
                            anonymous=anonymous,
                            config_profile=config_profile,
-                           report_path=deidentification_report)
+                           report_path=deidentification_report,
+                           capture_folder=capture_folder)
 
         elif os.path.isdir(wip_dicom_in):
             for root, dirs, files in os.walk(wip_dicom_in):
@@ -180,7 +213,8 @@ def anonymize(dicom_in, dicom_out,
                                        forced_values=forced_values,
                                        anonymous=anonymous,
                                        config_profile=config_profile,
-                                       report_path=deidentification_report)
+                                       report_path=deidentification_report,
+                                       capture_folder=capture_folder)
                     except AnonymizerError as e:
                         # Raise an error only if no DICOM file
                         if error_no_dicom:
@@ -457,7 +491,7 @@ class Anonymizer():
     def __init__(self, dicom_filein, dicom_fileout,
                  tags_config=None,
                  forced_values=None, config_profile=None,
-                 anonymous=False, report_path=None):
+                 anonymous=False, report_path=None, keep_capture=False):
         """
         dicom_filein: the DICOM file to anonymize
         dicom_fileout: the file to write the output of the anonymization
@@ -472,10 +506,11 @@ class Anonymizer():
         self.anonymous = anonymous
         self.config_profile = config_profile
         self.report_path = report_path
+        self.keep_capture = keep_capture
 
         self.originalDict = {}
         self.outputDict = {}
-        self._dataset = self._load_dataset()
+        self._dataset = self._load_dataset() # TODO Handle PNG/JPEG if necessary
         self.result = None
         self.ano_run = False
 
@@ -484,8 +519,9 @@ class Anonymizer():
         Reads the DICOM file, anonymizes it and write the result.
         """
         if not is_imaging_modality(self._dataset):
-            self.fill_report('removed')
-            return 0
+            if not self.keep_capture or not is_capture_dicom(self._dataset):
+                self.fill_report('removed')
+                return 0
         if not self.ano_run:
             self._dataset.walk(self._anonymize_check)
 
