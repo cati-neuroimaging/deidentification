@@ -94,9 +94,9 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
     # Check for screen capture files
     if capture_type := is_capture(dicom_file_in):
         if capture_folder:
+            os.makedirs(capture_folder, exist_ok=True)
             if capture_type == "image":
                 # move file to a "captures" folder
-                os.makedirs(capture_folder, exist_ok=True)
                 shutil.copy2(dicom_file_in, os.path.join(capture_folder, os.path.basename(dicom_file_in)))
                 return
             elif capture_type == "dicom":
@@ -128,7 +128,7 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
     
     # Check if output folder is empty
     if is_folder_empty_of_files(Path(dicom_folder_out)):
-        Path(dicom_folder_out).rmdir()
+        shutil.rmtree(dicom_folder_out)
 
 
 def anonymize(dicom_in, dicom_out,

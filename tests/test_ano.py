@@ -18,6 +18,7 @@ from . import create_fake_config
 DATA_DIR = 'tests/data/'
 DICOM_DATA_DIR = osp.join(DATA_DIR, 'dicoms')
 FILES_DATA_DIR = osp.join(DATA_DIR, 'files')
+SPECTRO_DATA_DIR = osp.join(DATA_DIR, 'spectro')
 OUTPUT_DIR = osp.join(DICOM_DATA_DIR, 'output_dir')
 BIN_DIR = 'bin'
 
@@ -85,6 +86,14 @@ def dicom_with_other(request):
 
 @pytest.fixture(params=glob.glob(DICOM_DATA_DIR + '/non_imaging/*.tar.gz'))
 def dicom_non_imaging_archives_path(request):
+    file_path = request.param
+    if osp.isfile(file_path):
+        yield file_path
+    clean_outputs(file_path)
+
+
+@pytest.fixture(params=glob.glob(SPECTRO_DATA_DIR + '/*'))
+def spectro_path(request):
     file_path = request.param
     if osp.isfile(file_path):
         yield file_path
@@ -351,6 +360,10 @@ def test_anonymize_non_dicom_wo_err(dicom_with_other):
     dicom_folder, tmp_folder = dicom_with_other
     anonymize(DICOM_DATA_DIR, tmp_folder, error_no_dicom=False)
 
+
+def test_anonymize_spectro(spectro_path):
+    anonymize(spectro_path, path_ano(spectro_path))
+    assert osp.exists(path_ano(spectro_path))
 
 # Anonymize bin
 
