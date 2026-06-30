@@ -84,8 +84,9 @@ def is_capture_dicom(ds):
 
 
 def is_spectro(filepath):
-    # check if spec2nii peut faire la conversion en mode auto
-    # si non, vérifier avec les extension des fichiers et tenter avec les options philips_dl ou philips_dicom
+    """
+    Check if spec2nii can convert data in auto mode or philips_dcm mode.
+    """
     
     temp_folder = tempfile.mkdtemp()
     cmd = ["spec2nii", "auto", "-o", temp_folder, filepath]
