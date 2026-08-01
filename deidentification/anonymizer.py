@@ -109,24 +109,22 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
         profile_name = config_profile
     
     # Check for screen capture files
-    if capture_type := is_capture(dicom_file_in):
-        if capture_folder:
-            os.makedirs(capture_folder, exist_ok=True)
-            if capture_type == "image":
-                # move file to a "captures" folder
-                capture_file_out = _get_unique_output_path(dicom_file_in, capture_folder)
-                shutil.copy2(dicom_file_in, capture_file_out)
-                return
-            elif capture_type == "dicom":
-                file_out = _get_unique_output_path(dicom_file_in, capture_folder)
-                anon = Anonymizer(dicom_file_in, file_out,
-                                tags_config, forced_values,
-                                anonymous=anonymous,
-                                config_profile=profile_name,
-                                report_path=report_path,
-                                keep_capture=True)
-                anon.run_ano()
-                return
+    if (capture_type := is_capture(dicom_file_in)) and capture_folder:
+        os.makedirs(capture_folder, exist_ok=True)
+        file_out = _get_unique_output_path(dicom_file_in, capture_folder)
+        if capture_type == "image":
+            # move file to a "captures" folder
+            shutil.copy2(dicom_file_in, file_out)
+            return
+        elif capture_type == "dicom":
+            anon = Anonymizer(dicom_file_in, file_out,
+                            tags_config, forced_values,
+                            anonymous=anonymous,
+                            config_profile=profile_name,
+                            report_path=report_path,
+                            keep_capture=True)
+            anon.run_ano()
+            return
 
     os.makedirs(dicom_folder_out, exist_ok=True)
     dicom_file_out = _get_unique_output_path(dicom_file_in, dicom_folder_out)
@@ -524,7 +522,7 @@ def _get_private_creator_tag(data_element):
     return pydicom.tag.Tag(group, element)
 
 
-class Anonymizer():
+class Anonymizer:
 
     """
     Anonymizes a DICOM file according to DICOM standard.
@@ -560,10 +558,9 @@ class Anonymizer():
         """
         Reads the DICOM file, anonymizes it and write the result.
         """
-        if not is_imaging_modality(self._dataset):
-            if not self.keep_capture or not is_capture_dicom(self._dataset):
-                self.fill_report('removed')
-                return 0
+        if not is_imaging_modality(self._dataset) and (not self.keep_capture or not is_capture_dicom(self._dataset)):
+            self.fill_report("removed")
+            return 0
         if not self.ano_run:
             self._dataset.walk(self._anonymize_check)
 
