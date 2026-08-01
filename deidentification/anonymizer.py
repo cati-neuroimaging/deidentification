@@ -57,6 +57,23 @@ def _load_config(config_profile, tags_to_keep, tags_to_delete, anonymous):
     return tags_config
 
 
+def _get_unique_output_path(dicom_file_in, output_folder):
+    input_name = os.path.basename(dicom_file_in)
+    output_path = os.path.join(output_folder, input_name)
+    stem, ext = os.path.splitext(input_name)
+    counter = 1
+
+    while os.path.exists(output_path):
+        if ext:
+            candidate_name = f'{stem}_{counter}{ext}'
+        else:
+            candidate_name = f'{input_name}_{counter}'
+        output_path = os.path.join(output_folder, candidate_name)
+        counter += 1
+
+    return output_path
+
+
 def anonymize_file(dicom_file_in, dicom_folder_out,
                    tags_to_keep=None,
                    tags_to_delete=None,
@@ -97,10 +114,11 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
             os.makedirs(capture_folder, exist_ok=True)
             if capture_type == "image":
                 # move file to a "captures" folder
-                shutil.copy2(dicom_file_in, os.path.join(capture_folder, os.path.basename(dicom_file_in)))
+                capture_file_out = _get_unique_output_path(dicom_file_in, capture_folder)
+                shutil.copy2(dicom_file_in, capture_file_out)
                 return
             elif capture_type == "dicom":
-                file_out = os.path.join(capture_folder, os.path.basename(dicom_file_in))
+                file_out = _get_unique_output_path(dicom_file_in, capture_folder)
                 anon = Anonymizer(dicom_file_in, file_out,
                                 tags_config, forced_values,
                                 anonymous=anonymous,
@@ -111,8 +129,7 @@ def anonymize_file(dicom_file_in, dicom_folder_out,
                 return
 
     os.makedirs(dicom_folder_out, exist_ok=True)
-    dicom_file_out = os.path.join(dicom_folder_out,
-                                  os.path.basename(dicom_file_in))
+    dicom_file_out = _get_unique_output_path(dicom_file_in, dicom_folder_out)
 
     # Keep spectro non DICOM data
     if not is_dicom(dicom_file_in) and is_spectro(dicom_file_in):
