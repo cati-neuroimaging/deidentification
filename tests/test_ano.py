@@ -374,7 +374,13 @@ def test_anonymize_non_dicom_w_err_wo_seriesdescription(dicom_path):
 
 def test_anonymize_non_dicom_wo_err(dicom_with_other):
     dicom_folder, tmp_folder = dicom_with_other
-    anonymize(DICOM_DATA_DIR, tmp_folder, error_no_dicom=False)
+
+
+def test_remove_folder_hierarchy(dicom_with_other):
+    dicom_folder, tmp_folder = dicom_with_other
+    anonymize(dicom_folder, tmp_folder, error_no_dicom=False)
+    for filepath in os.listdir(tmp_folder):
+        assert not osp.isdir(filepath)
 
 
 def test_keep_duplicate_filename(dicom_duplicate_filename):
