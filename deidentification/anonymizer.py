@@ -194,27 +194,52 @@ def anonymize(dicom_in, dicom_out,
     # Launch deidentification
     try:
         if os.path.isfile(wip_dicom_in):
-            anonymize_file(wip_dicom_in, wip_dicom_out,
-                           tags_to_keep, tags_to_delete,
-                           forced_values=forced_values,
-                           anonymous=anonymous,
-                           config_profile=config_profile,
-                           report_path=deidentification_report,
-                           capture_folder=capture_folder)
+            if is_archive_file(wip_dicom_in):
+                anonymize(
+                    wip_dicom_in,
+                    wip_dicom_out,
+                    tags_to_keep=tags_to_keep,
+                    tags_to_delete=tags_to_delete,
+                    forced_values=forced_values,
+                    config_profile=config_profile,
+                    anonymous=anonymous,
+                    tempdir_prefix=tempdir_prefix,
+                    error_no_dicom=error_no_dicom,
+                    keep_capture=keep_capture
+                )
+            else:
+                anonymize_file(wip_dicom_in, wip_dicom_out,
+                            tags_to_keep, tags_to_delete,
+                            forced_values=forced_values,
+                            anonymous=anonymous,
+                            config_profile=config_profile,
+                            report_path=deidentification_report,
+                            capture_folder=capture_folder)
 
         elif os.path.isdir(wip_dicom_in):
             for root, dirs, files in os.walk(wip_dicom_in):
-                folder_out = root.replace(wip_dicom_in, wip_dicom_out)
                 for name in files:
                     current_file = os.path.join(root, name)
                     try:
-                        anonymize_file(current_file, folder_out,
-                                       tags_to_keep, tags_to_delete,
-                                       forced_values=forced_values,
-                                       anonymous=anonymous,
-                                       config_profile=config_profile,
-                                       report_path=deidentification_report,
-                                       capture_folder=capture_folder)
+                        if is_archive_file(current_file):
+                            anonymize(
+                                current_file, wip_dicom_out,
+                                tags_to_keep, tags_to_delete,
+                                forced_values=forced_values,
+                                config_profile=config_profile,
+                                anonymous=anonymous,
+                                tempdir_prefix=tempdir_prefix,
+                                error_no_dicom=error_no_dicom,
+                                keep_capture=keep_capture
+                            )
+                        else:
+                            anonymize_file(current_file, wip_dicom_out,
+                                        tags_to_keep, tags_to_delete,
+                                        forced_values=forced_values,
+                                        anonymous=anonymous,
+                                        config_profile=config_profile,
+                                        report_path=deidentification_report,
+                                        capture_folder=capture_folder)
                     except AnonymizerError as e:
                         # Raise an error only if no DICOM file
                         if error_no_dicom:
