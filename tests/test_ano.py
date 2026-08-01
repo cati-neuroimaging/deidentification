@@ -100,6 +100,22 @@ def spectro_path(request):
     clean_outputs(file_path)
 
 
+@pytest.fixture()
+def dicom_duplicate_filename(dicom_path):
+    tmp_folder = tempfile.mkdtemp()
+    folder1 = osp.join(tmp_folder, "folder1")
+    folder2 = osp.join(tmp_folder, "folder2")
+    os.mkdir(folder1)
+    os.mkdir(folder2)
+    shutil.copy2(dicom_path, osp.join(folder1, osp.basename(dicom_path)))
+    shutil.copy2(dicom_path, osp.join(folder2, osp.basename(dicom_path)))
+
+    yield tmp_folder
+
+    clean_outputs(tmp_folder)
+    shutil.rmtree(tmp_folder)
+
+
 # Anonymizer class tests
 
 def test_anonymizer_basic(dicom_path):
@@ -262,26 +278,26 @@ def test_anonymize_private_creator_tree(dicom_path):
     ds.add_new((0x3030, 0x1001), 'SQ', [sequence_block])
     ds.add_new((0x3035, 0x0010), 'SH', 'Test deid2')
 
-    tmp_file = tempfile.NamedTemporaryFile()
-    tmp_file_path = tmp_file.name
-    ds.save_as(tmp_file_path)
+    with tempfile.NamedTemporaryFile() as tmp_file:
+        tmp_file_path = tmp_file.name
+        ds.save_as(tmp_file_path)
 
-    tags_config = {
-        (0x3033, 0x1011): {
-            'private_creator': 'Test deidentification',
-            'action': 'K'
-        },
-        (0x3035, 0x1011): {
-            'private_creator': 'Test deidentification2',
-            'action': 'K'
+        tags_config = {
+            (0x3033, 0x1011): {
+                'private_creator': 'Test deidentification',
+                'action': 'K'
+            },
+            (0x3035, 0x1011): {
+                'private_creator': 'Test deidentification2',
+                'action': 'K'
+            }
         }
-    }
 
-    output_dicom_path = os.path.join(OUTPUT_DIR, os.path.basename(dicom_path))
-    anon = Anonymizer(tmp_file_path,
-                      osp.abspath(output_dicom_path),
-                      tags_config)
-    anon.run_ano()
+        output_dicom_path = os.path.join(OUTPUT_DIR, os.path.basename(dicom_path))
+        anon = Anonymizer(tmp_file_path,
+                        osp.abspath(output_dicom_path),
+                        tags_config)
+        anon.run_ano()
 
     ds = pydicom.read_file(osp.abspath(output_dicom_path))
 
@@ -308,15 +324,15 @@ def test_ano_several_private_creator_name(dicom_path):
     ds.add_new((0x3030, 0x1001), 'SQ', [sequence_block])
     ds.add_new((0x3034, 0x1001), 'SQ', [sequence_block2])
 
-    tmp_file = tempfile.NamedTemporaryFile()
-    tmp_file_path = tmp_file.name
-    ds.save_as(tmp_file_path)
+    with tempfile.NamedTemporaryFile() as tmp_file:
+        tmp_file_path = tmp_file.name
+        ds.save_as(tmp_file_path)
 
-    output_dicom_path = os.path.join(OUTPUT_DIR, os.path.basename(dicom_path))
-    anon = Anonymizer(tmp_file_path,
-                      osp.abspath(output_dicom_path),
-                      load_config_profile(tmp_config))
-    anon.run_ano()
+        output_dicom_path = os.path.join(OUTPUT_DIR, os.path.basename(dicom_path))
+        anon = Anonymizer(tmp_file_path,
+                        osp.abspath(output_dicom_path),
+                        load_config_profile(tmp_config))
+        anon.run_ano()
 
     ds = pydicom.read_file(osp.abspath(output_dicom_path))
 
@@ -338,7 +354,7 @@ def test_anonymize_non_imaging_dicom(dicom_non_imaging_archives_path):
 
 def test_anonymize_non_dicom_w_err(dicom_with_other):
     dicom_folder, tmp_folder = dicom_with_other
-    with pytest.raises(anonymizer.AnonymizerError, match=f".*not a DICOM file.*{dicom_folder}.*"):
+    with pytest.raises(anonymizer.AnonymizerError, match=".*not a DICOM file.*"):
         anonymize(dicom_folder, tmp_folder, error_no_dicom=True)
 
 
@@ -349,16 +365,29 @@ def test_anonymize_non_dicom_w_err_wo_seriesdescription(dicom_path):
     if ds.get('SeriesDescription', None) is not None:
         del ds['SeriesDescription']
     ds.Modality = "ANN"
-    tmp_file = tempfile.NamedTemporaryFile()
-    tmp_file_path = tmp_file.name
-    ds.save_as(tmp_file_path)
-    output_dicom_path = os.path.join(OUTPUT_DIR, os.path.basename(dicom_path))
-    anonymize(tmp_file_path, output_dicom_path)
+    with tempfile.NamedTemporaryFile() as tmp_file:
+        tmp_file_path = tmp_file.name
+        ds.save_as(tmp_file_path)
+        output_dicom_path = os.path.join(OUTPUT_DIR, os.path.basename(dicom_path))
+        anonymize(tmp_file_path, output_dicom_path)
        
 
 def test_anonymize_non_dicom_wo_err(dicom_with_other):
     dicom_folder, tmp_folder = dicom_with_other
-    anonymize(DICOM_DATA_DIR, tmp_folder, error_no_dicom=False)
+    anonymize(dicom_folder, tmp_folder, error_no_dicom=False)
+
+
+def test_remove_folder_hierarchy(dicom_with_other):
+    dicom_folder, tmp_folder = dicom_with_other
+    anonymize(dicom_folder, tmp_folder, error_no_dicom=False)
+    for filepath in os.listdir(tmp_folder):
+        assert not osp.isdir(filepath)
+
+
+def test_keep_duplicate_filename(dicom_duplicate_filename):
+    anonymize(dicom_duplicate_filename, path_ano(dicom_duplicate_filename))
+    assert osp.exists(path_ano(dicom_duplicate_filename))
+    assert len(os.listdir(path_ano(dicom_duplicate_filename))) == 2
 
 
 def test_anonymize_spectro(spectro_path):
