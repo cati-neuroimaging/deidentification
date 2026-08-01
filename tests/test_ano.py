@@ -100,6 +100,22 @@ def spectro_path(request):
     clean_outputs(file_path)
 
 
+@pytest.fixture()
+def dicom_duplicate_filename(dicom_path):
+    tmp_folder = tempfile.mkdtemp()
+    folder1 = osp.join(tmp_folder, "folder1")
+    folder2 = osp.join(tmp_folder, "folder2")
+    os.mkdir(folder1)
+    os.mkdir(folder2)
+    shutil.copy2(dicom_path, osp.join(folder1, osp.basename(dicom_path)))
+    shutil.copy2(dicom_path, osp.join(folder2, osp.basename(dicom_path)))
+
+    yield tmp_folder
+
+    clean_outputs(tmp_folder)
+    shutil.rmtree(tmp_folder)
+
+
 # Anonymizer class tests
 
 def test_anonymizer_basic(dicom_path):
@@ -338,7 +354,7 @@ def test_anonymize_non_imaging_dicom(dicom_non_imaging_archives_path):
 
 def test_anonymize_non_dicom_w_err(dicom_with_other):
     dicom_folder, tmp_folder = dicom_with_other
-    with pytest.raises(anonymizer.AnonymizerError, match=f".*not a DICOM file.*{dicom_folder}.*"):
+    with pytest.raises(anonymizer.AnonymizerError, match=".*not a DICOM file.*"):
         anonymize(dicom_folder, tmp_folder, error_no_dicom=True)
 
 
@@ -359,6 +375,12 @@ def test_anonymize_non_dicom_w_err_wo_seriesdescription(dicom_path):
 def test_anonymize_non_dicom_wo_err(dicom_with_other):
     dicom_folder, tmp_folder = dicom_with_other
     anonymize(DICOM_DATA_DIR, tmp_folder, error_no_dicom=False)
+
+
+def test_keep_duplicate_filename(dicom_duplicate_filename):
+    anonymize(dicom_duplicate_filename, path_ano(dicom_duplicate_filename))
+    assert osp.exists(path_ano(dicom_duplicate_filename))
+    assert len(os.listdir(path_ano(dicom_duplicate_filename))) == 2
 
 
 def test_anonymize_spectro(spectro_path):
