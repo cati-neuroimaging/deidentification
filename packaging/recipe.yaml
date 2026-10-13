@@ -1,0 +1,32 @@
+package:
+  name: ${{ load_from_file("../pyproject.toml").project.name }}
+  version : ${{ load_from_file("../pyproject.toml").project.version }}
+
+build:
+  number: 4
+  noarch: python
+  script: python -m pip install $RECIPE_DIR/..
+
+source:
+  - path: .
+  - path: ../tests
+    target_directory: tests
+
+requirements:
+  host:
+    - setuptools
+    - pip
+    - python >3.9,<3.13
+  run:
+    - python >3.9,<3.13
+    - pydicom <3
+tests:
+  #- python:
+  - script:
+      - pytest
+    requirements:
+      run:
+        - pytest
+    files:
+      source:
+        - tests
