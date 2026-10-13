@@ -2,7 +2,7 @@ from pathlib import Path
 import puremagic
 import pydicom
 import shutil
-from subprocess import DEVNULL, run
+from subprocess import DEVNULL, run, CalledProcessError
 import tempfile
 
 # List of DICOM Tag value modality (0008, 0060) that is considered as imaging data
@@ -102,6 +102,24 @@ def is_spectro(filepath):
     finally:
         shutil.rmtree(temp_folder, ignore_errors=True)
 
+    return True
+
+
+def is_physio(filepath):
+    """
+    Check if dcm2niix can convert dcm and generate physio data.
+    """
+    temp_folder = tempfile.mkdtemp()
+    cmd = ["dcm2niix", "-o", temp_folder, filepath]
+
+    try:
+        run(cmd, shell=False, check=True, stderr=DEVNULL, stdout=DEVNULL)
+        output_physio = Path(temp_folder).glob("*_physio.json")
+        return bool(list(output_physio))
+    except CalledProcessError:
+        return False
+    finally:
+        shutil.rmtree(temp_folder, ignore_errors=True)
     return True
 
 

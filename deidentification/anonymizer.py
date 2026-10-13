@@ -20,7 +20,7 @@ from deidentification.archive import (is_archive_ext, is_archive_file, pack,
                                       unpack, unpack_first)
 from deidentification.config import load_config_profile
 from deidentification.dicom import is_imaging_modality, is_folder_empty_of_files, is_dicom
-from deidentification.dicom import is_capture, is_capture_dicom, is_spectro
+from deidentification.dicom import is_capture, is_capture_dicom, is_spectro, is_physio
 
 
 def _load_config(config_profile, tags_to_keep, tags_to_delete, anonymous):
@@ -558,7 +558,11 @@ class Anonymizer:
         """
         Reads the DICOM file, anonymizes it and write the result.
         """
-        if not is_imaging_modality(self._dataset) and (not self.keep_capture or not is_capture_dicom(self._dataset)):
+        if (
+            not is_imaging_modality(self._dataset)
+            and (not is_physio(self._dicom_filein))
+            and (not self.keep_capture or not is_capture_dicom(self._dataset))
+        ):
             self.fill_report("removed")
             return 0
         if not self.ano_run:
