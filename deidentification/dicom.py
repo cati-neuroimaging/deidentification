@@ -40,7 +40,7 @@ def is_imaging_modality(dicom_ds):
 
 
 def is_dicom(filepath):
-    magic = puremagic.magic_file(filepath)
+    magic = get_magic(filepath)
     magic_mime_type = set(m.mime_type for m in magic)
     if "application/dicom" in magic_mime_type:
         return True
@@ -55,7 +55,7 @@ def is_capture(filepath):
     # png : 'image/png'
     # DICOM : 'application/dicom'
 
-    magic = puremagic.magic_file(filepath)
+    magic = get_magic(filepath)
     magic_mime_type = set(m.mime_type for m in magic)
     if "image/jpeg" in magic_mime_type:
         return "image"
@@ -137,3 +137,16 @@ def is_folder_empty_of_files(folder_path) -> bool:
     
     return True
 
+
+def get_magic(filepath):
+    """
+    Get puremagic.magic_file type with handling files without header (ex: 0 octet file).
+    """
+    try:
+        magic = puremagic.magic_file(filepath)
+    except ValueError as e:
+        is_empty_error = str(e) == "Input was empty"
+        if is_empty_error:
+            return []
+        raise
+    return magic
