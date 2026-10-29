@@ -115,6 +115,16 @@ def dicom_duplicate_filename(dicom_path):
     clean_outputs(tmp_folder)
     shutil.rmtree(tmp_folder)
 
+@pytest.fixture()
+def empty_file():
+    tmp_folder = tempfile.mkdtemp()
+    empty_filepath = os.path.join(tmp_folder, "empty_file")
+    open(empty_filepath, "w").close()
+
+    yield empty_filepath
+
+    clean_outputs(empty_filepath)
+    shutil.rmtree(tmp_folder)
 
 # Anonymizer class tests
 
@@ -375,6 +385,13 @@ def test_anonymize_non_dicom_w_err_wo_seriesdescription(dicom_path):
 def test_anonymize_non_dicom_wo_err(dicom_with_other):
     dicom_folder, tmp_folder = dicom_with_other
     anonymize(dicom_folder, tmp_folder, error_no_dicom=False)
+
+def test_anonymize_empty_file(empty_file):
+    """
+    Check that error from empty file is not ValueError("Input was empty") from puremagic.
+    """
+    with pytest.raises(anonymizer.AnonymizerError):
+        anonymize(empty_file, path_ano(empty_file))
 
 
 def test_remove_folder_hierarchy(dicom_with_other):
