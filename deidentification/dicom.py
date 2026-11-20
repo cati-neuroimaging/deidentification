@@ -64,7 +64,7 @@ def is_capture(filepath):
     elif "application/dicom" in magic_mime_type:
         try:
             # check tag
-            ds = pydicom.read_file(filepath)
+            ds = pydicom.dcmread(filepath)
             if is_capture_dicom(ds):
                 return "dicom"
         except Exception:

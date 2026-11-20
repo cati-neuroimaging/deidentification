@@ -127,7 +127,7 @@ def test_anonymizer_basic(dicom_path):
 def test_anonymizer_public_tags(dicom_path):
     a = anonymizer.Anonymizer(dicom_path, path_ano(dicom_path))
     a.run_ano()
-    ds = pydicom.read_file(path_ano(dicom_path))
+    ds = pydicom.dcmread(path_ano(dicom_path))
     assert ds.get((0x0008, 0x0008))
     assert not ds.get((0x0008, 0x0032))
 
@@ -140,7 +140,7 @@ def test_anonymizer_input_tags(dicom_path):
     a = anonymizer.Anonymizer(dicom_path, path_ano(dicom_path),
                               tags_config=tags_config)  # Usually kept
     a.run_ano()
-    ds = pydicom.read_file(path_ano(dicom_path))
+    ds = pydicom.dcmread(path_ano(dicom_path))
     assert not ds.get((0x0008, 0x0008))
     assert ds.get((0x0008, 0x0032))
 
@@ -148,7 +148,7 @@ def test_anonymizer_input_tags(dicom_path):
 def test_anonymizer_private_tags(dicom_path):
     a = anonymizer.Anonymizer(dicom_path, path_ano(dicom_path))
     a.run_ano()
-    ds = pydicom.read_file(path_ano(dicom_path))
+    ds = pydicom.dcmread(path_ano(dicom_path))
     assert not ds.get((0x2005, 0x1445), None)
     assert ds.get((0x2001, 0x1003), None)
 
@@ -161,7 +161,7 @@ def test_anonymizer_private_creator(dicom_path):
     a = anonymizer.Anonymizer(dicom_path, path_ano(dicom_path),
                               tags_config=tags_config)
     a.run_ano()
-    ds = pydicom.read_file(path_ano(dicom_path))
+    ds = pydicom.dcmread(path_ano(dicom_path))
     assert ds.get((0x2005, 0x101d), None)
     assert not ds.get((0x2005, 0x1013), None)
 
@@ -171,9 +171,9 @@ def test_anonymizer_data_sharing_profile(dicom_path):
     a = anonymizer.Anonymizer(dicom_path, path_ano(dicom_path),
                               tags_config=tags_config)
     a.run_ano()
-    _ds = pydicom.read_file(dicom_path)
+    _ds = pydicom.dcmread(dicom_path)
     assert _ds.get((0x2005, 0x101D))
-    ds = pydicom.read_file(path_ano(dicom_path))
+    ds = pydicom.dcmread(path_ano(dicom_path))
     assert ds.get((0x2005, 0x101D))
 
 
@@ -227,7 +227,7 @@ def test_anonymize_anonymous(file_path):
 def test_anonymize_config_safe_private(dicom_path):
     if not os.path.exists(OUTPUT_DIR):
         os.makedirs(OUTPUT_DIR)
-    ds = pydicom.read_file(dicom_path)
+    ds = pydicom.dcmread(dicom_path)
     tags_config = {
         # Private Creator tag to be kept
         (0x2005, 0x0011): {
@@ -246,7 +246,7 @@ def test_anonymize_config_safe_private(dicom_path):
                       tags_config)
     anon.run_ano()
 
-    ds = pydicom.read_file(output_dicom_path)
+    ds = pydicom.dcmread(output_dicom_path)
 
     assert ds.get((0x2005, 0x0011))
     assert ds.get((0x2005, 0x1199)) and ds.get((0x2005, 0x1134))
@@ -268,7 +268,7 @@ def test_anonymize_private_creator_tree(dicom_path):
     #    ---------
     # (3035, 0010) Private Creator                     SH: 'Test deidentification2'
 
-    ds = pydicom.read_file(osp.abspath(dicom_path))
+    ds = pydicom.dcmread(osp.abspath(dicom_path))
     sequence_block = pydicom.Dataset()
     block = sequence_block.private_block(0x3033, 'Test deidentification', create=True)
     block.add_new(0x11, 'SH', 'Important Tag')
@@ -299,7 +299,7 @@ def test_anonymize_private_creator_tree(dicom_path):
                         tags_config)
         anon.run_ano()
 
-    ds = pydicom.read_file(osp.abspath(output_dicom_path))
+    ds = pydicom.dcmread(osp.abspath(output_dicom_path))
 
     assert ds[(0x3030, 0x1001)][0][(0x3033, 0x1011)]
     assert ds.get((0x3035, 0X0010))
@@ -314,7 +314,7 @@ def test_ano_several_private_creator_name(dicom_path):
         ['(3033,1011)', 'VIT', 'K', 'Name2'],
     ])
 
-    ds = pydicom.read_file(osp.abspath(dicom_path))
+    ds = pydicom.dcmread(osp.abspath(dicom_path))
     sequence_block = pydicom.Dataset()
     block = sequence_block.private_block(0x3033, 'Name1', create=True)
     block.add_new(0x11, 'SH', 'Important Tag')
@@ -334,7 +334,7 @@ def test_ano_several_private_creator_name(dicom_path):
                         load_config_profile(tmp_config))
         anon.run_ano()
 
-    ds = pydicom.read_file(osp.abspath(output_dicom_path))
+    ds = pydicom.dcmread(osp.abspath(output_dicom_path))
 
     assert ds[(0x3030, 0x1001)][0].get((0x3033, 0x1011))
     assert ds[(0x3034, 0x1001)][0].get((0x3033, 0x1011))
@@ -361,7 +361,7 @@ def test_anonymize_non_dicom_w_err(dicom_with_other):
 def test_anonymize_non_dicom_w_err_wo_seriesdescription(dicom_path):
     """Check that the lack of SeriesDescription does not raise an error anymore
     """
-    ds = pydicom.read_file(osp.abspath(dicom_path))
+    ds = pydicom.dcmread(osp.abspath(dicom_path))
     if ds.get('SeriesDescription', None) is not None:
         del ds['SeriesDescription']
     ds.Modality = "ANN"

@@ -19,8 +19,8 @@ def get_tag_diff(path_raw, path_ano, outpath=None):
         outpath (str): path of the diff_file
     """
     print(f"Check difference between:\n{path_raw} and\n{path_ano}\n")
-    dcm_ref = pydicom.read_file(path_raw)
-    dcm_current = pydicom.read_file(path_ano)
+    dcm_ref = pydicom.dcmread(path_raw)
+    dcm_current = pydicom.dcmread(path_ano)
     diff = difflib.ndiff(str(dcm_ref).splitlines(keepends=True),
                          str(dcm_current).splitlines(keepends=True))
 
