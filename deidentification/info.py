@@ -1,6 +1,6 @@
 version_major = 1
 version_minor = 3
-version_micro = 1
+version_micro = 2
 version_extra = ''
 
 __version__ = '{}.{}.{}{}'.format(version_major,
@@ -17,6 +17,6 @@ AUTHOR = 'CATI'
 LICENSE = 'MIT License'
 AUTHOR_EMAIL = 'support@cati-neuroimaging.com'
 VERSION = __version__
-REQUIRES = ['pydicom<3,>=1.4.2']
+REQUIRES = ['pydicom>=3']
 
 brainvisa_build_model = 'pure_python'
