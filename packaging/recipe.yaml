@@ -19,7 +19,7 @@ requirements:
     - python >3.9,<3.13
   run:
     - python >3.9,<3.13
-    - pydicom <3
+    - pydicom >=3
 tests:
   #- python:
   - script:
